@@ -128,11 +128,25 @@ int main(int argc, char** argv) {
             if(e.type == SDL_MOUSEWHEEL) {
                 trackCam.moveFront(e.wheel.y);
             }
-            // if(e.type == SDL_KEYDOWN) {
-            //     if(e.key.keysym == 37) {
-            //         trackCam.rotateLeft(1);
-            //     }
-            // }
+            if(e.type == SDL_KEYDOWN) {
+                switch (e.key.keysym.sym)  {
+                    case SDLK_UP :
+                        trackCam.moveFront(2);
+                        break;
+                    case SDLK_DOWN :
+                        trackCam.moveFront(-2);
+                        break;
+                    case SDLK_LEFT :
+                        trackCam.rotateLeft(90);
+                        break;
+                    case SDLK_RIGHT :
+                        trackCam.rotateLeft(-90);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
