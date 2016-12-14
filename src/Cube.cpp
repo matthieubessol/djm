@@ -24,7 +24,6 @@ void Cube::build() {
 
                         -1.0, 1.0, 1.0,   1.0, 1.0, 1.0,   1.0, 1.0, -1.0,         // Face 6
                         -1.0, 1.0, 1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0};      // Face 6
-
     float coordTextureTmp[] = { 0, 0,0,   1, 0,0,   1, 1,0,     // Face 1
                                 0, 0,0,   0, 1,0,   1, 1,0,     // Face 1
 
@@ -42,7 +41,6 @@ void Cube::build() {
 
                                   0, 0,0,   1, 0,0,   1, 1,0,     // Face 6
                                   0, 0,0,   0, 1,0,   1, 1,0};    // Face 6
-
 
     // Construit l'ensemble des vertex
     for(GLsizei i = 0; i < 108 ; i+=3) {

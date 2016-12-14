@@ -5,7 +5,7 @@
 #include <glimac/FilePath.hpp>
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
-#include <glimac/TrackballCamera.hpp>
+#include <glimac/FreeflyCamera.hpp>
 #include <vector>
 #include "Cube.hpp"
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
 
-    TrackballCamera trackCam = TrackballCamera();
+    FreeflyCamera trackCam = FreeflyCamera();
 
     Cube sphere = Cube();
 
@@ -171,10 +171,10 @@ int main(int argc, char** argv) {
         glActiveTexture(GL_TEXTURE1);
 
         for (int i = 0; i < rotateValues.size(); ++i){
-            MVMatrix = glm::translate(glm::mat4(1), glm::vec3(0, 0, -5)); // Translation
-            MVMatrix = glm::rotate(MVMatrix, windowManager.getTime()+i, rotateValues[i]); // Translation * Rotation
-            MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
-            MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
+            MVMatrix = glm::translate(glm::mat4(1), glm::vec3(-2, 0, -i)); // Translation
+            // MVMatrix = glm::rotate(MVMatrix, windowManager.getTime()+i, rotateValues[i]); // Translation * Rotation
+            // MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
+            // MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
 
             glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
             glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
