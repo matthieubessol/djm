@@ -8,6 +8,7 @@
 #include <glimac/FreeflyCamera.hpp>
 #include <vector>
 #include "Cube.hpp"
+#include "Player.hpp"
 
 using namespace glimac;
 
@@ -34,7 +35,7 @@ int main(int argc, char** argv) {
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
 
-    FreeflyCamera trackCam = FreeflyCamera();
+    Player player = Player();
 
     Cube sphere = Cube();
 
@@ -68,8 +69,8 @@ int main(int argc, char** argv) {
     GLint uNormalMatrix = glGetUniformLocation(program.getGLId(),"uNormalMatrix");
 
     glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
-    ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * trackCam.getViewMatrix();
-    MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * trackCam.getViewMatrix();
+    ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * player.getCamera()->getViewMatrix();
+    MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * player.getCamera()->getViewMatrix();
     NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
     std::vector<glm::vec3> rotateValues;
@@ -126,21 +127,21 @@ int main(int argc, char** argv) {
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
             if(e.type == SDL_MOUSEWHEEL) {
-                trackCam.moveFront(e.wheel.y);
+                player.getCamera()->moveFront(e.wheel.y);
             }
             if(e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym)  {
                     case SDLK_UP :
-                        trackCam.moveFront(2);
+                        player.getCamera()->moveFront(2);
                         break;
                     case SDLK_DOWN :
-                        trackCam.moveFront(-2);
+                        player.getCamera()->moveFront(-2);
                         break;
                     case SDLK_LEFT :
-                        trackCam.rotateLeft(90);
+                        player.getCamera()->rotateLeft(90);
                         break;
                     case SDLK_RIGHT :
-                        trackCam.rotateLeft(-90);
+                        player.getCamera()->rotateLeft(-90);
                         break;
                     default:
                         break;
@@ -158,7 +159,7 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindVertexArray(vao);
 
-        glm::mat4 vm = trackCam.getViewMatrix();
+        glm::mat4 vm = player.getCamera()->getViewMatrix();
 
         ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * vm;
         MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;
