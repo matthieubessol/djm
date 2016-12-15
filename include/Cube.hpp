@@ -28,6 +28,8 @@ public:
         return m_Vertices.size();
     }
 
+    // void drawCube(int type, vec3, )
+
 private:
     std::vector<ShapeVertex> m_Vertices;
 };

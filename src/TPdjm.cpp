@@ -9,6 +9,7 @@
 #include <vector>
 #include "Cube.hpp"
 #include "Player.hpp"
+#include "Terrain.hpp"
 
 using namespace glimac;
 
@@ -120,6 +121,8 @@ int main(int argc, char** argv) {
     GLint uEarthTexture = glGetUniformLocation(program.getGLId(), "uEarthTexture");
     GLint uCloudTexture = glGetUniformLocation(program.getGLId(), "uCloudTexture");
 
+    Terrain t = Terrain();
+
     // Application loop:
     bool done = false;
     while(!done) {
@@ -181,23 +184,40 @@ int main(int argc, char** argv) {
         glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
 
         glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glActiveTexture(GL_TEXTURE1);
 
-        for (int i = 0; i < rotateValues.size(); ++i){
-            MVMatrix = glm::translate(glm::mat4(1), glm::vec3(-2, 0, -i)); // Translation
-            // MVMatrix = glm::rotate(MVMatrix, windowManager.getTime()+i, rotateValues[i]); // Translation * Rotation
-            // MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
-            // MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
+        int nbCount = 0;
+        for (int i = 0; i < t.getWidth(); ++i){
+            for(int j = 0; j < t.getHeight(); ++j) {
 
-            glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-            glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-            glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+                if(t.getPixels().at(nbCount).isRed()) {
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    glActiveTexture(GL_TEXTURE1);
+                } else {
+                    glActiveTexture(GL_TEXTURE1);
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    glActiveTexture(GL_TEXTURE0);
+                }
 
-            glBindTexture(GL_TEXTURE_2D,textureMoon);
-            glUniform1i(glGetUniformLocation(program.getGLId(),"uEarthTexture"), 0);
-            glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+                MVMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, -j)); // Translation
+                // MVMatrix = glm::rotate(MVMatrix, windowManager.getTime()+i, rotateValues[i]); // Translation * Rotation
+                // MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
+                MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
+
+                glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+                glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+                glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+                if(t.getPixels().at(nbCount).isRed()) {
+                    glBindTexture(GL_TEXTURE_2D,textureMoon);
+                } else {
+                    glBindTexture(GL_TEXTURE_2D,textureEarth);
+                }
+                glUniform1i(glGetUniformLocation(program.getGLId(),"uEarthTexture"), 0);
+                glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+
+                nbCount++;
+            }
         }
 
         glBindVertexArray(0);
