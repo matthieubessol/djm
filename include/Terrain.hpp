@@ -16,6 +16,8 @@ private:
     int width;
     int height;
     std::vector<Pixels> pixels;
+    glm::vec3 startPosition;
+    // std::vector< std::vector<int> > matriceMap;
 
 public:
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
@@ -26,5 +28,7 @@ public:
     int getHeight();
     std::vector<Pixels> getPixels();
     void loadMap();
+    glm::vec3 getStartPosition();
+    bool checkCollision(glm::vec3 playerPosition);
 };
 }

@@ -3,10 +3,11 @@
 #include <iostream>
 #include "glimac/common.hpp"
 #include "../include/Cube.hpp"
+#include "../include/Texture.hpp"
 
 namespace glimac {
 
-void Cube::build() {
+void Cube::build(GLuint glId, std::vector<std::string> nameTextures) {
     this->modelMatrix = glm::mat4(1);
     float vertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
                         -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
@@ -63,6 +64,7 @@ void Cube::build() {
 
     this->initVbo();
     this->initVao();
+    this->initTextures(glId, nameTextures);
 
     // Attention ! dans cette implantation on duplique beaucoup de sommets. Une meilleur stratégie est de passer
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
@@ -112,11 +114,27 @@ void Cube::draw(GLuint activeTexture, GLuint idTexture, int i , int j) {
   this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, j));
   this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
   glBindTexture(GL_TEXTURE_2D,idTexture);
-  glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
+  // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
+}
+
+void Cube::drawPlane(GLuint activeTexture, GLuint idTexture, float scale, float translateX, float translateY) {
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glActiveTexture(activeTexture);
+  this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(translateX, -0.6, translateY));
+  this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(scale,0.1,scale));
+  glBindTexture(GL_TEXTURE_2D,idTexture);
+  // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
 }
 
 void Cube::resetMatrix() {
   this->modelMatrix = glm::mat4(1);
+}
+
+void Cube::initTextures(GLuint glId, std::vector<std::string> nameTextures) {
+  for (int i = 0; i < nameTextures.size(); ++i){
+    this->textures.push_back(Texture(nameTextures.at(i), glId));
+  }
 }
 
 }
