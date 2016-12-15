@@ -7,6 +7,7 @@
 namespace glimac {
 
 void Cube::build() {
+    this->modelMatrix = glm::mat4(1);
     float vertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
                         -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
 
@@ -98,6 +99,24 @@ GLuint Cube::getVbo() {
 
 GLuint Cube::getVao() {
   return this->vao;
+}
+
+glm::mat4 Cube::getModelMatrix() {
+  return this->modelMatrix;
+}
+
+void Cube::draw(GLuint activeTexture, GLuint idTexture, int i , int j) {
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glActiveTexture(activeTexture);
+  this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, j));
+  this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
+  glBindTexture(GL_TEXTURE_2D,idTexture);
+  glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
+}
+
+void Cube::resetMatrix() {
+  this->modelMatrix = glm::mat4(1);
 }
 
 }

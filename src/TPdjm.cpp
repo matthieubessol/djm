@@ -53,7 +53,6 @@ int main(int argc, char** argv) {
         glm::vec3 value = glm::sphericalRand(3.f);
         // rotateValues.push_back(glm::sphericalRand(3));
         rotateValues.push_back(value);
-
     }
 
     // LOAD THE TEXTURE
@@ -136,63 +135,34 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glBindVertexArray(cubes.getVao());
 
+        glDisable(GL_TEXTURE_2D);
         glm::mat4 vm = player.getCamera()->getViewMatrix();
 
         ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * vm;
         MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;
 
         glm::mat4 MVMatrix;
-        MVMatrix = glm::translate(MVMatrix,glm::vec3(0,0,-5));
-        glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-        glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
         glUniform1i(uEarthTexture, 0);
         glUniform1i(uCloudTexture, 1);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureEarth); // la texture earthTexture est bindée sur l'unité GL_TEXTURE0
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, textureCloudz); // la texture cloudTexture est bindée sur l'unité GL_TEXTURE1
-
-        glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-
-        glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0
-
         int nbCount = 0;
         for (int i = 0; i < t.getWidth(); ++i){
             for(int j = 0; j < t.getHeight(); ++j) {
-
                 if(t.getPixels().at(nbCount).isRed()) {
-                    glActiveTexture(GL_TEXTURE0);
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    glActiveTexture(GL_TEXTURE1);
+                    cubes.draw(GL_TEXTURE1, textureMoon, i , j);
+                    glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+                glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+                glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
                 } else {
-                    glActiveTexture(GL_TEXTURE1);
-                    glBindTexture(GL_TEXTURE_2D, 0);
-                    glActiveTexture(GL_TEXTURE0);
+                    cubes.resetMatrix();
+                    // cubes.draw(GL_TEXTURE0, textureEarth, i , j);
                 }
 
-                MVMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, -j)); // Translation
-                // MVMatrix = glm::rotate(MVMatrix, windowManager.getTime()+i, rotateValues[i]); // Translation * Rotation
-                // MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
-                MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
-
-                if(t.getPixels().at(nbCount).isRed()) {
-                    glBindTexture(GL_TEXTURE_2D,textureMoon);
-                } else {
-                    glBindTexture(GL_TEXTURE_2D,textureEarth);
-                }
-
-
-
-                glUniform1i(glGetUniformLocation(program.getGLId(),"uEarthTexture"), 0);
-
-                glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+                glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
                 glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
                 glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-                glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
                 nbCount++;
             }

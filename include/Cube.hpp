@@ -33,11 +33,15 @@ public:
     void initVao();
     GLuint getVbo();
     GLuint getVao();
+    glm::mat4 getModelMatrix();
+    void draw(GLuint activeTexture, GLuint idTexture, int i , int j);
+    void resetMatrix();
 
 private:
     std::vector<ShapeVertex> m_Vertices;
     GLuint vbo;
     GLuint vao;
+    glm::mat4 modelMatrix;
 };
 
 }
