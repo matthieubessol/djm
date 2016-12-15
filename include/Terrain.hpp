@@ -17,6 +17,7 @@ private:
     int height;
     std::vector<Pixels> pixels;
     glm::vec3 startPosition;
+    glm::vec3 finishPosition;
     // std::vector< std::vector<int> > matriceMap;
 
 public:

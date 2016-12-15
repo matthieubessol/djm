@@ -14,6 +14,7 @@ Terrain::Terrain() {
     this->width = 0;
     this->height = 0;
     this->startPosition = glm::vec3(0,0,0);
+    this->finishPosition = glm::vec3(0,0,0);
     this->loadMap();
 }
 
@@ -22,6 +23,7 @@ Terrain::Terrain(std::string _path) {
     this->width = 0;
     this->height = 0;
     this->startPosition = glm::vec3(0,0,0);
+    this->finishPosition = glm::vec3(0,0,0);
     this->loadMap();
 }
 
@@ -72,6 +74,9 @@ void Terrain::loadMap() {
 
                 if(a.isWhite())
                     this->startPosition = glm::vec3(i,0,j);
+                if(a.isGreen() && a.isWhite() == false)
+                    this->finishPosition = glm::vec3(i,0,j);
+
 
                 this->pixels.push_back(a);
             }
@@ -86,8 +91,10 @@ std::vector<Pixels> Terrain::getPixels() {
 }
 
 bool Terrain::checkCollision(glm::vec3 playerPosition) {
-    int x = playerPosition.x;
-    int z = playerPosition.z;
+    if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
+        std::cout << "WIN" << std::endl;
+    }
+
     if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x)).isRed() == false) {
         return true;
     }
