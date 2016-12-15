@@ -5,6 +5,7 @@
 #include "../include/Terrain.hpp"
 #include "../include/Pixels.hpp"
 #include <fstream>
+#include <GL/glew.h>
 
 namespace glimac {
 

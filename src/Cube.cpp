@@ -60,8 +60,44 @@ void Cube::build() {
         m_Vertices.push_back(vertex);
     }
 
+    this->initVbo();
+    this->initVao();
+
     // Attention ! dans cette implantation on duplique beaucoup de sommets. Une meilleur stratégie est de passer
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
+}
+
+void Cube::initVbo() {
+  glGenBuffers(1, &this->vbo);
+  glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
+  glBufferData(GL_ARRAY_BUFFER,this->getVertexCount()*sizeof(ShapeVertex), this->getDataPointer(), GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER,0);
+}
+
+void Cube::initVao() {
+  glGenVertexArrays(1, &this->vao);
+  glBindVertexArray(this->vao);
+
+  const GLuint VERTEX_POSITION_LOCATION = 0;
+  const GLuint VERTEX_NORMAL_LOCATION = 1;
+  const GLuint VERTEX_TEXTURE_LOCATION = 2;
+  glEnableVertexAttribArray(VERTEX_POSITION_LOCATION);
+  glEnableVertexAttribArray(VERTEX_NORMAL_LOCATION);
+  glEnableVertexAttribArray(VERTEX_TEXTURE_LOCATION);
+  glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
+  glVertexAttribPointer(VERTEX_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*) 0);
+  glVertexAttribPointer(VERTEX_NORMAL_LOCATION  , 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*) offsetof(ShapeVertex, normal));
+  glVertexAttribPointer(VERTEX_TEXTURE_LOCATION , 2, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)(offsetof(ShapeVertex, texCoords)));
+  glBindBuffer(GL_ARRAY_BUFFER,0);
+  glBindVertexArray(0);
+}
+
+GLuint Cube::getVbo() {
+  return this->vbo;
+}
+
+GLuint Cube::getVao() {
+  return this->vao;
 }
 
 }

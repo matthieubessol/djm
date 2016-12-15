@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "glimac/common.hpp"
+#include <GL/glew.h>
 
 namespace glimac {
 
@@ -28,10 +29,15 @@ public:
         return m_Vertices.size();
     }
 
-    // void drawCube(int type, vec3, )
+    void initVbo();
+    void initVao();
+    GLuint getVbo();
+    GLuint getVao();
 
 private:
     std::vector<ShapeVertex> m_Vertices;
+    GLuint vbo;
+    GLuint vao;
 };
 
 }

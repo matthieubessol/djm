@@ -36,34 +36,8 @@ int main(int argc, char** argv) {
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
 
-    Player player = Player();
-
-    Cube sphere = Cube();
-
-    // VBO
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER,sphere.getVertexCount()*sizeof(ShapeVertex), sphere.getDataPointer(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-
-    // VAO
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-
-    const GLuint VERTEX_POSITION_LOCATION = 0;
-    const GLuint VERTEX_NORMAL_LOCATION = 1;
-    const GLuint VERTEX_TEXTURE_LOCATION = 2;
-    glEnableVertexAttribArray(VERTEX_POSITION_LOCATION);
-    glEnableVertexAttribArray(VERTEX_NORMAL_LOCATION);
-    glEnableVertexAttribArray(VERTEX_TEXTURE_LOCATION);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glVertexAttribPointer(VERTEX_POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*) 0);
-    glVertexAttribPointer(VERTEX_NORMAL_LOCATION  , 3, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*) offsetof(ShapeVertex, normal));
-    glVertexAttribPointer(VERTEX_TEXTURE_LOCATION , 2, GL_FLOAT, GL_FALSE, sizeof(ShapeVertex), (const GLvoid*)(offsetof(ShapeVertex, texCoords)));
-    glBindBuffer(GL_ARRAY_BUFFER,0);
-    glBindVertexArray(0);
+    Player player;
+    Cube cubes;
 
     GLint uMVPMatrix    = glGetUniformLocation(program.getGLId(),"uMVPMatrix");
     GLint uMVMatrix     = glGetUniformLocation(program.getGLId(),"uMVMatrix");
@@ -135,10 +109,10 @@ int main(int argc, char** argv) {
             if(e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym)  {
                     case SDLK_UP :
-                        player.getCamera()->moveFront(2);
+                        player.getCamera()->moveFront(1);
                         break;
                     case SDLK_DOWN :
-                        player.getCamera()->moveFront(-2);
+                        player.getCamera()->moveFront(-1);
                         break;
                     case SDLK_LEFT :
                         player.getCamera()->rotateLeft(90);
@@ -160,7 +134,7 @@ int main(int argc, char** argv) {
          * HERE SHOULD COME THE RENDERING CODE
          *********************************/
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glBindVertexArray(vao);
+        glBindVertexArray(cubes.getVao());
 
         glm::mat4 vm = player.getCamera()->getViewMatrix();
 
@@ -181,7 +155,7 @@ int main(int argc, char** argv) {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, textureCloudz); // la texture cloudTexture est bindée sur l'unité GL_TEXTURE1
 
-        glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+        glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
         glBindTexture(GL_TEXTURE_2D, 0); // débind sur l'unité GL_TEXTURE0
 
@@ -204,17 +178,21 @@ int main(int argc, char** argv) {
                 // MVMatrix = glm::translate(MVMatrix, glm::vec3(-rotateValues[i].y, rotateValues[i].x, 0)); // Translation * Rotation * Translation
                 MVMatrix = glm::scale(MVMatrix, glm::vec3(0.2, 0.2, 0.2)); // Translation * Rotation * Translation * Scale
 
-                glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
-                glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-                glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-
                 if(t.getPixels().at(nbCount).isRed()) {
                     glBindTexture(GL_TEXTURE_2D,textureMoon);
                 } else {
                     glBindTexture(GL_TEXTURE_2D,textureEarth);
                 }
+
+
+
                 glUniform1i(glGetUniformLocation(program.getGLId(),"uEarthTexture"), 0);
-                glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+
+                glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix));
+                glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+                glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+                glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
                 nbCount++;
             }
