@@ -70,6 +70,13 @@ void Cube::build(GLuint glId, std::vector<std::string> nameTextures) {
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
 }
 
+Cube::~Cube() {
+  for (int i = 0; i < textures.size(); ++i){
+    unsigned int tex = int(textures.at(i).getidTexture());
+    glDeleteTextures(0,&tex);
+  }
+}
+
 void Cube::initVbo() {
   glGenBuffers(1, &this->vbo);
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
@@ -107,23 +114,24 @@ glm::mat4 Cube::getModelMatrix() {
   return this->modelMatrix;
 }
 
-void Cube::draw(GLuint activeTexture, GLuint idTexture, int i , int j) {
+void Cube::draw(int idTexture, int i , int j) {
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_TEXTURE_2D);
-  glActiveTexture(activeTexture);
+  glActiveTexture(textures.at(idTexture).getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, j));
   this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
-  glBindTexture(GL_TEXTURE_2D,idTexture);
+  glBindTexture(GL_TEXTURE_2D,textures.at(idTexture).getidTexture());
   // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
 }
 
-void Cube::drawPlane(GLuint activeTexture, GLuint idTexture, float scale, float translateX, float translateY) {
+void Cube::drawPlane(int idTexture, float scale, float translateX, float translateY) {
+  this->resetMatrix();
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_TEXTURE_2D);
-  glActiveTexture(activeTexture);
+  glActiveTexture(textures.at(idTexture).getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(translateX, -0.6, translateY));
   this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(scale,0.1,scale));
-  glBindTexture(GL_TEXTURE_2D,idTexture);
+  glBindTexture(GL_TEXTURE_2D,textures.at(idTexture).getidTexture());
   // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
 }
 

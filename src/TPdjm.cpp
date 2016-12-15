@@ -55,35 +55,7 @@ int main(int argc, char** argv) {
     MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * player.getCamera()->getViewMatrix();
     NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
-    // // LOAD THE TEXTURE
-    // std::unique_ptr<Image> earth = loadImage(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg");
-    // if(earth == NULL) {
-    //     std::cout << "Can't open it" << std::endl;
-    // }
-    // GLuint textureEarth;
-    // glGenTextures(1,&textureEarth);
-    // glBindTexture(GL_TEXTURE_2D, textureEarth);
-    // glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,earth->getWidth(),earth->getHeight(),0,GL_RGBA,GL_FLOAT,earth->getPixels());
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    Texture textureEarth = Texture(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg", program.getGLId());
-    Texture textureMoon  = Texture(applicationPath.dirPath() + "/assets/textures/MoonMap.jpg", program.getGLId());
-
-    std::unique_ptr<Image> cloudz = loadImage(applicationPath.dirPath() + "/assets/textures/CloudMap.jpg");
-    if(cloudz == NULL) {
-        std::cout << "Can't open it" << std::endl;
-    }
-    GLuint textureCloudz;
-    glGenTextures(1,&textureCloudz);
-    glBindTexture(GL_TEXTURE_2D, textureCloudz);
-    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,cloudz->getWidth(),cloudz->getHeight(),0,GL_RGBA,GL_FLOAT,cloudz->getPixels());
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
     glEnable(GL_DEPTH_TEST);
-
-    // GLint uEarthTexture = glGetUniformLocation(program.getGLId(), "uEarthTexture");
-    GLint uCloudTexture = glGetUniformLocation(program.getGLId(), "uCloudTexture");
 
     // Application loop:
     bool done = false;
@@ -130,10 +102,8 @@ int main(int argc, char** argv) {
         MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;
 
         glm::mat4 MVMatrix;
-        glUniform1i(textureEarth.getUTexture(), 0);
-        glUniform1i(uCloudTexture, 1);
-        cubes.resetMatrix();
-        cubes.drawPlane(textureEarth.getActiveTexture(), textureEarth.getidTexture(), (t.getWidth()/2) + 1, t.getWidth()/2, t.getHeight()/2);
+
+        cubes.drawPlane(0, (t.getWidth()/2) + 1, t.getWidth()/2, t.getHeight()/2);
         glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
         glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -143,7 +113,7 @@ int main(int argc, char** argv) {
         for (int j = 0; j < t.getWidth(); ++j){
             for(int i = 0; i < t.getHeight(); ++i) {
                 if(t.getPixels().at(nbCount).isRed()) {
-                    cubes.draw(textureMoon.getActiveTexture(), textureMoon.getidTexture(), i , j);
+                    cubes.draw(1, i , j);
                 } else {
                     cubes.resetMatrix();
                 }
@@ -156,15 +126,7 @@ int main(int argc, char** argv) {
         }
 
         glBindVertexArray(0);
-
-        // Update the display
         windowManager.swapBuffers();
     }
-
-    unsigned int earth = int(textureEarth.getidTexture());
-    unsigned int moon =  int(textureEarth.getidTexture());
-
-    glDeleteTextures(0,&earth);
-    glDeleteTextures(0,&moon);
     return EXIT_SUCCESS;
 }

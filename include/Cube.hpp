@@ -20,6 +20,8 @@ public:
         build(glId, nameTextures); // Construction (voir le .cpp)
     }
 
+    ~Cube();
+
     // Renvoit le pointeur vers les données
     const ShapeVertex* getDataPointer() const {
         return &m_Vertices[0];
@@ -36,9 +38,10 @@ public:
     GLuint getVbo();
     GLuint getVao();
     glm::mat4 getModelMatrix();
-    void draw(GLuint activeTexture, GLuint idTexture, int i , int j);
-    void drawPlane(GLuint activeTexture, GLuint idTexture, float scale, float translateX, float translateY);
+    void draw(int idTexture, int i , int j);
+    void drawPlane(int idTexture, float scale, float translateX, float translateY);
     void resetMatrix();
+    void freeTextures();
 
 private:
     std::vector<ShapeVertex> m_Vertices;
