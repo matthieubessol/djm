@@ -131,6 +131,17 @@ void Cube::drawPlane(Texture * texture, float scale, float translateX, float tra
   // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
 }
 
+void Cube::draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale) {
+  this->resetMatrix();
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glActiveTexture(texture->getActiveTexture());
+  this->modelMatrix = glm::translate(glm::mat4(1), translate);
+  // this->modelMatrix = glm::rotate(this->modelMatrix, time, rotate);
+  this->modelMatrix = glm::scale(this->modelMatrix, scale);
+  glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
+}
+
 void Cube::resetMatrix() {
   this->modelMatrix = glm::mat4(1);
 }
