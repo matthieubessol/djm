@@ -33,6 +33,9 @@ namespace glimac{
         glm::vec3 getStartPosition();
         bool checkCollision(glm::vec3 playerPosition);
         bool isWall(int pos);
-    };
 
+        bool checkCollision(glm::vec3 playerPosition);
+        bool checkReachEnd(glm::vec3 playerPosition);
+        bool isInTerrain(glm::vec3 playerPosition);
+    };
 }
