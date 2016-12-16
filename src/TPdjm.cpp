@@ -42,6 +42,7 @@ int main(int argc, char** argv) {
     std::vector<Texture *> textures;
     textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/EarthMap.jpg",program.getGLId()) );
     textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/MoonMap.jpg" ,program.getGLId()) );
+    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/skybox.jpg" ,program.getGLId()) );
 
     Cube cubes;
     Terrain t = Terrain();
@@ -106,7 +107,13 @@ int main(int argc, char** argv) {
 
         glm::mat4 MVMatrix;
 
-        cubes.drawPlane(textures.at(0), (t.getWidth()/2) + 1, t.getWidth()/2, t.getHeight()/2);
+        cubes.draw(textures.at(2), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
+        glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+        glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+        glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
+
+        cubes.draw(textures.at(0), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
         glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
         glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
