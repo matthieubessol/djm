@@ -4,6 +4,7 @@
 
 #include "glimac/common.hpp"
 #include <GL/glew.h>
+#include "Texture.hpp"
 
 namespace glimac {
 
@@ -19,6 +20,8 @@ public:
         build(); // Construction (voir le .cpp)
     }
 
+    ~Cube();
+
     // Renvoit le pointeur vers les données
     const ShapeVertex* getDataPointer() const {
         return &m_Vertices[0];
@@ -33,11 +36,17 @@ public:
     void initVao();
     GLuint getVbo();
     GLuint getVao();
+    glm::mat4 getModelMatrix();
+    void draw(Texture * texture, int i , int j);
+    void drawPlane(Texture * texture, float scale, float translateX, float translateY);
+    void resetMatrix();
+    void freeTextures();
 
 private:
     std::vector<ShapeVertex> m_Vertices;
     GLuint vbo;
     GLuint vao;
+    glm::mat4 modelMatrix;
 };
 
 }

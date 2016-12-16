@@ -60,4 +60,11 @@ bool Pixels::isBlue() {
         return false;
 }
 
+bool Pixels::isWhite() {
+    if(this->b == 255 && this->r == 255 && this->g == 255)
+        return true;
+    else
+        return false;
+}
+
 }

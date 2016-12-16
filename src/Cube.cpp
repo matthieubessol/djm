@@ -3,10 +3,12 @@
 #include <iostream>
 #include "glimac/common.hpp"
 #include "../include/Cube.hpp"
+#include "../include/Texture.hpp"
 
 namespace glimac {
 
 void Cube::build() {
+    this->modelMatrix = glm::mat4(1);
     float vertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
                         -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
 
@@ -67,6 +69,10 @@ void Cube::build() {
     // par un Index Buffer Object, que nous verrons dans les prochains TDs
 }
 
+Cube::~Cube() {
+
+}
+
 void Cube::initVbo() {
   glGenBuffers(1, &this->vbo);
   glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
@@ -98,6 +104,35 @@ GLuint Cube::getVbo() {
 
 GLuint Cube::getVao() {
   return this->vao;
+}
+
+glm::mat4 Cube::getModelMatrix() {
+  return this->modelMatrix;
+}
+
+void Cube::draw(Texture * texture, int i , int j) {
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glActiveTexture(texture->getActiveTexture());
+  this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, j));
+  this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
+  glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
+  // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
+}
+
+void Cube::drawPlane(Texture * texture, float scale, float translateX, float translateY) {
+  this->resetMatrix();
+  glBindTexture(GL_TEXTURE_2D, 0);
+  glDisable(GL_TEXTURE_2D);
+  glActiveTexture(texture->getActiveTexture());
+  this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(translateX, -0.6, translateY));
+  this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(scale,0.1,scale));
+  glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
+  // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
+}
+
+void Cube::resetMatrix() {
+  this->modelMatrix = glm::mat4(1);
 }
 
 }

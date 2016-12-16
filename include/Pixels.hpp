@@ -25,5 +25,6 @@ public:
     int getBlue();
     void setBlue(int _blue);
     bool isBlue();
+    bool isWhite();
 };
 }
