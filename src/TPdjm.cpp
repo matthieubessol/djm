@@ -131,10 +131,10 @@ int main(int argc, char** argv) {
 
 
         int nbCount = 0;
-        for (int j = 0; j < t.getWidth(); ++j){
-            for(int i = 0; i < t.getHeight(); ++i) {
-                if(t.isWall(nbCount)) {
-                    cubes.draw(textures.at(1), i , j);
+        for(int x = 0; x < t.getWidth(); ++x) {
+            for (int y = 0; y < t.getHeight(); ++y){
+                if(t.isWall(glm::vec3(x, 0, y))) {
+                    cubes.draw(textures.at(1), x, y);
                 } else {
                     cubes.resetMatrix();
                 }

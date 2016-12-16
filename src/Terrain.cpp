@@ -7,8 +7,11 @@
 #include <fstream>
 #include <GL/glew.h>
 
+static const std::string MAP_PATH = "/map/map2.ppm";
 
-//static const Pixel BONUS_LIFE = Pixel(100, 100, 100);
+static const glimac::Pixel BONUS_LIFE = glimac::Pixel(100, 100, 100); //#646464
+static const glimac::Pixel BONUS_POWER = glimac::Pixel(150, 150, 150); //#969696
+static const glimac::Pixel WALL_COLOR = glimac::Pixel(255, 0, 0);
 
 // Terrain::Terrain() {
 //     this->path = "";
@@ -44,9 +47,8 @@ namespace glimac{
     }
 
     void Terrain::loadMap() {
-        std::ifstream file(path+"/map/map2.ppm");
+        std::ifstream file(path+MAP_PATH);
         if (file){
-            std::cout << "YES, the map has been loaded successfully." << std::endl;
             std::string content;
             getline(file, content);
             getline(file, content);
@@ -57,15 +59,14 @@ namespace glimac{
                 nbzones += content[i];
                 i++;
             }
-
             int zones = stoi(nbzones);
             this->width = zones;
             this->height = zones;
             getline(file, content);
             int r, g, b;
-
-            for (int i = 0; i < zones; i++) {
-                for (int j = 0; j < zones; j++){
+            for (int y = 0; y < height; y++) {
+                std::vector<Pixel*> *ligne = new std::vector<Pixel*>();
+                for (int x = 0; x < width; x++){
                     getline(file, content);
                     r = std::stoi(content);
                     getline(file, content);
@@ -73,40 +74,66 @@ namespace glimac{
                     getline(file, content);
                     b = std::stoi(content);
                     Pixel *a= new Pixel(r, g, b);
-                    if(a->isWhite())
-                        this->startPosition = glm::vec3(i,0,j);
-                    if(a->isGreen() && a->isWhite() == false)
-                        this->finishPosition = glm::vec3(i,0,j);
-                    this->pixels.push_back(a);
+                    checkPixelSignification(a, x, y);
+                    ligne->push_back(a);
                 }
+                pixels.push_back(ligne);
             }
             file.close();
+            std::cout << "YES, the map has been loaded successfully." << std::endl;
         }
         else std::cerr << "Impossible de lire de fichier." << std::endl;
     }
 
+void Terrain::checkPixelSignification(Pixel* p, int x, int y){
+        if(p->isWhite())
+            this->startPosition = glm::vec3(x,0,y);
+        if(p->isGreen())
+            this->finishPosition = glm::vec3(x,0,y);
+    }
+
     bool Terrain::checkCollision(glm::vec3 playerPosition) {
-        if(!this->isInTerrain(playerPosition)) return true;
-        if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x))->isRed() == false && int(playerPosition.z+0.01) <= this->getWidth() && int(playerPosition.z+0.01) >= 0 && int(playerPosition.x+0.01) >= 0 && int(playerPosition.x+0.01) < this->getHeight()) {
+        if(!isInTerrain(playerPosition)) return true;
+        if(!isWall(playerPosition)) {
+            std::cout<<"COLLISION"<<std::endl;
             return false;
         }
         return true;
     }
 
     bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
-        if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z )
+        if(playerPosition.x == finishPosition.x && playerPosition.z == finishPosition.z)
             return true;
         return false;
     }
 
-    bool Terrain::isWall(int pos){
-    	return pixels.at(pos)->isRed();
+    // bool Terrain::isWall(int pos){
+    // 	return pixels.at(pos)->isRed();
+    // }
+
+    bool Terrain::isWall(glm::vec3 pos){
+        if(!isInTerrain(pos))
+            return false;
+        Pixel *color = getPixel(pos);
+        return ((*color)==WALL_COLOR);
     }
 
-    bool Terrain::isInTerrain(glm::vec3 playerPosition) {
-        if(int(playerPosition.z+0.01) < this->getWidth() && playerPosition.z >= 0 && playerPosition.x >= 0 && playerPosition.x < this->getHeight())
-            return true;
-        return false;
-    }
+    bool Terrain::isInTerrain(glm::vec3 pos) {
+        int x = static_cast<int>(pos.x);
+        int y = static_cast<int>(pos.z);
+        bool b = !(x<0 || x>width || y<0 || y>height);
 
+        return b;
+    }
+    Pixel* Terrain::getPixel(glm::vec3& pos){
+        if(!isInTerrain(pos)){
+            std::cout<<"Position out of Terrain"<<std::endl;
+            exit(EXIT_FAILURE);
+        }
+        //std::cout<<"pos : " <<pos.x <<", "<<pos.z<<std::endl;
+        int x = static_cast<int>(pos.x);
+        int y = static_cast<int>(pos.z);
+        //std::cout<<"(int) pos : " <<x <<", "<<y<<std::endl;
+        return pixels.at(y)->at(x);
+    }
 }
