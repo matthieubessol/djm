@@ -36,11 +36,14 @@ int main(int argc, char** argv) {
     /*********************************
      * HERE SHOULD COME THE INITIALIZATION CODE
      *********************************/
-    std::vector<std::string> stringTextures;
-    stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg");
-    stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/MoonMap.jpg");
+    // std::vector<std::string> stringTextures;
+    // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg");
+    // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/MoonMap.jpg");
+    std::vector<Texture *> textures;
+    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/EarthMap.jpg",program.getGLId()) );
+    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/MoonMap.jpg" ,program.getGLId()) );
 
-    Cube cubes = Cube(program.getGLId(), stringTextures);
+    Cube cubes;
     Terrain t = Terrain();
     Player player;
     glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
@@ -103,7 +106,7 @@ int main(int argc, char** argv) {
 
         glm::mat4 MVMatrix;
 
-        cubes.drawPlane(0, (t.getWidth()/2) + 1, t.getWidth()/2, t.getHeight()/2);
+        cubes.drawPlane(textures.at(0), (t.getWidth()/2) + 1, t.getWidth()/2, t.getHeight()/2);
         glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
         glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -113,7 +116,7 @@ int main(int argc, char** argv) {
         for (int j = 0; j < t.getWidth(); ++j){
             for(int i = 0; i < t.getHeight(); ++i) {
                 if(t.getPixels().at(nbCount).isRed()) {
-                    cubes.draw(1, i , j);
+                    cubes.draw(textures.at(1), i , j);
                 } else {
                     cubes.resetMatrix();
                 }

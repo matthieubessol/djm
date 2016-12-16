@@ -12,12 +12,12 @@ namespace glimac {
 // Son axe vertical est (0, 1, 0) et ses axes transversaux sont (1, 0, 0) et (0, 0, 1)
 class Cube {
     // Alloue et construit les données (implantation dans le .cpp)
-    void build(GLuint glId, std::vector<std::string> nameTextures);
+    void build();
 
 public:
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
-    Cube(GLuint glId, std::vector<std::string> nameTextures){
-        build(glId, nameTextures); // Construction (voir le .cpp)
+    Cube(){
+        build(); // Construction (voir le .cpp)
     }
 
     ~Cube();
@@ -34,12 +34,11 @@ public:
 
     void initVbo();
     void initVao();
-    void initTextures(GLuint glId, std::vector<std::string> nameTextures);
     GLuint getVbo();
     GLuint getVao();
     glm::mat4 getModelMatrix();
-    void draw(int idTexture, int i , int j);
-    void drawPlane(int idTexture, float scale, float translateX, float translateY);
+    void draw(Texture * texture, int i , int j);
+    void drawPlane(Texture * texture, float scale, float translateX, float translateY);
     void resetMatrix();
     void freeTextures();
 
@@ -48,7 +47,6 @@ private:
     GLuint vbo;
     GLuint vao;
     glm::mat4 modelMatrix;
-    std::vector<Texture> textures;
 };
 
 }
