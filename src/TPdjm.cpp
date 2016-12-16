@@ -5,6 +5,7 @@
 #include <glimac/FilePath.hpp>
 #include <glimac/glm.hpp>
 #include <glimac/Image.hpp>
+#include <glimac/Sphere.hpp>
 #include <glimac/FreeflyCamera.hpp>
 #include <vector>
 #include "Cube.hpp"
@@ -45,6 +46,7 @@ int main(int argc, char** argv) {
     textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/skybox.jpg" ,program.getGLId()) );
 
     Cube cubes;
+    Sphere sphere = Sphere(1,32,16);
     Terrain t = Terrain();
     Player player;
     glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
@@ -119,6 +121,7 @@ int main(int argc, char** argv) {
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
         glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
+
         int nbCount = 0;
         for (int j = 0; j < t.getWidth(); ++j){
             for(int i = 0; i < t.getHeight(); ++i) {
@@ -132,6 +135,12 @@ int main(int argc, char** argv) {
                 glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
                 glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
                 nbCount++;
+
+                // sphere.draw(textures.at(1), glm::vec3(0, 0, 0), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(nbCount,nbCount,nbCount));
+                // glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+                // glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+                // glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+                // glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
             }
         }
 
