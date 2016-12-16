@@ -4,7 +4,7 @@
 
 #include "glimac/common.hpp"
 #include <glimac/Program.hpp>
-#include "Pixels.hpp"
+#include "Pixel.hpp"
 
 namespace glimac {
 
