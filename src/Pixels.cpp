@@ -25,7 +25,7 @@ void Pixels::setRed(int _red) {
 }
 
 bool Pixels::isRed() {
-    if (this->r == 255)
+    if (this->r == 255 && this->b != 255)
         return true;
     else
         return false;

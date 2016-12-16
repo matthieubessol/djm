@@ -31,5 +31,7 @@ public:
     void loadMap();
     glm::vec3 getStartPosition();
     bool checkCollision(glm::vec3 playerPosition);
+    bool checkReachEnd(glm::vec3 playerPosition);
+    bool isInTerrain(glm::vec3 playerPosition);
 };
 }

@@ -43,8 +43,7 @@ glm::vec3 Terrain::getStartPosition() {
 
 void Terrain::loadMap() {
     std::ifstream file("/Users/Matthieu/Desktop/projet/bin/map/map2.ppm");
-    if (file)
-    {
+    if (file){
         std::cout << "YES, the map has been loaded successfully." << std::endl;
         std::string content;
         getline(file, content);
@@ -91,13 +90,23 @@ std::vector<Pixels> Terrain::getPixels() {
 }
 
 bool Terrain::checkCollision(glm::vec3 playerPosition) {
-    if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
-        std::cout << "WIN" << std::endl;
+    if(!this->isInTerrain(playerPosition)) return true;
+    if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x)).isRed() == false && int(playerPosition.z+0.01) <= this->getWidth() && int(playerPosition.z+0.01) >= 0 && int(playerPosition.x+0.01) >= 0 && int(playerPosition.x+0.01) < this->getHeight()) {
+        return false;
     }
+    return true;
+}
 
-    if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x)).isRed() == false) {
+bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
+    if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
         return true;
     }
+    return false;
+}
+
+bool Terrain::isInTerrain(glm::vec3 playerPosition) {
+    if(int(playerPosition.z+0.01) < this->getWidth() && playerPosition.z >= 0 && playerPosition.x >= 0 && playerPosition.x < this->getHeight())
+        return true;
     return false;
 }
 

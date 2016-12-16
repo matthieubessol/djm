@@ -70,11 +70,11 @@ int main(int argc, char** argv) {
             if(e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym)  {
                     case SDLK_UP :
-                        if(t.checkCollision(player.getCamera()->getFuturePosition(1)) == true)
+                        if(t.checkCollision(player.getCamera()->getFuturePosition(1)) == false)
                             player.getCamera()->moveFront(player.getCamera()->getMoveFrontValue());
                         break;
                     case SDLK_DOWN :
-                        if(t.checkCollision(player.getCamera()->getFuturePosition(-1)) == true)
+                        if(t.checkCollision(player.getCamera()->getFuturePosition(-1)) == false)
                             player.getCamera()->moveFront(-player.getCamera()->getMoveFrontValue());
                         break;
                     case SDLK_LEFT :
@@ -123,7 +123,7 @@ int main(int argc, char** argv) {
         for (int j = 0; j < t.getWidth(); ++j){
             for(int i = 0; i < t.getHeight(); ++i) {
                 if(t.getPixels().at(nbCount).isRed()) {
-                    cubes.draw(textures.at(1), i , j);
+                    cubes.draw(textures.at(1), i, j);
                 } else {
                     cubes.resetMatrix();
                 }
