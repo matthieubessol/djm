@@ -130,7 +130,7 @@ int main(int argc, char** argv) {
         int nbCount = 0;
         for (int j = 0; j < t.getWidth(); ++j){
             for(int i = 0; i < t.getHeight(); ++i) {
-                if(t.getPixels().at(nbCount).isRed()) {
+                if(t.isWall(nbCount)) {
                     cubes.draw(textures.at(1), i , j);
                 } else {
                     cubes.resetMatrix();

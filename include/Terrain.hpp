@@ -4,7 +4,7 @@
 
 #include "glimac/common.hpp"
 #include "glimac/FreeflyCamera.hpp"
-#include "Pixels.hpp"
+#include "Pixel.hpp"
 
 namespace glimac{
     // Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
@@ -14,7 +14,7 @@ namespace glimac{
         std::string path;
         int width;
         int height;
-        std::vector<Pixels> pixels;
+        std::vector<Pixel*> pixels;
         glm::vec3 startPosition;
         glm::vec3 finishPosition;
         // std::vector< std::vector<int> > matriceMap;
@@ -26,10 +26,11 @@ namespace glimac{
         ~Terrain();
         int getWidth();
         int getHeight();
-        std::vector<Pixels> getPixels();
+        //std::vector<Pixel*> getPixels();
         void loadMap();
         glm::vec3 getStartPosition();
         bool checkCollision(glm::vec3 playerPosition);
+        bool isWall(int pos);
     };
 
 }

@@ -3,7 +3,6 @@
 #include <iostream>
 #include "glimac/common.hpp"
 #include "../include/Terrain.hpp"
-#include "../include/Pixels.hpp"
 #include <fstream>
 #include <GL/glew.h>
 
@@ -62,22 +61,21 @@ namespace glimac{
             this->width = zones;
             this->height = zones;
             getline(file, content);
-            Pixels a = Pixels();
+            int r, g, b;
+
             for (int i = 0; i < zones; i++) {
                 for (int j = 0; j < zones; j++){
                     getline(file, content);
-                    a.setRed(std::stoi(content));
+                    r = std::stoi(content);
                     getline(file, content);
-                    a.setGreen(std::stoi(content));
+                    g = std::stoi(content);
                     getline(file, content);
-                    a.setBlue(std::stoi(content));
-
-                    if(a.isWhite())
+                    b = std::stoi(content);
+                    Pixel *a= new Pixel(r, g, b);
+                    if(a->isWhite())
                         this->startPosition = glm::vec3(i,0,j);
-                    if(a.isGreen() && a.isWhite() == false)
+                    if(a->isGreen() && a->isWhite() == false)
                         this->finishPosition = glm::vec3(i,0,j);
-
-
                     this->pixels.push_back(a);
                 }
             }
@@ -86,19 +84,23 @@ namespace glimac{
         else std::cerr << "Impossible de lire de fichier." << std::endl;
     }
 
-    std::vector<Pixels> Terrain::getPixels() {
-        return this->pixels;
-    }
+//    std::vector<Pixel*> Terrain::getPixels() {
+//        return this->pixels;
+//    }
 
     bool Terrain::checkCollision(glm::vec3 playerPosition) {
         if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
             std::cout << "WIN" << std::endl;
         }
 
-        if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x)).isRed() == false) {
+        if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x))->isRed() == false) {
             return true;
         }
         return false;
+    }
+
+    bool Terrain::isWall(int pos){
+    	return pixels.at(pos)->isRed();
     }
 
 }
