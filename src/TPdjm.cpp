@@ -14,6 +14,13 @@
 
 using namespace glimac;
 
+const static std::string VS_SHADER_PATH = "/shaders/3D.vs.glsl";
+const static std::string FS_SHADER_PATH = "/shaders/multiTex3D.fs.glsl";
+const static std::string EARTH_TEXT_PATH = "/assets/textures/EarthMap.jpg";
+const static std::string MOON_TEXT_PATH = "/assets/textures/MoonMap.jpg" ;
+const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
+
+
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     SDLWindowManager windowManager(800, 600, "GLImac");
@@ -26,8 +33,9 @@ int main(int argc, char** argv) {
     }
 
     FilePath applicationPath(argv[0]);
-    Program program = loadProgram(applicationPath.dirPath() + "/shaders/3D.vs.glsl",
-                                  applicationPath.dirPath() + "/shaders/multiTex3D.fs.glsl");
+    std::cout<<"direpath : "<<applicationPath.dirPath()<<std::endl;
+    Program program = loadProgram(applicationPath.dirPath() + VS_SHADER_PATH,
+                                  applicationPath.dirPath() + FS_SHADER_PATH);
     program.use();
 
     std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
@@ -40,12 +48,12 @@ int main(int argc, char** argv) {
     // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg");
     // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/MoonMap.jpg");
     std::vector<Texture *> textures;
-    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/EarthMap.jpg",program.getGLId()) );
-    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/MoonMap.jpg" ,program.getGLId()) );
-    textures.push_back( new Texture( applicationPath.dirPath() + "/assets/textures/skybox.jpg" ,program.getGLId()) );
+    textures.push_back( new Texture( applicationPath.dirPath() + EARTH_TEXT_PATH , program.getGLId()) );
+    textures.push_back( new Texture( applicationPath.dirPath() + MOON_TEXT_PATH , program.getGLId()) );
+    textures.push_back( new Texture( applicationPath.dirPath() + SKYBOX_TEXT_PATH ,program.getGLId()) );
 
     Cube cubes;
-    Terrain t = Terrain();
+    Terrain t = Terrain(applicationPath.dirPath());
     Player player;
     glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
     player.getCamera()->setPosition(start);
