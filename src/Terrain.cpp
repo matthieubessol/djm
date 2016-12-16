@@ -3,9 +3,12 @@
 #include <iostream>
 #include "glimac/common.hpp"
 #include "../include/Terrain.hpp"
+#include "../include/Pixel.hpp"
 #include <fstream>
 #include <GL/glew.h>
 
+
+//static const Pixel BONUS_LIFE = Pixel(100, 100, 100);
 
 // Terrain::Terrain() {
 //     this->path = "";

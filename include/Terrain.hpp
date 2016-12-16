@@ -5,6 +5,7 @@
 #include "glimac/common.hpp"
 #include "glimac/FreeflyCamera.hpp"
 #include "Pixel.hpp"
+#include "Bonus.h"
 
 namespace glimac{
     // Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
@@ -17,6 +18,7 @@ namespace glimac{
         std::vector<Pixel*> pixels;
         glm::vec3 startPosition;
         glm::vec3 finishPosition;
+        std::vector<Bonus*> bonus;
         // std::vector< std::vector<int> > matriceMap;
 
     public:
