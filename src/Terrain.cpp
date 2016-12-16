@@ -85,37 +85,28 @@ namespace glimac{
         else std::cerr << "Impossible de lire de fichier." << std::endl;
     }
 
-//    std::vector<Pixel*> Terrain::getPixels() {
-//        return this->pixels;
-//    }
-
     bool Terrain::checkCollision(glm::vec3 playerPosition) {
-        if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
-            std::cout << "WIN" << std::endl;
+        if(!this->isInTerrain(playerPosition)) return true;
+        if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x))->isRed() == false && int(playerPosition.z+0.01) <= this->getWidth() && int(playerPosition.z+0.01) >= 0 && int(playerPosition.x+0.01) >= 0 && int(playerPosition.x+0.01) < this->getHeight()) {
+            return false;
         }
+        return true;
+    }
 
-bool Terrain::checkCollision(glm::vec3 playerPosition) {
-    if(!this->isInTerrain(playerPosition)) return true;
-    if(this->pixels.at(int(playerPosition.z+0.01) * width + int(playerPosition.x))->isRed() == false && int(playerPosition.z+0.01) <= this->getWidth() && int(playerPosition.z+0.01) >= 0 && int(playerPosition.x+0.01) >= 0 && int(playerPosition.x+0.01) < this->getHeight()) {
+    bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
+        if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z )
+            return true;
         return false;
     }
-    return true;
-}
 
-bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
-    if(playerPosition.z == finishPosition.x && playerPosition.x == finishPosition.z ) {
-        return true;
-    return false;
-}
+    bool Terrain::isWall(int pos){
+    	return pixels.at(pos)->isRed();
+    }
 
-bool Terrain::isWall(int pos){
-	return pixels.at(pos)->isRed();
-}
-
-bool Terrain::isInTerrain(glm::vec3 playerPosition) {
-    if(int(playerPosition.z+0.01) < this->getWidth() && playerPosition.z >= 0 && playerPosition.x >= 0 && playerPosition.x < this->getHeight())
-        return true;
-    return false;
-}
+    bool Terrain::isInTerrain(glm::vec3 playerPosition) {
+        if(int(playerPosition.z+0.01) < this->getWidth() && playerPosition.z >= 0 && playerPosition.x >= 0 && playerPosition.x < this->getHeight())
+            return true;
+        return false;
+    }
 
 }
