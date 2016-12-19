@@ -1,4 +1,4 @@
-#include <cmath>
+#include "math.hpp"
 #include "glimac/glm.hpp"
 #include "glimac/TrackballCamera.hpp"
 

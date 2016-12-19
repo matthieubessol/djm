@@ -1,6 +1,8 @@
-#include <math.h>
+#include "math.hpp"
 #include "glimac/glm.hpp"
 #include "glimac/FreeflyCamera.hpp"
+
+
 
 namespace glimac {
 
