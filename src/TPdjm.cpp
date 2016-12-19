@@ -25,7 +25,6 @@ const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 int main(int argc, char** argv) {
     // Initialize SDL and open a window
     SDLWindowManager windowManager(800, 600, "GLImac");
-
     // Initialize glew for OpenGL3+ support
     GLenum glewInitError = glewInit();
     if(GLEW_OK != glewInitError) {
@@ -33,14 +32,17 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
+    std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
+    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
+
+
     FilePath applicationPath(argv[0]);
     std::cout<<"direpath : "<<applicationPath.dirPath()<<std::endl;
     Program program = loadProgram(applicationPath.dirPath() + VS_SHADER_PATH,
                                   applicationPath.dirPath() + FS_SHADER_PATH);
     program.use();
 
-    std::cout << "OpenGL Version : " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "GLEW Version : " << glewGetString(GLEW_VERSION) << std::endl;
+
 
     /*********************************
      * HERE SHOULD COME THE INITIALIZATION CODE
@@ -57,7 +59,8 @@ int main(int argc, char** argv) {
     Sphere sphere = Sphere(1,32,16);
     Terrain t = Terrain(applicationPath.dirPath());
     Player player;
-    glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
+    //glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
+    glm::vec3 start = t.getStartCameraPosition();
     player.getCamera()->setPosition(start);
 
     GLint uMVPMatrix    = glGetUniformLocation(program.getGLId(),"uMVPMatrix");
@@ -131,8 +134,8 @@ int main(int argc, char** argv) {
 
 
         int nbCount = 0;
-        for(int x = 0; x < t.getWidth(); ++x) {
             for (int y = 0; y < t.getHeight(); ++y){
+            	for(int x = 0; x < t.getWidth(); ++x) {
                 if(t.isWall(glm::vec3(x, 0, y))) {
                     cubes.draw(textures.at(1), x, y);
                 } else {

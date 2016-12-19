@@ -16,8 +16,8 @@ namespace glimac{
         int width;
         int height;
         std::vector<std::vector<Pixel*>*> pixels;
-        glm::vec3 startPosition;
-        glm::vec3 finishPosition;
+        glm::vec2 startPosition;
+        glm::vec2 finishPosition;
         std::vector<Bonus*> bonus;
         // std::vector< std::vector<int> > matriceMap;
 
@@ -28,10 +28,8 @@ namespace glimac{
         ~Terrain();
         int getWidth();
         int getHeight();
-        //std::vector<Pixel*> getPixels();
         void loadMap();
-        glm::vec3 getStartPosition();
-        // bool isWall(int pos);
+        glm::vec3 getStartCameraPosition();
         bool isWall(glm::vec3 pos);
         bool checkCollision(glm::vec3 playerPosition);
         bool checkReachEnd(glm::vec3 playerPosition);
