@@ -4,6 +4,8 @@
 
 #include "common.hpp"
 
+#include "../Texture.hpp"
+
 namespace glimac {
 
 // Représente une sphère discrétisée centrée en (0, 0, 0) (dans son repère local)
@@ -23,15 +25,26 @@ public:
     const ShapeVertex* getDataPointer() const {
         return &m_Vertices[0];
     }
-    
+
     // Renvoit le nombre de vertex
     GLsizei getVertexCount() const {
         return m_nVertexCount;
     }
 
+    void draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale);
+    void resetMatrix();
+    glm::mat4 getModelMatrix();
+    void initVbo();
+    void initVao();
+    GLuint getVbo();
+    GLuint getVao();
+
 private:
     std::vector<ShapeVertex> m_Vertices;
     GLsizei m_nVertexCount; // Nombre de sommets
+    GLuint vbo;
+    GLuint vao;
+    glm::mat4 modelMatrix;
 };
-    
+
 }

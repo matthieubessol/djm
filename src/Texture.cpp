@@ -1,71 +1,42 @@
-#include <cmath>
+#include <glimac/Image.hpp>
+#include <GL/glew.h>
 #include <vector>
 #include <iostream>
 #include "glimac/common.hpp"
 #include "../include/Texture.hpp"
 #include <fstream>
+#include <glimac/Program.hpp>
 
 namespace glimac {
+Texture::Texture(std::string _path, GLuint glId) {
+    std::unique_ptr<Image> img = loadImage(_path);
+    if(img == NULL) {
+        std::cout << "Can't open it" << std::endl;
+    }
+    glGenTextures(1,&this->idTexture);
+    glBindTexture(GL_TEXTURE_2D, this->idTexture);
+    glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,img->getWidth(),img->getHeight(),0,GL_RGBA,GL_FLOAT,img->getPixels());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    this->uTexture = glGetUniformLocation(glId, "uEarthTexture");
+    glUniform1i(this->uTexture, 0);
+    this->activeTexture = GL_TEXTURE0;
+}
 
-// Terrain::Terrain() {
-//     this->path = "";
-//     this->width = 0;
-//     this->height = 0;
-//     this->loadMap();
-// }
+Texture::~Texture() {
 
-// Terrain::Terrain(std::string _path) {
-//     this->path = _path;
-//     this->width = 0;
-//     this->height = 0;
-//     this->loadMap();
-// }
+}
 
-// Terrain::~Terrain() {
-// }
+GLuint Texture::getActiveTexture(){
+    return this->activeTexture;
+}
 
-// int Terrain::getWidth() {
-//     return this->width;
-// }
-// int Terrain::getHeight() {
-//     return this->height;
-// }
+GLuint Texture::getidTexture(){
+    return this->idTexture;
+}
 
-// void Terrain::loadMap() {
-//     std::ifstream file("/Users/Matthieu/Desktop/projet/bin/map/map2.ppm");
-//     if (file)
-//     {
-//         std::cout << "YES, the map has been loaded successfully." << std::endl;
-//         std::string content;
-//         getline(file, content);
-//         getline(file, content);
-//         getline(file, content);
-//         int i = 0;
-//         std::string nbzones = "";
-//         while (content[i] != ' ')
-//         {
-//             nbzones += content[i];
-//             i++;
-//         }
-
-//         int zones = stoi(nbzones);
-//         this->width = zones;
-//         this->height = zones;
-//         getline(file, content);
-//         Pixels a = Pixels();
-//         for (int j = 0; j < zones * zones; j++)
-//         {
-//             getline(file, content);
-//             a.setRed(std::stoi(content));
-//             getline(file, content);
-//             a.setGreen(std::stoi(content));
-//             getline(file, content);
-//             a.setBlue(std::stoi(content));
-//             this->pixels.push_back(a);
-//         }
-//         file.close();
-//     }
-//     else std::cerr << "Impossible de lire de fichier." << std::endl;
-// }
+GLuint Texture::getUTexture(){
+    return this->uTexture;
+}
 
 }

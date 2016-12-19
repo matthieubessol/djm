@@ -20,6 +20,7 @@ public:
     ~Player();
 
     FreeflyCamera* getCamera();
+
     int getHealth();
     void setHealth(int _health);
 };
