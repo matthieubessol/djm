@@ -5,66 +5,101 @@
 #include "glimac/common.hpp"
 #include <fstream>
 
-namespace glimac {
 
-    Pixel::Pixel(int r, int g, int b) {
-        this->r = r;
-        this->g = g;
-        this->b = b;
-    }
+static const glimac::Pixel BONUS_LIFE = glimac::Pixel(100, 100, 100); //#646464
+static const glimac::Pixel BONUS_POWER = glimac::Pixel(150, 150, 150); //#969696
+static const glimac::Pixel WALL_COLOR = glimac::Pixel(255, 0, 0);
 
-    Pixel::~Pixel() {
-    }
 
-    int Pixel::getRed() {
-        return this->r;
-    }
+namespace glimac{
 
-    // void Pixel::setRed(int _red) {
-    //     this->r = _red;
-    // }
+Pixel::Pixel(int r, int g, int b) {
+	this->r = r;
+	this->g = g;
+	this->b = b;
+}
 
-    bool Pixel::isRed() {
-        return (r == 255 && g == 0 && b==0);
-    }
+Pixel::~Pixel() {
+}
 
-    int Pixel::getGreen() {
-        return this->g;
-    }
+int Pixel::getRed() {
+	return this->r;
+}
 
-    // void Pixel::setGreen(int _green) {
-    //     this->g = _green;
-    // }
+bool Pixel::isRed() {
+	return (r == 255 && g == 0 && b==0);
+}
 
-    bool Pixel::isGreen() {
-        if (this->g == 255 && r == 0 && b==0)
-            return true;
-        else
-            return false;
-    }
+int Pixel::getGreen() {
+	return this->g;
+}
 
-    int Pixel::getBlue() {
-        return this->b;
-    }
-    // void Pixel::setBlue(int _blue) {
-    //     this->b = _blue;
-    // }
+bool Pixel::isGreen() {
+	if (this->g == 255 && r == 0 && b==0)
+		return true;
+	else
+		return false;
+}
 
-    bool Pixel::isBlue() {
-        if (this->b == 255 && g==0 && r==0)
-            return true;
-        else
-            return false;
-    }
+int Pixel::getBlue() {
+	return this->b;
+}
 
-    bool Pixel::isWhite() {
-        if(this->b == 255 && this->r == 255 && this->g == 255)
-            return true;
-        else
-            return false;
-    }
+bool Pixel::isBlue() {
+	if (this->b == 255 && g==0 && r==0)
+		return true;
+	else
+		return false;
+}
 
-    bool Pixel::operator==(const Pixel& p){
-        return (r==p.r && g==p.g && b==p.b);
-    }
+bool Pixel::isWhite() {
+	if(this->b == 255 && this->r == 255 && this->g == 255)
+		return true;
+	else
+		return false;
+}
+
+bool Pixel::operator==(const Pixel& p){
+	return (r==p.r && g==p.g && b==p.b);
+}
+
+//key = [0, 0, 150] => [0, 0, 254]
+bool Pixel::isKey(){
+	return (r==0 && g==0 && b>149 && b<255);
+}
+
+//door = [0, 150, 0] => [0, 254, 0]
+bool Pixel::isDoor(){
+	return (r==0 && b==0 && g>149 && g<255);
+}
+
+bool Pixel::isWall(){
+	return (*this == WALL_COLOR);
+}
+
+bool Pixel::isEnd(){
+	return this->isGreen();
+}
+
+bool Pixel::isStart(){
+	return isWhite();
+}
+
+bool Pixel::isMyKey(Pixel* key){
+	if(!this->isDoor() || !key->isKey())
+		return false;
+	if(g==key->b)
+		return true;
+	return false;
+}
+
+bool Pixel::isMyDoor(Pixel* door){
+	return door->isMyKey(this);
+}
+
+std::ostream& Pixel::operator<<(Pixel& p){
+	return std::cout<<"r : "<<r<<" g : "<<g<<" b: "<<b<<std::endl;
+}
+
+
 }
