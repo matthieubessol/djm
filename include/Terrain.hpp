@@ -34,7 +34,9 @@ namespace glimac{
         bool checkCollision(glm::vec3 playerPosition);
         bool checkReachEnd(glm::vec3 playerPosition);
         bool isInTerrain(glm::vec3 playerPosition);
+        bool isInTerrain(glm::vec2 playerPosition);
         void checkPixelSignification(Pixel* p, int x, int y);
-        Pixel* getPixel(glm::vec3& pos);
+        Pixel* getPixel(glm::vec2& pos);
+        glm::vec2 get2DIntPosition(glm::vec3& pos);
     };
 }

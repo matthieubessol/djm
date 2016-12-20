@@ -111,37 +111,37 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
         return false;
     }
 
-    glm::vec3 getMapPosition(glm::vec3 playerPos){
-    	return glm::vec3(playerPos.x, 0, playerPos.z);
-    }
-
-
-    bool Terrain::isWall(glm::vec3 pos){
+    bool Terrain::isWall(glm::vec3 p){
+    	glm::vec2 pos = get2DIntPosition(p);
     	if(!isInTerrain(pos))
             return false;
-    	glm::vec3 p = getMapPosition(pos);
-        Pixel *color = getPixel(p);
+        Pixel *color = getPixel(pos);
         return ((*color)==WALL_COLOR);
     }
 
     bool Terrain::isInTerrain(glm::vec3 pos) {
-    	glm::vec3 p = getMapPosition(pos);
-        int x = static_cast<int>(p.x);
-        int y = static_cast<int>(p.z);
-        bool b = !(x<0 || x>=width || y<0 || y>=height);
-
-        return b;
+        return isInTerrain(glm::vec2(pos.x, pos.z));
     }
-    Pixel* Terrain::getPixel(glm::vec3& pos){
+
+    bool Terrain::isInTerrain(glm::vec2 pos) {
+		return(pos.x>-1 && pos.x<width && pos.y>-1 && pos.y<height);
+	}
+
+    glm::vec2 Terrain::get2DIntPosition(glm::vec3& pos){
+    	int x = static_cast<int>(pos.x+0.1);
+        int y = static_cast<int>(pos.z+0.1);
+        return glm::vec2(x, y);
+    }
+
+    Pixel* Terrain::getPixel(glm::vec2& pos){
+        //std::cout<<"pos : " <<pos.x <<", "<<pos.z<<std::endl;
         if(!isInTerrain(pos)){
             std::cout<<"Position out of Terrain"<<std::endl;
             exit(EXIT_FAILURE);
         }
-        //std::cout<<"pos : " <<pos.x <<", "<<pos.z<<std::endl;
-        int x = static_cast<int>(pos.x+0.1);
-        int y = static_cast<int>(pos.z+0.1);
+
         //std::cout<<"(int) pos : " <<x <<", "<<y<<std::endl;
 
-        return pixels.at(y)->at(x);
+        return pixels.at(pos.y)->at(pos.x);
     }
 }
