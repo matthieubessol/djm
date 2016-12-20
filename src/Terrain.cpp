@@ -116,7 +116,7 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
     	if(!isInTerrain(pos))
             return false;
         Pixel *color = getPixel(pos);
-        return ((*color)==WALL_COLOR);
+        return ((*color) == WALL_COLOR);
     }
 
     bool Terrain::isInTerrain(glm::vec3 pos) {
