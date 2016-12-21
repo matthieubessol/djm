@@ -12,10 +12,12 @@
 class SceneElement {
 	int id;
 	glm::vec3 position;
+
 public:
 	SceneElement(glm::vec3 pos);
 	virtual ~SceneElement();
-	int getId();
+	int getId() const;
+	glm::vec3 getPosition() const;
 
 };
 

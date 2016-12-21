@@ -134,11 +134,15 @@ bool Terrain::checkCollision(glm::vec3 playerPosition) {
 		 std::cout << "out of terrain pos : " << playerPosition<< std::endl;
 		return true;
 	}
-	if(!isWall(playerPosition)) {
-		return false;
+	if(isWall(playerPosition)) {
+		std::cout << "mur pos : " << playerPosition<< std::endl;
+		return true;
 	}
-	std::cout << "mur pos : " << playerPosition<< std::endl;
-	return true;
+	if(isKey(playerPosition)){
+		std::cout << "LA CLEEE" << std::endl;
+		return true;
+	}
+	return false;
 }
 
 bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
@@ -148,15 +152,23 @@ bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
 }
 
 bool Terrain::isWall(glm::vec3 p){
-	glm::vec2 pos = get2DIntPosition(p);
-	if(!isInTerrain(pos))
-		return false;
-	Pixel *color = getPixel(pos);
+//	glm::vec2 pos = get2DIntPosition(p);
+//	if(!isInTerrain(pos))
+//		return false;
+	Pixel *color = getPixel(p);
 	return (color->isWall());
 }
 
+bool Terrain::isKey(glm::vec3 pos){
+	if(!getPixel(pos)->isKey())
+		return false;
+	else
+		return true;
+	return false;
+}
+
 bool Terrain::isInTerrain(glm::vec3 pos) {
-	return isInTerrain(glm::vec2(pos.x, pos.z));
+	return isInTerrain(get2DIntPosition(pos));
 }
 
 bool Terrain::isInTerrain(glm::vec2 pos) {
@@ -168,6 +180,12 @@ glm::vec2 Terrain::get2DIntPosition(glm::vec3& pos){
 	int y = static_cast<int>(pos.z+0.1);
 	return glm::vec2(x, y);
 }
+
+Pixel* Terrain::getPixel(glm::vec3& p){
+	glm::vec2 pos = get2DIntPosition(p);
+	return getPixel(pos);
+}
+
 
 Pixel* Terrain::getPixel(glm::vec2& pos){
 	//std::cout<<"pos : " <<pos.x <<", "<<pos.z<<std::endl;

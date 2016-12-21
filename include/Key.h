@@ -19,6 +19,7 @@ public:
 	Key(glm::vec3 pos, Pixel *p);
 	Pixel* getColor();
 	int getId(){return SceneElement::getId();}
+	glm::vec3 getPosition(){return SceneElement::getPosition();}
 	virtual ~Key();
 
 };

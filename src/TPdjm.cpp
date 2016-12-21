@@ -84,18 +84,16 @@ int main(int argc, char** argv) {
             if(e.type == SDL_KEYDOWN) {
                 switch (e.key.keysym.sym)  {
                     case SDLK_UP :
-                        if(t.checkCollision(player.getCamera()->getFuturePosition(1)) == false)
-                            player.getCamera()->moveFront(player.getCamera()->getMoveFrontValue());
-                        break;
+                    	player.moovForward(&t);
+                    	break;
                     case SDLK_DOWN :
-                        if(t.checkCollision(player.getCamera()->getFuturePosition(-1)) == false)
-                            player.getCamera()->moveFront(-player.getCamera()->getMoveFrontValue());
+                    	player.moovBack(&t);
                         break;
                     case SDLK_LEFT :
-                        player.getCamera()->rotateLeft(player.getCamera()->getAngleValue());
-                        break;
+                    	player.lookLeft();
+                    	break;
                     case SDLK_RIGHT :
-                        player.getCamera()->rotateLeft(-player.getCamera()->getAngleValue());
+                        player.lookRight();
                         break;
                     default:
                         break;

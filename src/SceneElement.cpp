@@ -14,8 +14,12 @@ SceneElement::SceneElement(glm::vec3 pos) {
 	position = pos;
 }
 
-int SceneElement::getId(){
+int SceneElement::getId()const {
 	return id;
+}
+
+glm::vec3 SceneElement::getPosition()const {
+	return position;
 }
 
 SceneElement::~SceneElement() {

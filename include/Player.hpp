@@ -4,6 +4,7 @@
 
 #include "glimac/common.hpp"
 #include "glimac/FreeflyCamera.hpp"
+#include "Terrain.hpp"
 
 namespace glimac {
 
@@ -14,6 +15,8 @@ private:
     FreeflyCamera * camera;
     int health;
 
+    void moov(Terrain *t, float value);
+
 public:
     // Constructeur: alloue le tableau de données et construit les attributs des vertex
     Player();
@@ -23,5 +26,9 @@ public:
 
     int getHealth();
     void setHealth(int _health);
+    void moovBack(Terrain *t);
+    void moovForward(Terrain *t);
+    void lookLeft();
+    void lookRight();
 };
 }

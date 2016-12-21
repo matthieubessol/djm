@@ -28,6 +28,10 @@ namespace glimac {
         FreeflyCamera::computeDirectionVectors();
     }
 
+    void FreeflyCamera::rotateRight(float degrees){
+    	rotateLeft(-degrees);
+    }
+
     void FreeflyCamera::rotateUp(float degrees){
         float radians = degrees / 180 * M_PI;
         m_fTheta += radians;
