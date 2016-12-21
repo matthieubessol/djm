@@ -8,6 +8,7 @@
 #include <glimac/Sphere.hpp>
 #include <glimac/FreeflyCamera.hpp>
 #include <vector>
+#include <map>
 #include "Cube.hpp"
 #include "Player.hpp"
 #include "Terrain.hpp"
@@ -17,8 +18,8 @@ using namespace glimac;
 
 const static std::string VS_SHADER_PATH = "/shaders/3D.vs.glsl";
 const static std::string FS_SHADER_PATH = "/shaders/multiTex3D.fs.glsl";
-const static std::string EARTH_TEXT_PATH = "/assets/textures/EarthMap.jpg";
-const static std::string MOON_TEXT_PATH = "/assets/textures/MoonMap.jpg" ;
+const static std::string FLOOR_TEXT_PATH = "/assets/textures/floor.jpg";
+const static std::string WALL_TEXT_PATH = "/assets/textures/wall.jpg" ;
 const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 
 
@@ -50,10 +51,10 @@ int main(int argc, char** argv) {
     // std::vector<std::string> stringTextures;
     // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/EarthMap.jpg");
     // stringTextures.push_back(applicationPath.dirPath() + "/assets/textures/MoonMap.jpg");
-    std::vector<Texture *> textures;
-    textures.push_back( new Texture( applicationPath.dirPath() + EARTH_TEXT_PATH , program.getGLId()) );
-    textures.push_back( new Texture( applicationPath.dirPath() + MOON_TEXT_PATH , program.getGLId()) );
-    textures.push_back( new Texture( applicationPath.dirPath() + SKYBOX_TEXT_PATH ,program.getGLId()) );
+    std::map<std::string, Texture *> textures;
+    textures.insert(std::pair<std::string, Texture *>("floor",new Texture( applicationPath.dirPath() + FLOOR_TEXT_PATH , program.getGLId())));
+    textures.insert(std::pair<std::string, Texture *>("wall",new Texture( applicationPath.dirPath() + WALL_TEXT_PATH , program.getGLId())));
+    textures.insert(std::pair<std::string, Texture *>("skybox",new Texture( applicationPath.dirPath() + SKYBOX_TEXT_PATH , program.getGLId())));
 
     Cube cubes;
     Sphere sphere = Sphere(1,32,16);
@@ -120,13 +121,13 @@ int main(int argc, char** argv) {
 
         glm::mat4 MVMatrix;
 
-        cubes.draw(textures.at(2), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
+        cubes.draw(textures.at("skybox"), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
         glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
         glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
         glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
-        cubes.draw(textures.at(0), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
+        cubes.draw(textures.at("floor"), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
         glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
         glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -137,10 +138,9 @@ int main(int argc, char** argv) {
             for (int y = 0; y < t.getHeight(); ++y){
             	for(int x = 0; x < t.getWidth(); ++x) {
                 if(t.isWall(glm::vec3(x, 0, y))) {
-                    cubes.draw(textures.at(1), x, y);
-                } else {
-                    cubes.resetMatrix();
+                    cubes.draw(textures.at("wall"), x, y);
                 }
+
                 glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
                 glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
                 glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
