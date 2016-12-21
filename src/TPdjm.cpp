@@ -133,7 +133,15 @@ int main(int argc, char** argv) {
         glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
         glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
-
+        glBindVertexArray(0);
+        glBindVertexArray(sphere.getVao());
+        sphere.draw(textures.at("floor"), glm::vec3(0,0,0), windowManager.getTime(), glm::vec3(0,0,0), glm::vec3(5,5,5));
+        glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
+        glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+        glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+        glBindVertexArray(0);
+        glBindVertexArray(cubes.getVao());
         int nbCount = 0;
             for (int y = 0; y < t.getHeight(); ++y){
             	for(int x = 0; x < t.getWidth(); ++x) {
@@ -146,12 +154,6 @@ int main(int argc, char** argv) {
                 glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
                 glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
                 nbCount++;
-
-                // sphere.draw(textures.at(1), glm::vec3(0, 0, 0), windowManager.getTime(), glm::vec3(1,1,1), glm::vec3(nbCount,nbCount,nbCount));
-                // glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-                // glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-                // glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-                // glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
             }
         }
 

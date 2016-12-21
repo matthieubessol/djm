@@ -74,9 +74,9 @@ glm::mat4 Sphere::getModelMatrix() {
 
 void Sphere::initVbo() {
   glGenBuffers(1, &this->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
-    glBufferData(GL_ARRAY_BUFFER,this->getVertexCount()*sizeof(ShapeVertex), this->getDataPointer(), GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER,0);
+  glBindBuffer(GL_ARRAY_BUFFER, this->vbo);
+  glBufferData(GL_ARRAY_BUFFER,this->getVertexCount()*sizeof(ShapeVertex), this->getDataPointer(), GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 
 void Sphere::initVao() {
