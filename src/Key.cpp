@@ -7,7 +7,10 @@
 
 #include "Key.h"
 
-Key::Key(glm::vec3 pos, Pixel *p):SceneElement(pos), color(p){
+Key::Key():PlayerItem(){
+}
+
+Key::Key(glm::vec3 pos, Pixel *p): PlayerItem(pos), color(p){
 	// TODO Auto-generated constructor stub
 
 }

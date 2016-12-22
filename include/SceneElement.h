@@ -9,11 +9,15 @@
 #define INCLUDE_SCENEELEMENT_H_
 #include "glimac/glm.hpp"
 
+
 class SceneElement {
 	int id;
 	glm::vec3 position;
 
 public:
+	SceneElement();
+	SceneElement(SceneElement& e);
+	SceneElement(SceneElement* e);
 	SceneElement(glm::vec3 pos);
 	virtual ~SceneElement();
 	int getId() const;

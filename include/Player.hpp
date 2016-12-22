@@ -6,6 +6,7 @@
 #include "glimac/FreeflyCamera.hpp"
 #include "Terrain.hpp"
 
+
 namespace glimac {
 
 // Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
@@ -14,6 +15,7 @@ class Player {
 private:
     FreeflyCamera * camera;
     int health;
+    std::vector<PlayerItem*> items;
 
     void moov(Terrain *t, float value);
 
@@ -30,5 +32,7 @@ public:
     void moovForward(Terrain *t);
     void lookLeft();
     void lookRight();
+    void addItem(PlayerItem *k);
+    bool hasItem(PlayerItem *k);
 };
 }

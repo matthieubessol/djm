@@ -20,11 +20,6 @@ Terrain::Terrain(std::string _path) {
 	this->finishPosition = glm::vec2(0,0);
 	this->loadMap();
 	linkDoors();
-	//Les clés marche et son lié aux portes inchallah !
-	if(doors.at(0)->getKey() == NULL)
-		std::cout<<"CEST LA MERDE"<<std::endl;
-	else
-		std::cout<<"id key : "<< doors.at(0)->getKey()->getId()<<std::endl;
 }
 
 Terrain::~Terrain() {
@@ -77,6 +72,9 @@ void Terrain::loadMap() {
 		file.close();
 		std::cout << "YES, the map has been loaded successfully." << std::endl;
 		std::cout << "start pos : " << startPosition<< std::endl;
+		for(unsigned int i=0; i<keys.size(); ++i){
+			std::cout << "cle pos : " << keys.at(i)->getPosition()<< std::endl;
+		}
 	}
 	else std::cerr << "Impossible de lire de fichier." << std::endl;
 }
@@ -129,19 +127,20 @@ Key* Terrain::findKey(Door* door){
 	throw std::invalid_argument("Missing Key");
 }
 
-bool Terrain::checkCollision(glm::vec3 playerPosition) {
+bool Terrain::checkCollision(glm::vec3 playerPosition, PlayerItem* item) {
 	if(!isInTerrain(playerPosition)) {
-		 std::cout << "out of terrain pos : " << playerPosition<< std::endl;
 		return true;
 	}
 	if(isWall(playerPosition)) {
-		std::cout << "mur pos : " << playerPosition<< std::endl;
 		return true;
 	}
-	if(isKey(playerPosition)){
-		std::cout << "LA CLEEE" << std::endl;
-		return true;
+	Key k;
+	if(isKey(playerPosition, &k)){
+		std::cout << "LA CLE ! pos "<< k.getPosition() << std::endl;
+		*item = k;
+		return false;
 	}
+	item = NULL;
 	return false;
 }
 
@@ -152,19 +151,35 @@ bool Terrain::checkReachEnd(glm::vec3 playerPosition) {
 }
 
 bool Terrain::isWall(glm::vec3 p){
-//	glm::vec2 pos = get2DIntPosition(p);
-//	if(!isInTerrain(pos))
-//		return false;
 	Pixel *color = getPixel(p);
 	return (color->isWall());
 }
 
-bool Terrain::isKey(glm::vec3 pos){
+bool Terrain::isKey(glm::vec3 pos, Key *k){
 	if(!getPixel(pos)->isKey())
 		return false;
-	else
+	else{
+		Key *key = getKey(pos);
+		if(!key)
+			return false;
+		*k=*key;
+
 		return true;
+	}
 	return false;
+}
+
+
+Key* Terrain::getKey(glm::vec3 pos){
+	for(unsigned int i=0; i<keys.size(); ++i){
+		glm::vec3 p= keys.at(i)->getPosition();
+		if(posEqualsIn2D(pos, p)){
+			Key *key=keys.at(i);
+			keys.erase(keys.begin()+i);
+			return key;
+		}
+	}
+	return NULL;
 }
 
 bool Terrain::isInTerrain(glm::vec3 pos) {
@@ -181,6 +196,12 @@ glm::vec2 Terrain::get2DIntPosition(glm::vec3& pos){
 	return glm::vec2(x, y);
 }
 
+bool Terrain::posEqualsIn2D(glm::vec3& pos1, glm::vec3& pos2){
+	glm::vec2 pos1_2D = get2DIntPosition(pos1);
+	glm::vec2 pos2_2D = get2DIntPosition(pos2);
+	return(pos1_2D == pos2_2D);
+}
+
 Pixel* Terrain::getPixel(glm::vec3& p){
 	glm::vec2 pos = get2DIntPosition(p);
 	return getPixel(pos);
@@ -188,13 +209,9 @@ Pixel* Terrain::getPixel(glm::vec3& p){
 
 
 Pixel* Terrain::getPixel(glm::vec2& pos){
-	//std::cout<<"pos : " <<pos.x <<", "<<pos.z<<std::endl;
 	if(!isInTerrain(pos)){
-		std::cout<<"Position out of Terrain"<<std::endl;
 		exit(EXIT_FAILURE);
 	}
-
-	//std::cout<<"(int) pos : " <<x <<", "<<y<<std::endl;
 
 	return pixels.at(pos.y)->at(pos.x);
 }

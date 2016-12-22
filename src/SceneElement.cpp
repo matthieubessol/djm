@@ -8,6 +8,22 @@
 #include "SceneElement.h"
 static int id_cpt =0;
 
+SceneElement::SceneElement(){
+	id = id_cpt++;
+	position = glm::vec3(0, 0, 0);
+}
+
+SceneElement::SceneElement(SceneElement& e){
+	id = e.id;
+	position = e.position;
+}
+
+SceneElement::SceneElement(SceneElement* e){
+	id = e->id;
+	position = e->position;
+}
+
+
 SceneElement::SceneElement(glm::vec3 pos) {
 	// TODO Auto-generated constructor stub
 	id = id_cpt++;

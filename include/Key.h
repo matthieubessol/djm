@@ -7,20 +7,22 @@
 
 #ifndef INCLUDE_KEY_H_
 #define INCLUDE_KEY_H_
-#include "SceneElement.h"
+#include "PlayerItem.h"
 #include "Pixel.hpp"
 
 using namespace glimac;
 
-class Key : SceneElement{
+class Key : public PlayerItem{
 
 	Pixel *color;
 public:
+	Key();
 	Key(glm::vec3 pos, Pixel *p);
 	Pixel* getColor();
-	int getId(){return SceneElement::getId();}
-	glm::vec3 getPosition(){return SceneElement::getPosition();}
+	int getId(){return PlayerItem::getId();}
+	glm::vec3 getPosition(){return PlayerItem::getPosition();}
 	virtual ~Key();
+	bool operator== (Key* k){return getId() == k->getId();}
 
 };
 
