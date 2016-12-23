@@ -134,10 +134,10 @@ bool Terrain::checkCollision(glm::vec3 playerPosition, PlayerItem* item) {
 	if(isWall(playerPosition)) {
 		return true;
 	}
-	Key k;
-	if(isKey(playerPosition, &k)){
-		std::cout << "LA CLE ! pos "<< k.getPosition() << std::endl;
-		*item = k;
+	Key *k = recoverKey(playerPosition);
+	if(k!=NULL){
+		std::cout << "LA CLE ! pos "<< k->getPosition() << std::endl;
+		*item = *k;
 		return false;
 	}
 	item = NULL;
@@ -155,28 +155,56 @@ bool Terrain::isWall(glm::vec3 p){
 	return (color->isWall());
 }
 
-bool Terrain::isKey(glm::vec3 pos, Key *k){
-	if(!getPixel(pos)->isKey())
+bool Terrain::isDoor(glm::vec3 pos){
+	if(!getPixel(pos)->isDoor())
 		return false;
-	else{
-		Key *key = getKey(pos);
-		if(!key)
-			return false;
-		*k=*key;
-
-		return true;
-	}
-	return false;
+	Door *door= getDoor(pos);
+	if(!door)
+		return false;
+	return true;
 }
 
+Key* Terrain::recoverKey(glm::vec3 pos){
+	Key * k = getKey(pos);
+	if(!isKey(pos))
+		return NULL;
+	removeKey(k);
+	return k;
+}
+
+bool Terrain::isKey(glm::vec3 pos){
+	if(!getPixel(pos)->isKey())
+		return false;
+	Key *key = getKey(pos);
+	if(!key)
+		return false;
+	return true;
+}
+
+void Terrain::removeKey(Key* k){
+	for(unsigned int i=0; i<keys.size(); ++i){
+		if(keys.at(i) == k){
+			keys.erase(keys.begin()+i);
+			return;
+		}
+	}
+}
 
 Key* Terrain::getKey(glm::vec3 pos){
 	for(unsigned int i=0; i<keys.size(); ++i){
 		glm::vec3 p= keys.at(i)->getPosition();
 		if(posEqualsIn2D(pos, p)){
-			Key *key=keys.at(i);
-			keys.erase(keys.begin()+i);
-			return key;
+			return keys.at(i);
+		}
+	}
+	return NULL;
+}
+
+Door* Terrain::getDoor(glm::vec3 pos){
+	for(unsigned int i=0; i<doors.size(); ++i){
+		glm::vec3 p= doors.at(i)->getPosition();
+		if(posEqualsIn2D(pos, p)){
+			return doors.at(i);
 		}
 	}
 	return NULL;

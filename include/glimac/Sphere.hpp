@@ -31,6 +31,7 @@ public:
         return m_nVertexCount;
     }
 
+    void draw(Texture *texture, int x, int y);
     void draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale);
     void resetMatrix();
     glm::mat4 getModelMatrix();

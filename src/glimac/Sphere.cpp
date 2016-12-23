@@ -108,6 +108,15 @@ void Sphere::draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 ro
     glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
 }
 
+void Sphere::draw(Texture * texture, int x, int y) {
+	  glBindTexture(GL_TEXTURE_2D, 0);
+	  glDisable(GL_TEXTURE_2D);
+	  glActiveTexture(texture->getActiveTexture());
+	  this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(x, 0, y));
+	  this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
+	  glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
+}
+
 void Sphere::resetMatrix() {
   this->modelMatrix = glm::mat4(1);
 }

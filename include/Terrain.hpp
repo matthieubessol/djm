@@ -35,7 +35,9 @@ public:
 	void loadMap();
 	glm::vec3 getStartCameraPosition();
 	bool isWall(glm::vec3 pos);
-	bool isKey(glm::vec3 pos, Key* k);
+	bool isDoor(glm::vec3 pos);
+	bool isKey(glm::vec3 pos);
+	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
 	bool checkCollision(glm::vec3 playerPosition, PlayerItem* item);
@@ -49,6 +51,9 @@ public:
 	static bool posEqualsIn2D(glm::vec3& pos1, glm::vec3& pos2);
 	void linkDoors();
 	Key* getKey(glm::vec3 pos);
+	Door* getDoor(glm::vec3 pos);
+	void removeKey(Key* k);
+	Key* recoverKey(glm::vec3 pos);
 
 };
 }

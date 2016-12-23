@@ -19,6 +19,7 @@ public:
 	Door(glm::vec3 pos,Pixel*p, Key* k=0);
 	void setKey(Key *k);
 	Pixel* getColor();
+	glm::vec3 getPosition(){return SceneElement::getPosition();}
 	Key * getKey();
 	virtual ~Door();
 };
