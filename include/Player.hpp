@@ -6,7 +6,6 @@
 #include "glimac/FreeflyCamera.hpp"
 #include "Terrain.hpp"
 
-//class Terrain;
 
 namespace glimac {
 

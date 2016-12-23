@@ -42,3 +42,7 @@ SceneElement::~SceneElement() {
 	// TODO Auto-generated destructor stub
 }
 
+void SceneElement::setPosition(glm::vec3 pos){
+	position = pos;
+}
+

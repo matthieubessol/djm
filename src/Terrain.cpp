@@ -137,12 +137,16 @@ bool Terrain::checkCollision(glm::vec3 playerPosition, Player* player) {
 	}
 	Key *k = recoverKey(playerPosition);
 	if(k!=NULL){
+		if(!player)
+			return true;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(k);
 		player->addItem(item);
 		return false;
 	}
 	Door *d = getDoor(playerPosition);
 	if(d){
+		if(!player)
+			return true;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
 		if(player->hasItem(item)){
 			removeDoor(d);

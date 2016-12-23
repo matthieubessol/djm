@@ -13,6 +13,8 @@
 class SceneElement {
 	int id;
 	glm::vec3 position;
+protected:
+	void setPosition(glm::vec3 pos);
 
 public:
 	SceneElement();

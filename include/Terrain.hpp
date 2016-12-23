@@ -45,7 +45,7 @@ public:
 	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
-	bool checkCollision(glm::vec3 playerPosition, Player* player);
+	bool checkCollision(glm::vec3 playerPosition, Player* player=NULL);
 	bool checkReachEnd(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec2 playerPosition);

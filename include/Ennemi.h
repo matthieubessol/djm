@@ -9,13 +9,18 @@
 #define SRC_MONSTER_H_
 
 #include "SceneElement.h"
+#include "Direction.h"
+#include "Terrain.hpp"
 
-class Monster : SceneElement {
+class Ennemi : SceneElement {
 	int life;
-	int xp;
+	Direction direction;
+
+	glm::vec3 getNextPos();
 public:
-	Monster(glm::vec3 pos);
-	virtual ~Monster();
+	Ennemi(glm::vec3 pos);
+	virtual ~Ennemi();
+	void moov(Terrain *t);
 };
 
 #endif /* SRC_MONSTER_H_ */
