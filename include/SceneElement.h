@@ -22,6 +22,7 @@ public:
 	virtual ~SceneElement();
 	int getId() const;
 	glm::vec3 getPosition() const;
+	bool operator== (SceneElement *e){return getId() == e->getId();}
 
 };
 

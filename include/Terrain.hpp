@@ -8,8 +8,13 @@
 #include "Bonus.h"
 #include "Door.h"
 #include "Key.h"
+//#include "Player.hpp"
+
+
 
 namespace glimac{
+class Player;
+
 // Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
 // Son axe vertical est (0, 1, 0) et ses axes transversaux sont (1, 0, 0) et (0, 0, 1)
 class Terrain {
@@ -40,7 +45,7 @@ public:
 	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
-	bool checkCollision(glm::vec3 playerPosition, PlayerItem* item);
+	bool checkCollision(glm::vec3 playerPosition, Player* player);
 	bool checkReachEnd(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec2 playerPosition);
@@ -53,6 +58,7 @@ public:
 	Key* getKey(glm::vec3 pos);
 	Door* getDoor(glm::vec3 pos);
 	void removeKey(Key* k);
+	void removeDoor(Door* k);
 	Key* recoverKey(glm::vec3 pos);
 
 };

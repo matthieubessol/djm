@@ -8,6 +8,7 @@
 #include "../include/Pixel.hpp"
 #include <fstream>
 #include <GL/glew.h>
+#include "Player.hpp"
 
 static const std::string MAP_PATH = "/map/map.ppm";
 
@@ -127,7 +128,7 @@ Key* Terrain::findKey(Door* door){
 	throw std::invalid_argument("Missing Key");
 }
 
-bool Terrain::checkCollision(glm::vec3 playerPosition, PlayerItem* item) {
+bool Terrain::checkCollision(glm::vec3 playerPosition, Player* player) {
 	if(!isInTerrain(playerPosition)) {
 		return true;
 	}
@@ -136,11 +137,19 @@ bool Terrain::checkCollision(glm::vec3 playerPosition, PlayerItem* item) {
 	}
 	Key *k = recoverKey(playerPosition);
 	if(k!=NULL){
-		std::cout << "LA CLE ! pos "<< k->getPosition() << std::endl;
-		*item = *k;
+		PlayerItem *item = dynamic_cast<PlayerItem*>(k);
+		player->addItem(item);
 		return false;
 	}
-	item = NULL;
+	Door *d = getDoor(playerPosition);
+	if(d){
+		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
+		if(player->hasItem(item)){
+			removeDoor(d);
+			return false;
+		}
+		return true;
+	}
 	return false;
 }
 
@@ -185,6 +194,15 @@ void Terrain::removeKey(Key* k){
 	for(unsigned int i=0; i<keys.size(); ++i){
 		if(keys.at(i) == k){
 			keys.erase(keys.begin()+i);
+			return;
+		}
+	}
+}
+
+void Terrain::removeDoor(Door* d){
+	for(unsigned int i=0; i<doors.size(); ++i){
+		if(doors.at(i) == d){
+			doors.erase(doors.begin()+i);
 			return;
 		}
 	}

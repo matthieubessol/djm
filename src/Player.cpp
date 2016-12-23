@@ -5,6 +5,7 @@
 #include "../include/Player.hpp"
 #include <glimac/FreeflyCamera.hpp>
 #include <glimac/SDLWindowManager.hpp>
+#include "Terrain.hpp"
 
 
 static const int MOOV_FRONT_VALUE = 1;
@@ -38,13 +39,13 @@ void Player::moovForward(Terrain* t){
 
 void Player::moov(Terrain *t, float value){
 	glm::vec3 nextPos = camera->getFuturePosition(value);
-	PlayerItem it;
-	if(t->checkCollision(nextPos, &it))
+	//PlayerItem it;
+	if(t->checkCollision(nextPos, this))
 		return;
-	if(it.getPosition() != glm::vec3(0, 0, 0)){
-		addItem(&it);
-		std::cout<<"Item ajouter ! pos "<<it.getPosition()<<std::endl;
-	}
+//	if(it.getPosition() != glm::vec3(0, 0, 0)){
+//		addItem(&it);
+//		//std::cout<<"Item ajouter ! pos "<<it.getPosition()<<std::endl;
+//	}
 	camera->moveFront(value);
 }
 
@@ -65,7 +66,7 @@ void Player::addItem(PlayerItem *item){
 }
 
 bool Player::hasItem(PlayerItem *item){
-	for(unsigned int i=0; i<sizeof(items);++i){
+	for(unsigned int i=0; i<items.size();++i){
 		if(items.at(i) == item)
 			return true;
 	}

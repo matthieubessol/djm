@@ -12,7 +12,6 @@
 #include "Cube.hpp"
 #include "Player.hpp"
 #include "Terrain.hpp"
-#include "Texture.hpp"
 
 using namespace glimac;
 
