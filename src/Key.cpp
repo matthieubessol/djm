@@ -8,6 +8,7 @@
 #include "Key.h"
 
 Key::Key():PlayerItem(){
+	color = NULL;
 }
 
 Key::Key(glm::vec3 pos, Pixel *p): PlayerItem(pos), color(p){

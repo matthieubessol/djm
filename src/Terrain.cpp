@@ -13,7 +13,7 @@
 static const std::string MAP_PATH = "/map/map.ppm";
 
 namespace glimac {
-Terrain::Terrain(std::string _path) {
+Terrain::Terrain(std::string _path, Player* p) {
 	this->path = _path;
 	this->width = 0;
 	this->height = 0;
@@ -21,6 +21,7 @@ Terrain::Terrain(std::string _path) {
 	this->finishPosition = glm::vec2(0,0);
 	this->loadMap();
 	linkDoors();
+	player = p;
 }
 
 Terrain::~Terrain() {
@@ -92,33 +93,24 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isDoor()){
 		Door *door = new Door(glm::vec3(x, 0, y), p);
 		doors.push_back(door);
-		std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
+		//std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isKey()){
 		Key *key = new Key(glm::vec3(x, 0, y), p);
 		keys.push_back(key);
-		std::cout << "Key in : " << glm::vec2(x, y)<< std::endl;
+		//std::cout << "Key in : " << glm::vec2(x, y)<< std::endl;
+		return;
+	}
+	if(p->isEnnemi()){
+		Ennemi *e = new Ennemi(glm::vec3(x, 0, y));
+		ennemis.push_back(e);
+		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 }
 
-//Key* Terrain::findKey(Pixel* door){
-//	std::cout << "test "<< std::endl;
-//
-//	for (int x = 0; x < width; x++){
-//		for (int y = 0; y < height; y++) {
-//			glm::vec2 pos(x, y);
-//			Pixel *p = getPixel(pos);
-//			std::cout << "key not found in : " << pos<< std::endl;
-//			if(door->isMyKey(p)){
-//				std::cout << "key find in : " << pos<< std::endl;
-//				return new Key(glm::vec3(x, 0, y), );
-//			}
-//		}
-//	}
-//	throw std::invalid_argument("Map Missing Key");
-//}
+
 
 Key* Terrain::findKey(Door* door){
 	for(std::vector<Key*>::iterator it = keys.begin(); it != keys.end(); it++){
@@ -128,13 +120,16 @@ Key* Terrain::findKey(Door* door){
 	throw std::invalid_argument("Missing Key");
 }
 
-bool Terrain::checkCollision(glm::vec3 playerPosition, Player* player) {
+bool Terrain::checkCollision(glm::vec3 playerPosition) {
+	//si c'est pas dans le terrain
 	if(!isInTerrain(playerPosition)) {
 		return true;
 	}
+	//si c'est un mur
 	if(isWall(playerPosition)) {
 		return true;
 	}
+	//si c'est une clé
 	Key *k = recoverKey(playerPosition);
 	if(k!=NULL){
 		if(!player)
@@ -143,6 +138,7 @@ bool Terrain::checkCollision(glm::vec3 playerPosition, Player* player) {
 		player->addItem(item);
 		return false;
 	}
+	//si c'est une porte
 	Door *d = getDoor(playerPosition);
 	if(d){
 		if(!player)
@@ -272,6 +268,40 @@ void Terrain::linkDoors(){
 	}
 }
 
+bool Terrain::keyEvent(int  key){
+	// Event loop:
+	switch (key)  {
+		case SDLK_UP :
+			player->moovForward(this);
+			break;
+		case SDLK_DOWN :
+			player->moovBack(this);
+			break;
+		case SDLK_LEFT :
+			player->lookLeft();
+			break;
+		case SDLK_RIGHT :
+			player->lookRight();
+			break;
+		default:
+			break;
 
+	}
+	return false;
+}
+
+bool Terrain::isEnnemi(glm::vec3 pos){
+	for (unsigned int i=0; i<ennemis.size(); ++i){
+		if(ennemis.at(i)->getPosition() == pos)
+			return true;
+	}
+	return false;
+}
+
+void Terrain::update(){
+	for (unsigned int i=0; i<ennemis.size(); ++i){
+			ennemis.at(i)->moov(this);
+	}
+}
 
 }

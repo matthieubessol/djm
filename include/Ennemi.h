@@ -10,8 +10,13 @@
 
 #include "SceneElement.h"
 #include "Direction.h"
-#include "Terrain.hpp"
 
+
+namespace glimac{
+class Terrain;
+}
+
+using namespace glimac ;
 class Ennemi : SceneElement {
 	int life;
 	Direction direction;
@@ -21,6 +26,12 @@ public:
 	Ennemi(glm::vec3 pos);
 	virtual ~Ennemi();
 	void moov(Terrain *t);
+	glm::vec3 getPosition(){return SceneElement::getPosition();}
+
+	static Direction getInverseDirection(Direction d);
+	static glm::vec3 getDirection(Direction d);
+	Direction getNextDirection(Direction d);
 };
+
 
 #endif /* SRC_MONSTER_H_ */

@@ -15,7 +15,7 @@ class SceneElement {
 	glm::vec3 position;
 protected:
 	void setPosition(glm::vec3 pos);
-
+	glm::vec3 getPosition() const;
 public:
 	SceneElement();
 	SceneElement(SceneElement& e);
@@ -23,7 +23,7 @@ public:
 	SceneElement(glm::vec3 pos);
 	virtual ~SceneElement();
 	int getId() const;
-	glm::vec3 getPosition() const;
+
 	bool operator== (SceneElement *e){return getId() == e->getId();}
 
 };

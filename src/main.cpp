@@ -1,5 +1,5 @@
 #include <GL/glew.h>
-#include <glimac/SDLWindowManager.hpp>
+
 #include <glimac/Program.hpp>
 #include <iostream>
 #include <glimac/FilePath.hpp>
@@ -58,8 +58,9 @@ int main(int argc, char** argv) {
 
     Cube cubes;
     Sphere sphere = Sphere(1,32,16);
-    Terrain t = Terrain(applicationPath.dirPath());
     Player player;
+    Terrain t = Terrain(applicationPath.dirPath(), &player);
+
     //glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
     glm::vec3 start = t.getStartCameraPosition();
     player.getCamera()->setPosition(start);
@@ -82,28 +83,15 @@ int main(int argc, char** argv) {
         SDL_Event e;
         while(windowManager.pollEvent(e)) {
             if(e.type == SDL_KEYDOWN) {
-                switch (e.key.keysym.sym)  {
-                    case SDLK_UP :
-                    	player.moovForward(&t);
-                    	break;
-                    case SDLK_DOWN :
-                    	player.moovBack(&t);
-                        break;
-                    case SDLK_LEFT :
-                    	player.lookLeft();
-                    	break;
-                    case SDLK_RIGHT :
-                        player.lookRight();
-                        break;
-                    default:
-                        break;
-                }
+                t.keyEvent(e.key.keysym.sym) ;
                 break;
             }
             if(e.type == SDL_QUIT) {
                 done = true; // Leave the loop after this iteration
             }
         }
+
+        t.update();
 
         /*********************************
          * HERE SHOULD COME THE RENDERING CODE
@@ -140,8 +128,8 @@ int main(int argc, char** argv) {
         glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
 
         int nbCount = 0;
-            for (int y = 0; y < t.getHeight(); ++y){
-            	for(int x = 0; x < t.getWidth(); ++x) {
+        for(int x = 0; x < t.getWidth(); ++x) {
+        	for (int y = 0; y < t.getHeight(); ++y){
                 if(t.isWall(glm::vec3(x, 0, y))) {
                     glBindVertexArray(0);
                     glBindVertexArray(cubes.getVao());
@@ -169,6 +157,16 @@ int main(int argc, char** argv) {
 			        glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 			        glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
                 }
+                else if(t.isEnnemi(glm::vec3(x, 0, y))){
+					glBindVertexArray(0);
+					glBindVertexArray(sphere.getVao());
+					sphere.draw(textures.at("floor"), x, y);
+					glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
+					glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+					glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+					glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
+				}
+
                 nbCount++;
             }
         }

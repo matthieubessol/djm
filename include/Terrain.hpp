@@ -4,10 +4,12 @@
 
 #include "glimac/common.hpp"
 #include "glimac/FreeflyCamera.hpp"
+#include <glimac/SDLWindowManager.hpp>
 #include "Pixel.hpp"
 #include "Bonus.h"
 #include "Door.h"
 #include "Key.h"
+#include "Ennemi.h"
 //#include "Player.hpp"
 
 
@@ -28,12 +30,14 @@ private:
 	glm::vec2 startPosition;
 	glm::vec2 finishPosition;
 	std::vector<Bonus*> bonus;
+	Player* player;
+	std::vector<Ennemi*> ennemis;
 	// std::vector< std::vector<int> > matriceMap;
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
 	//Terrain();
-	Terrain(std::string _path);
+	Terrain(std::string _path, Player* p);
 	~Terrain();
 	int getWidth();
 	int getHeight();
@@ -45,7 +49,7 @@ public:
 	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
-	bool checkCollision(glm::vec3 playerPosition, Player* player=NULL);
+	bool checkCollision(glm::vec3 playerPosition);
 	bool checkReachEnd(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec2 playerPosition);
@@ -60,6 +64,8 @@ public:
 	void removeKey(Key* k);
 	void removeDoor(Door* k);
 	Key* recoverKey(glm::vec3 pos);
-
+	bool keyEvent(int  key);
+	bool isEnnemi(glm::vec3 pos);
+	void update();
 };
 }

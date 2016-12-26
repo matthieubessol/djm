@@ -40,7 +40,7 @@ void Player::moovForward(Terrain* t){
 void Player::moov(Terrain *t, float value){
 	glm::vec3 nextPos = camera->getFuturePosition(value);
 	//PlayerItem it;
-	if(t->checkCollision(nextPos, this))
+	if(t->checkCollision(nextPos))
 		return;
 //	if(it.getPosition() != glm::vec3(0, 0, 0)){
 //		addItem(&it);
