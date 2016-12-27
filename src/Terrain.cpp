@@ -13,7 +13,16 @@
 
 static const std::string MAP_PATH = "/map/map.ppm";
 
-namespace glimac {
+//namespace glimac {
+
+Terrain::Terrain(){
+	this->width = 0;
+	this->height = 0;
+	this->startPosition = glm::vec2(0,0);
+	this->finishPosition = glm::vec2(0,0);
+	player = NULL;
+}
+
 Terrain::Terrain(std::string _path, Player* p) {
 	this->path = _path;
 	this->width = 0;
@@ -35,7 +44,7 @@ int Terrain::getHeight() {
 	return this->height;
 }
 
-glm::vec3 Terrain::getStartCameraPosition() {
+glm::vec3 Terrain::getStartPosition() {
 	return glm::vec3(startPosition.x, 0, startPosition.y);
 }
 
@@ -127,31 +136,26 @@ Key* Terrain::findKey(Door* door){
 	throw std::invalid_argument("Missing Key");
 }
 
-bool Terrain::checkCollision(glm::vec3 playerPosition) {
+bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	//si c'est pas dans le terrain
-	if(!isInTerrain(playerPosition)) {
+	if(!isInTerrain(position)) {
 		return true;
 	}
 	//si c'est un mur
-	if(isWall(playerPosition)) {
-		isWall(playerPosition);
-		std::cout<<"wall pos "<<playerPosition<<std::endl;
+	if(isWall(position)) {
+		//std::cout<<"wall pos "<<playerPosition<<std::endl;
 		return true;
 	}
 	//si c'est une clé
-	Key *k = recoverKey(playerPosition);
+	Key *k = recoverKey(position);
 	if(k!=NULL){
-		if(!player)
-			return true;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(k);
 		player->addItem(item);
 		return false;
 	}
 	//si c'est une porte
-	Door *d = getDoor(playerPosition);
+	Door *d = getDoor(position);
 	if(d){
-		if(!player)
-			return true;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
 		if(player->hasItem(item)){
 			removeDoor(d);
@@ -159,6 +163,20 @@ bool Terrain::checkCollision(glm::vec3 playerPosition) {
 		}
 		return true;
 	}
+
+	// ennemis/players checks
+	Player *_player = dynamic_cast<Player*>(element);
+	if(!_player){
+		if(isPlayer(position)){
+			std::cout<<"JE LE TUE !!!"<<std::endl;
+		}
+	}
+	else if(isEnnemi(position)){
+		std::cout<<"JE MEURS !!!"<<std::endl;
+		player->kill();
+		return true;
+	}
+
 	return false;
 }
 
@@ -220,7 +238,7 @@ void Terrain::removeDoor(Door* d){
 Key* Terrain::getKey(glm::vec3 pos){
 	for(unsigned int i=0; i<keys.size(); ++i){
 		glm::vec3 p= keys.at(i)->getPosition();
-		if(posEqualsIn2D(pos, p)){
+		if(isInTheSameCase(pos, p)){
 			return keys.at(i);
 		}
 	}
@@ -230,7 +248,7 @@ Key* Terrain::getKey(glm::vec3 pos){
 Door* Terrain::getDoor(glm::vec3 pos){
 	for(unsigned int i=0; i<doors.size(); ++i){
 		glm::vec3 p= doors.at(i)->getPosition();
-		if(posEqualsIn2D(pos, p)){
+		if(isInTheSameCase(pos, p)){
 			return doors.at(i);
 		}
 	}
@@ -251,7 +269,7 @@ glm::vec2 Terrain::get2DIntPosition(glm::vec3& pos){
 	return glm::vec2(x, y);
 }
 
-bool Terrain::posEqualsIn2D(glm::vec3& pos1, glm::vec3& pos2){
+bool Terrain::isInTheSameCase(glm::vec3& pos1, glm::vec3& pos2){
 	glm::vec2 pos1_2D = get2DIntPosition(pos1);
 	glm::vec2 pos2_2D = get2DIntPosition(pos2);
 	return(pos1_2D == pos2_2D);
@@ -301,9 +319,17 @@ bool Terrain::keyEvent(int  key){
 
 bool Terrain::isEnnemi(glm::vec3 pos){
 	for (unsigned int i=0; i<ennemis.size(); ++i){
-		if(ennemis.at(i)->getPosition() == pos)
+		glm::vec3 p =ennemis.at(i)->getPosition();
+		if(isInTheSameCase(p, pos))
 			return true;
 	}
+	return false;
+}
+
+bool Terrain::isPlayer(glm::vec3 pos){
+	glm::vec3 p = player->getPosition();
+	if(isInTheSameCase(p, pos))
+		return true;
 	return false;
 }
 
@@ -351,4 +377,4 @@ void Terrain::drawEnnemis(Game *g){
 	}
 }
 
-}
+//}

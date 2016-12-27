@@ -9,10 +9,11 @@
 #include "Terrain.hpp"
 
 static const float PAS = 50;
+static const Direction DIRECTION = NORTH;
 
 Ennemi::Ennemi(glm::vec3 pos) : SceneElement(pos) {
-	// TODO Auto-generated constructor stub
-	direction = EAST;
+	direction = NORTH;
+	validDirection = false;
 	life = 100;
 }
 
@@ -22,8 +23,16 @@ Ennemi::~Ennemi() {
 
 void Ennemi::moov(Terrain *t){
 	glm::vec3 nextPos = getNextTestPos();
-	if(t->checkCollision(nextPos)){
-		std::cout<<"next pos : "<<nextPos <<std::endl;
+	if(!validDirection){
+		while(t->checkCollision(nextPos, this)){
+			direction = Ennemi::getNextDirection(direction);
+			//std::cout << "change dir : "<< Direction(direction) << std::endl;
+			nextPos = getNextTestPos();
+		}
+		validDirection = true;
+	}
+	else if(t->checkCollision(nextPos, this)){
+		//std::cout<<"next pos : "<<nextPos <<std::endl;
 		direction = Ennemi::getInverseDirection(direction);
 	}
 	nextPos = getNextPos();

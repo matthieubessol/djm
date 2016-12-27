@@ -14,7 +14,7 @@
 
 class Game;
 
-namespace glimac{
+//namespace glimac{
 class Player;
 
 
@@ -49,19 +49,20 @@ private:
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
 	//Terrain();
+	Terrain();
 	Terrain(std::string _path, Player* p);
 	~Terrain();
 	int getWidth();
 	int getHeight();
 	void loadMap();
-	glm::vec3 getStartCameraPosition();
+	glm::vec3 getStartPosition();
 	bool isWall(glm::vec3 pos);
 	bool isDoor(glm::vec3 pos);
 	bool isKey(glm::vec3 pos);
 	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
-	bool checkCollision(glm::vec3 playerPosition);
+	bool checkCollision(glm::vec3 playerPosition, SceneElement *e);
 	bool checkReachEnd(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec3 playerPosition);
 	bool isInTerrain(glm::vec2 playerPosition);
@@ -69,7 +70,7 @@ public:
 	Pixel* getPixel(glm::vec2& pos);
 	Pixel* getPixel(glm::vec3& p);
 	static glm::vec2 get2DIntPosition(glm::vec3& pos);
-	static bool posEqualsIn2D(glm::vec3& pos1, glm::vec3& pos2);
+	static bool isInTheSameCase(glm::vec3& pos1, glm::vec3& pos2);
 	void linkDoors();
 	Key* getKey(glm::vec3 pos);
 	Door* getDoor(glm::vec3 pos);
@@ -78,7 +79,8 @@ public:
 	Key* recoverKey(glm::vec3 pos);
 	bool keyEvent(int  key);
 	bool isEnnemi(glm::vec3 pos);
+	bool isPlayer(glm::vec3 pos);
 	void update();
 	void draw(Game *g);
 };
-}
+//}

@@ -20,7 +20,7 @@
 #include <map>
 #include "Cube.hpp"
 #include "Player.hpp"
-#include "Terrain.hpp"
+//#include "Terrain.hpp"
 
 using namespace glimac;
 

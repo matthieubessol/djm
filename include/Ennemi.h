@@ -12,14 +12,15 @@
 #include "Direction.h"
 
 
-namespace glimac{
+//namespace glimac{
 class Terrain;
-}
+//}
 
-using namespace glimac ;
+//using namespace glimac ;
 class Ennemi : SceneElement {
 	int life;
 	Direction direction;
+	bool validDirection;
 
 	glm::vec3 getNextPos();
 	glm::vec3 getNextTestPos();
@@ -29,7 +30,6 @@ public:
 	virtual ~Ennemi();
 	void moov(Terrain *t);
 	glm::vec3 getPosition(){return SceneElement::getPosition();}
-
 	static Direction getInverseDirection(Direction d);
 	static glm::vec3 getDirection(Direction d);
 	Direction getNextDirection(Direction d);

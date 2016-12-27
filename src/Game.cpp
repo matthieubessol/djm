@@ -15,9 +15,7 @@ const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
 
 
-Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16),
-			t(dirPath, &player),
-			windowManager(window){
+Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), windowManager(window){
 	Program program = loadProgram(dirPath + VS_SHADER_PATH,
 								  dirPath + FS_SHADER_PATH);
 	program.use();
@@ -37,8 +35,10 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16),
 
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
-	glm::vec3 start = t.getStartCameraPosition();
-	player.getCamera()->setPosition(start);
+
+	t = Terrain(dirPath, &player);
+	glm::vec3 start = t.getStartPosition();
+	player = Player(start);
 
 	uMVPMatrix    = glGetUniformLocation(program.getGLId(),"uMVPMatrix");
 	uMVMatrix     = glGetUniformLocation(program.getGLId(),"uMVMatrix");
