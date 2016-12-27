@@ -10,7 +10,7 @@ static const Pixel BONUS_LIFE = Pixel(100, 100, 100); //#646464
 static const Pixel BONUS_POWER = Pixel(150, 150, 150); //#969696
 static const Pixel WALL_COLOR = Pixel(255, 0, 0);
 static const Pixel ENNEMI_COLOR = Pixel(0, 0, 0);
-
+static const Pixel START_COLOR = Pixel(255, 0, 255);
 
 
 Pixel::Pixel(int r, int g, int b) {
@@ -82,7 +82,7 @@ bool Pixel::isEnd(){
 }
 
 bool Pixel::isStart(){
-	return isWhite();
+	return (*this == START_COLOR);
 }
 
 bool Pixel::isMyKey(Pixel* key){

@@ -25,7 +25,7 @@ void Ennemi::moov(Terrain *t){
 	if(t->checkCollision(nextPos)){
 		direction = Ennemi::getInverseDirection(direction);
 	}
-	std::cout<<"ennemi pos "<<nextPos<<std::endl;
+	//std::cout<<"ennemi pos "<<nextPos<<std::endl;
 	setPosition(nextPos);
 
 }

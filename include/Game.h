@@ -40,6 +40,12 @@ public:
 	Game(std::string dirPath, SDLWindowManager* window);
 	void play();
 	virtual ~Game();
+	void drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale);
+	inline void drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale);
+	void drawKey(glm::vec3 pos);
+	void drawDoor(glm::vec3 pos);
+	void drawBonus(glm::vec3 pos);
+	void drawWall(glm::vec3 pos);
 };
 
 #endif /* SRC_GAME_H_ */

@@ -12,10 +12,11 @@
 #include "Ennemi.h"
 //#include "Player.hpp"
 
-
+class Game;
 
 namespace glimac{
 class Player;
+
 
 // Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
 // Son axe vertical est (0, 1, 0) et ses axes transversaux sont (1, 0, 0) et (0, 0, 1)
@@ -26,13 +27,23 @@ private:
 	int height;
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
+	std::vector<SceneElement*> walls;
 	std::vector<Key*> keys;
 	glm::vec2 startPosition;
 	glm::vec2 finishPosition;
 	std::vector<Bonus*> bonus;
 	Player* player;
 	std::vector<Ennemi*> ennemis;
+
+
+
+	void drawKeys(Game *g);
+	void drawBonus(Game *g);
+	void drawDoors(Game *g);
+	void drawWalls(Game *g);
+
 	// std::vector< std::vector<int> > matriceMap;
+
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
@@ -67,5 +78,6 @@ public:
 	bool keyEvent(int  key);
 	bool isEnnemi(glm::vec3 pos);
 	void update();
+	void draw(Game *g);
 };
 }

@@ -8,11 +8,14 @@
 #ifndef INCLUDE_BONUS_H_
 #define INCLUDE_BONUS_H_
 
-class Bonus {
+#include "SceneElement.h"
+
+class Bonus : public SceneElement {
 private:
 
 public:
 	Bonus();
+	glm::vec3 getPosition(){return SceneElement::getPosition();}
 	virtual ~Bonus();
 };
 

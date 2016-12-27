@@ -4,11 +4,12 @@
 #include <stdexcept>
 
 #include "glimac/common.hpp"
-#include "../include/Terrain.hpp"
-#include "../include/Pixel.hpp"
+#include "Terrain.hpp"
 #include <fstream>
 #include <GL/glew.h>
 #include "Player.hpp"
+#include "Game.h"
+
 
 static const std::string MAP_PATH = "/map/map.ppm";
 
@@ -106,6 +107,12 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 		Ennemi *e = new Ennemi(glm::vec3(x, 0, y));
 		ennemis.push_back(e);
 		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
+		return;
+	}
+	if(p->isWall()){
+		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
+		walls.push_back(e);
+		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 }
@@ -303,5 +310,37 @@ void Terrain::update(){
 			ennemis.at(i)->moov(this);
 	}
 }
+
+void Terrain::draw(Game *g){
+	drawKeys(g);
+	drawWalls(g);
+	drawDoors(g);
+	drawBonus(g);
+}
+
+void Terrain::drawKeys(Game *g){
+	for (unsigned int i=0; i<keys.size();++i){
+		g->drawKey(keys.at(i)->getPosition());
+	}
+}
+
+void Terrain::drawBonus(Game *g){
+	for (unsigned int i=0; i<bonus.size();++i){
+		g->drawBonus(bonus.at(i)->getPosition());
+	}
+}
+
+void Terrain::drawWalls(Game *g){
+	for (unsigned int i=0; i<walls.size();++i){
+		g->drawWall(walls.at(i)->getPosition());
+	}
+}
+
+void Terrain::drawDoors(Game *g){
+	for (unsigned int i=0; i<doors.size();++i){
+		g->drawDoor(doors.at(i)->getPosition());
+	}
+}
+
 
 }

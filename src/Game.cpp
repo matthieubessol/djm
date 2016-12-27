@@ -32,6 +32,9 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16),
 	textures.insert(std::pair<std::string, Texture *>("wall",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("skybox",new Texture( dirPath + SKYBOX_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("door",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("key",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("bonus",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
+
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
 	glm::vec3 start = t.getStartCameraPosition();
@@ -49,6 +52,15 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16),
 	glEnable(GL_DEPTH_TEST);
 }
 
+//void test(){
+//	glBindVertexArray(cubes.getVao());
+//		cubes.draw(textures.at("wall"), 9, 17);
+//		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+//		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+//		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+//		glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
+//	glBindVertexArray(0);
+//}
 
 void Game::play(){
 	// Application loop:
@@ -101,55 +113,56 @@ void Game::play(){
 		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 		glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
-
-		int nbCount = 0;
-		for(int x = 0; x < t.getWidth(); ++x) {
-			for (int y = 0; y < t.getHeight(); ++y){
-				if(t.isWall(glm::vec3(x, 0, y))) {
-					glBindVertexArray(0);
-					glBindVertexArray(cubes.getVao());
-					cubes.draw(textures.at("wall"), x, y);
-					glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-					glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-					glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-					glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-				}
-				else if(t.isDoor(glm::vec3(x, 0, y))){
-					glBindVertexArray(0);
-					glBindVertexArray(cubes.getVao());
-					cubes.draw(textures.at("door"), x, y);
-					glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-					glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-					glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-					glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-				}
-				else if(t.isKey(glm::vec3(x, 0, y))){
-					glBindVertexArray(0);
-					glBindVertexArray(sphere.getVao());
-					sphere.draw(textures.at("floor"), x, y);
-					glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
-					glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-					glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-					glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
-				}
-				else if(t.isEnnemi(glm::vec3(x, 0, y))){
-					glBindVertexArray(0);
-					glBindVertexArray(sphere.getVao());
-					sphere.draw(textures.at("floor"), x, y);
-					glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
-					glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-					glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-					glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
-				}
-				nbCount++;
-			}
-		}
 		glBindVertexArray(0);
+
+		t.draw(this);
+
 		windowManager->swapBuffers();
 	}
 }
 
 Game::~Game() {
 	// TODO Auto-generated destructor stub
+}
+
+
+void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+	glm::mat4 MVMatrix;
+
+	glBindVertexArray(sphere.getVao());
+	sphere.draw(textures.at(texture), translate, windowManager->getTime(), rotate, scale);
+	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
+	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+	glDrawArrays(GL_TRIANGLES, 0, sphere.getVertexCount());
+	glBindVertexArray(0);
+}
+
+void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+	glm::mat4 MVMatrix;
+
+	glBindVertexArray(cubes.getVao());
+	cubes.draw(textures.at(texture), translate, windowManager->getTime(), rotate, scale);
+	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
+	glBindVertexArray(0);
+}
+
+void Game::drawKey(glm::vec3 pos){
+	drawSphere("key", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+}
+
+void Game::drawBonus(glm::vec3 pos){
+	drawSphere("bonus", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+}
+
+void Game::drawDoor(glm::vec3 pos){
+	drawCube("door", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+}
+
+void Game::drawWall(glm::vec3 pos){
+	drawCube("wall", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
 }
 
