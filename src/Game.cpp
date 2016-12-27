@@ -45,8 +45,8 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	uNormalMatrix = glGetUniformLocation(program.getGLId(),"uNormalMatrix");
 
 
-	ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * player.getCamera()->getViewMatrix();
-	MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * player.getCamera()->getViewMatrix();
+	ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * player.getViewMatrix();
+	MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * player.getViewMatrix();
 	NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
 	glEnable(GL_DEPTH_TEST);
@@ -87,7 +87,7 @@ void Game::play(){
 		glBindVertexArray(cubes.getVao());
 
 		glDisable(GL_TEXTURE_2D);
-		glm::mat4 vm = player.getCamera()->getViewMatrix();
+		glm::mat4 vm = player.getViewMatrix();
 
 		ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * vm;
 		MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;

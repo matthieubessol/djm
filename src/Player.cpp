@@ -27,24 +27,17 @@ Player::Player(glm::vec3 pos) : SceneElement(pos) {
 Player::~Player() {
 }
 
-FreeflyCamera* Player::getCamera() {
-  return this->camera;
-}
-
 void Player::moovForward(Terrain* t){
 	moov(t, MOOV_FRONT_VALUE);
 }
 
 void Player::moov(Terrain *t, float value){
 	glm::vec3 nextPos = camera->getFuturePosition(value);
-	//PlayerItem it;
 	if(t->checkCollision(nextPos, this))
 		return;
-//	if(it.getPosition() != glm::vec3(0, 0, 0)){
-//		addItem(&it);
-//		//std::cout<<"Item ajouter ! pos "<<it.getPosition()<<std::endl;
-//	}
+
 	camera->moveFront(value);
+	setPosition(camera->getPosition());
 }
 
 void Player::moovBack(Terrain* t){
@@ -73,6 +66,10 @@ bool Player::hasItem(PlayerItem *item){
 
 void Player::kill(){
 	health = 0;
+}
+
+glm::mat4 Player::getViewMatrix(){
+	return camera->getViewMatrix();
 }
 
 //}
