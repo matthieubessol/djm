@@ -134,6 +134,8 @@ bool Terrain::checkCollision(glm::vec3 playerPosition) {
 	}
 	//si c'est un mur
 	if(isWall(playerPosition)) {
+		isWall(playerPosition);
+		std::cout<<"wall pos "<<playerPosition<<std::endl;
 		return true;
 	}
 	//si c'est une clé
@@ -244,8 +246,8 @@ bool Terrain::isInTerrain(glm::vec2 pos) {
 }
 
 glm::vec2 Terrain::get2DIntPosition(glm::vec3& pos){
-	int x = static_cast<int>(pos.x+0.1);
-	int y = static_cast<int>(pos.z+0.1);
+	int x = static_cast<int>(floor(pos.x+0.5));
+	int y = static_cast<int>(floor(pos.z+0.5));
 	return glm::vec2(x, y);
 }
 

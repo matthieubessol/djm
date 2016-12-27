@@ -8,7 +8,7 @@
 #include "Ennemi.h"
 #include "Terrain.hpp"
 
-static const float PAS = 0.01;
+static const float PAS = 50;
 
 Ennemi::Ennemi(glm::vec3 pos) : SceneElement(pos) {
 	// TODO Auto-generated constructor stub
@@ -21,18 +21,24 @@ Ennemi::~Ennemi() {
 }
 
 void Ennemi::moov(Terrain *t){
-	glm::vec3 nextPos = getNextPos();
+	glm::vec3 nextPos = getNextTestPos();
 	if(t->checkCollision(nextPos)){
+		std::cout<<"next pos : "<<nextPos <<std::endl;
 		direction = Ennemi::getInverseDirection(direction);
 	}
-	//std::cout<<"ennemi pos "<<nextPos<<std::endl;
-	setPosition(nextPos);
+	nextPos = getNextPos();
+	setPosition(nextPos);//operator*(nextPos,0.02)
 
+}
+
+glm::vec3 Ennemi::getNextTestPos(){
+	glm::vec3 nextPos = Ennemi::getDirection(direction);
+	return getPosition()+nextPos;
 }
 
 glm::vec3 Ennemi::getNextPos(){
 	glm::vec3 nextPos = Ennemi::getDirection(direction);
-	return getPosition()+nextPos;
+	return getPosition()+ (nextPos/PAS);
 }
 
 Direction Ennemi::getInverseDirection(Direction d){
@@ -64,13 +70,13 @@ Direction Ennemi::getNextDirection(Direction d){
 glm::vec3 Ennemi::getDirection(Direction d){
 	switch(d){
 	case NORTH:
-		return glm::vec3(0, 0, PAS);
+		return glm::vec3(0, 0, 0.5);
 	case EAST:
-		return glm::vec3(PAS, 0, 0);
+		return glm::vec3(0.5, 0, 0);
 	case SOUTH:
-		return glm::vec3(0, 0, -PAS);
+		return glm::vec3(0, 0, -0.5);
 	case WEST:
-		return glm::vec3(-PAS, 0, 0);
+		return glm::vec3(-0.5, 0, 0);
 	}
 }
 

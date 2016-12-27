@@ -22,6 +22,8 @@ class Ennemi : SceneElement {
 	Direction direction;
 
 	glm::vec3 getNextPos();
+	glm::vec3 getNextTestPos();
+
 public:
 	Ennemi(glm::vec3 pos);
 	virtual ~Ennemi();
@@ -32,6 +34,5 @@ public:
 	static glm::vec3 getDirection(Direction d);
 	Direction getNextDirection(Direction d);
 };
-
 
 #endif /* SRC_MONSTER_H_ */
