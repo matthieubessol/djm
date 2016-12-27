@@ -151,7 +151,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, 
 }
 
 void Game::drawKey(glm::vec3 pos){
-	drawSphere("key", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+	drawSphere("key", pos, glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 }
 
 void Game::drawBonus(glm::vec3 pos){
@@ -159,7 +159,7 @@ void Game::drawBonus(glm::vec3 pos){
 }
 
 void Game::drawDoor(glm::vec3 pos){
-	drawCube("door", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+	drawCube("door", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 2, 0.5));
 }
 
 void Game::drawWall(glm::vec3 pos){

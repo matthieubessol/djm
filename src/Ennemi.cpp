@@ -8,7 +8,7 @@
 #include "Ennemi.h"
 #include "Terrain.hpp"
 
-static const float PAS = 0.001;
+static const float PAS = 0.01;
 
 Ennemi::Ennemi(glm::vec3 pos) : SceneElement(pos) {
 	// TODO Auto-generated constructor stub

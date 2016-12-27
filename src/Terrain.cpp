@@ -316,6 +316,7 @@ void Terrain::draw(Game *g){
 	drawWalls(g);
 	drawDoors(g);
 	drawBonus(g);
+	drawEnnemis(g);
 }
 
 void Terrain::drawKeys(Game *g){
@@ -342,5 +343,10 @@ void Terrain::drawDoors(Game *g){
 	}
 }
 
+void Terrain::drawEnnemis(Game *g){
+	for (unsigned int i=0; i<ennemis.size();++i){
+		g->drawKey(ennemis.at(i)->getPosition());
+	}
+}
 
 }

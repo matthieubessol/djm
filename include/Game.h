@@ -46,6 +46,7 @@ public:
 	void drawDoor(glm::vec3 pos);
 	void drawBonus(glm::vec3 pos);
 	void drawWall(glm::vec3 pos);
+	void drawEnnemi(glm::vec3 pos);
 };
 
 #endif /* SRC_GAME_H_ */

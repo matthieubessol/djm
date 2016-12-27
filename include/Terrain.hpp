@@ -41,6 +41,7 @@ private:
 	void drawBonus(Game *g);
 	void drawDoors(Game *g);
 	void drawWalls(Game *g);
+	void drawEnnemis(Game *g);
 
 	// std::vector< std::vector<int> > matriceMap;
 
