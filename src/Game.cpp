@@ -129,40 +129,34 @@ Game::~Game() {
 void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
 	glm::mat4 MVMatrix;
 
+	Texture *text = textures.at(texture);
+	if(!text)
+		return;
+
 	glBindVertexArray(sphere.getVao());
-	sphere.draw(textures.at(texture), translate, windowManager->getTime(), rotate, scale);
+	sphere.draw(text, translate, windowManager->getTime(), rotate, scale);
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 	glDrawArrays(GL_TRIANGLES, 0, sphere.getVertexCount());
 	glBindVertexArray(0);
+	//std::cout<<"draw sphere pos"<<translate<<std::endl;
 }
 
 void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
 	glm::mat4 MVMatrix;
 
+	Texture *text = textures.at(texture);
+	if(!text)
+		return;
+
 	glBindVertexArray(cubes.getVao());
-	cubes.draw(textures.at(texture), translate, windowManager->getTime(), rotate, scale);
+	cubes.draw(text, translate, windowManager->getTime(), rotate, scale);
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
-}
-
-void Game::drawKey(glm::vec3 pos){
-	drawSphere("key", pos, glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
-}
-
-void Game::drawBonus(glm::vec3 pos){
-	drawSphere("bonus", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
-}
-
-void Game::drawDoor(glm::vec3 pos){
-	drawCube("door", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 2, 0.5));
-}
-
-void Game::drawWall(glm::vec3 pos){
-	drawCube("wall", pos, glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+	//std::cout<<"draw cube pos"<<translate<<std::endl;
 }
 

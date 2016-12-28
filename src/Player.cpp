@@ -11,7 +11,6 @@
 static const int MOOV_FRONT_VALUE = 1;
 static const float ROTATE_ANGLE = 90.;
 
-//namespace glimac {
 Player::Player(){
 	this->health = 0;
 	this->camera = NULL;
@@ -72,4 +71,3 @@ glm::mat4 Player::getViewMatrix(){
 	return camera->getViewMatrix();
 }
 
-//}

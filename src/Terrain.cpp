@@ -13,7 +13,6 @@
 
 static const std::string MAP_PATH = "/map/map.ppm";
 
-//namespace glimac {
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -349,32 +348,31 @@ void Terrain::draw(Game *g){
 
 void Terrain::drawKeys(Game *g){
 	for (unsigned int i=0; i<keys.size();++i){
-		g->drawKey(keys.at(i)->getPosition());
+		g->drawSphere("key", keys.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawBonus(Game *g){
 	for (unsigned int i=0; i<bonus.size();++i){
-		g->drawBonus(bonus.at(i)->getPosition());
+		g->drawSphere("bonus", bonus.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawWalls(Game *g){
 	for (unsigned int i=0; i<walls.size();++i){
-		g->drawWall(walls.at(i)->getPosition());
+		g->drawCube("wall", walls.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 2, 0.5));
 	}
 }
 
 void Terrain::drawDoors(Game *g){
 	for (unsigned int i=0; i<doors.size();++i){
-		g->drawDoor(doors.at(i)->getPosition());
+		g->drawCube("door", doors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
-		g->drawKey(ennemis.at(i)->getPosition());
+		g->drawSphere("key", ennemis.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
-//}
