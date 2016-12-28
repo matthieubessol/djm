@@ -72,4 +72,8 @@ glm::mat4 Player::getViewMatrix(){
 	return camera->getViewMatrix();
 }
 
+glm::vec3 Player::getFrontVector() {
+	return camera->getFrontVector();
+}
+
 //}

@@ -43,6 +43,10 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	uMVPMatrix    = glGetUniformLocation(program.getGLId(),"uMVPMatrix");
 	uMVMatrix     = glGetUniformLocation(program.getGLId(),"uMVMatrix");
 	uNormalMatrix = glGetUniformLocation(program.getGLId(),"uNormalMatrix");
+	uKd 	  	  = glGetUniformLocation(program.getGLId(),"uKd");
+	uKs 	  	  = glGetUniformLocation(program.getGLId(),"uKs");
+	uLightDir_vs    = glGetUniformLocation(program.getGLId(),"uLightDir_vs");
+	uLightIntensity = glGetUniformLocation(program.getGLId(),"uLightIntensity");
 
 
 	ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * player.getViewMatrix();
@@ -134,6 +138,18 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+	glm::vec3 kd = glm::vec3(0.7,0.7,0.7);
+
+	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
+	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
+	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1,1,0)));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
+	// glUniformMatrix4fv(uKs,    1, GL_FALSE, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
+	// glUniformMatrix4fv(uLightIntensity,    1, GL_FALSE, glm::value_ptr(glm::vec3(0.8,0.8,0.8)));
+	//glUniformMatrix4fv(uLightDir_vs,    1, GL_FALSE, glm::value_ptr(player.getViewMatrix()));
+	// glUniformMatrix4fv(uLightDir_vs,    1, GL_FALSE, glm::value_ptr(glm::vec3(0.8,0.8,0.8)));
+
 	glDrawArrays(GL_TRIANGLES, 0, sphere.getVertexCount());
 	glBindVertexArray(0);
 }
@@ -146,6 +162,12 @@ void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, 
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+	glUniformMatrix4fv(uKd,    1, GL_FALSE, glm::value_ptr(glm::vec3(1,0,0)));
+	glUniformMatrix4fv(uKs,    1, GL_FALSE, glm::value_ptr(glm::vec3(1,0,0)));
+	glUniformMatrix4fv(uLightIntensity,    1, GL_FALSE, glm::value_ptr(glm::vec3(0.8,0.8,0.8)));
+	glUniformMatrix4fv(uLightDir_vs,    1, GL_FALSE, glm::value_ptr(player.getViewMatrix()));
+
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 }

@@ -31,9 +31,7 @@ class Game {
 	Cube cubes;
 	Sphere sphere;
 	Player player;
-	GLint uMVPMatrix;
-	GLint uMVMatrix;
-	GLint uNormalMatrix;
+	GLint uMVPMatrix,uMVMatrix,uNormalMatrix,uKd,uKs,uLightDir_vs,uLightIntensity;
 	glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
 
 public:

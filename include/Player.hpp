@@ -26,7 +26,6 @@ public:
     Player(glm::vec3 pos);
     ~Player();
 
-    //FreeflyCamera* getCamera();
     void moovBack(Terrain *t);
     void moovForward(Terrain *t);
     void lookLeft();
@@ -35,6 +34,7 @@ public:
     bool hasItem(PlayerItem *k);
     void kill();
     glm::mat4 getViewMatrix();
+    glm::vec3 getFrontVector();
    // glm::vec3 getPosition(){return SceneElement::getPosition();}
 
 };

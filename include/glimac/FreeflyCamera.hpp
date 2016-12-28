@@ -21,6 +21,7 @@ public:
     glm::vec3 getFuturePosition(float value);
     float getMoveFrontValue();
     float getAngleValue();
+    glm::vec3 getFrontVector();
 
 private:
 	float m_fPhi;

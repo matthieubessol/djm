@@ -45,6 +45,10 @@ namespace glimac {
 
     }
 
+    glm::vec3 FreeflyCamera::getFrontVector() {
+        return m_FrontVector;
+    }
+
     void FreeflyCamera::setPosition(glm::vec3 _position) {
         this->m_Position = _position;
     }

@@ -10,8 +10,16 @@ out vec3 fFragColor;
 
 uniform sampler2D uEarthTexture;
 uniform sampler2D uCloudTexture;
+uniform vec3 uKd;
+uniform vec3 uKs;
+uniform vec3 uLightDir_vs;
+uniform vec3 uLightIntensity;
 
+vec3 blinnPhong() {
+    return (uLightIntensity * (uKd*(dot( uLightDir_vs , vNormal_vs )) + uKs*pow(dot( (uLightDir_vs+normalize(-vPosition_vs))/2, vNormal_vs ),0.8)));
+}
 
 void main() {
-    fFragColor = vec3(texture(uEarthTexture,vTexCoords) + texture(uCloudTexture,vTexCoords));
+    fFragColor = vec3(texture(uEarthTexture,vTexCoords) + texture(uCloudTexture,vTexCoords)) + blinnPhong();
+    //fFragColor = blinnPhong();
 }
