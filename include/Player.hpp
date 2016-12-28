@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <ctime>
 
 #include "glimac/common.hpp"
 #include "glimac/FreeflyCamera.hpp"
@@ -15,7 +16,8 @@ using namespace glimac;
 class Player : public SceneElement{
 private:
     FreeflyCamera * camera;
-    int health;
+    int nbLife;
+    clock_t timer;
     std::vector<PlayerItem*> items;
 
     void moov(Terrain *t, float value);

@@ -167,11 +167,12 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	Player *_player = dynamic_cast<Player*>(element);
 	if(!_player){
 		if(isPlayer(position)){
-			std::cout<<"JE LE TUE !!!"<<std::endl;
+			//std::cout<<"JE LE TUE !!!"<<std::endl;
+			player->kill();
 		}
 	}
 	else if(isEnnemi(position)){
-		std::cout<<"JE MEURS !!!"<<std::endl;
+		//std::cout<<"JE MEURS !!!"<<std::endl;
 		player->kill();
 		return true;
 	}
@@ -311,7 +312,6 @@ bool Terrain::keyEvent(int  key){
 			break;
 		default:
 			break;
-
 	}
 	return false;
 }
