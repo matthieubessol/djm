@@ -37,7 +37,7 @@ public:
     void kill();
     glm::mat4 getViewMatrix();
     glm::vec3 getFrontVector();
-   // glm::vec3 getPosition(){return SceneElement::getPosition();}
+    glm::vec3 getPosition(){return SceneElement::getPosition();}
 
 };
 //}

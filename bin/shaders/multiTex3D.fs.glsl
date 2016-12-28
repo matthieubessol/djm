@@ -16,10 +16,13 @@ uniform vec3 uLightDir_vs;
 uniform vec3 uLightIntensity;
 
 vec3 blinnPhong() {
+// Directionnelle
     return (uLightIntensity * (uKd*(dot( uLightDir_vs , vNormal_vs )) + uKs*pow(dot( (uLightDir_vs+normalize(-vPosition_vs))/2, vNormal_vs ),0.8)));
+// Ponctuelle
+    //return (uLightIntensity * (distance(vPosition_vs,uLightDir_vs)*distance(vPosition_vs,uLightDir_vs)) * (uKd*(dot( normalize(uLightDir_vs - vPosition_vs) , vNormal_vs )) + uKs*pow(dot( (normalize(uLightDir_vs - vPosition_vs)+normalize(-vPosition_vs))/2, vNormal_vs ),0.8)));
 }
 
 void main() {
-    fFragColor = vec3(texture(uEarthTexture,vTexCoords) + texture(uCloudTexture,vTexCoords)) + blinnPhong();
+    fFragColor = vec3(texture(uEarthTexture,vTexCoords) + texture(uCloudTexture,vTexCoords))+ blinnPhong();
     //fFragColor = blinnPhong();
 }

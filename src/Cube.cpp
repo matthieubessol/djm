@@ -9,7 +9,7 @@ namespace glimac {
 
 void Cube::build() {
     this->modelMatrix = glm::mat4(1);
-    float vertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
+    float vertices[] = {-1.0, -1.0, -1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1 A B C A D C
                         -1.0, -1.0, -1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0,     // Face 1
 
                         1.0, -1.0, 1.0,   1.0, -1.0, -1.0,   1.0, 1.0, -1.0,       // Face 2
@@ -26,6 +26,24 @@ void Cube::build() {
 
                         -1.0, 1.0, 1.0,   1.0, 1.0, 1.0,   1.0, 1.0, -1.0,         // Face 6
                         -1.0, 1.0, 1.0,   -1.0, 1.0, -1.0,   1.0, 1.0, -1.0};      // Face 6
+
+    float normals[] = { 0,0,-1,0,0,-1,0,0,-1,
+                        0,0,-1,0,0,-1,0,0,-1,
+
+                       1,0,0,1,0,0,1,0,0,
+                       1,0,0,1,0,0,1,0,0,
+
+                       0,-1,0,0,-1,0,0,-1,0,
+                       0,-1,0,0,-1,0,0,-1,0,
+
+                       0,0,1,0,0,1,0,0,1,
+                        0,0,1,0,0,1,0,0,1,
+
+                        0,1,0,0,1,0,0,1,0,
+                       0,1,0,0,1,0,0,1,0,
+
+                        -1,0,0,-1,0,0,-1,0,0,
+                       -1,0,0,-1,0,0,-1,0,0};      // Face 6
     float coordTextureTmp[] = { 0, 0,0,   1, 0,0,   1, 1,0,     // Face 1
                                 0, 0,0,   0, 1,0,   1, 1,0,     // Face 1
 
@@ -44,6 +62,7 @@ void Cube::build() {
                                   0, 0,0,   1, 0,0,   1, 1,0,     // Face 6
                                   0, 0,0,   0, 1,0,   1, 1,0};    // Face 6
 
+
     // Construit l'ensemble des vertex
     for(GLsizei i = 0; i < 108 ; i+=3) {
         ShapeVertex vertex;
@@ -51,9 +70,9 @@ void Cube::build() {
         vertex.texCoords.x = coordTextureTmp[i];
         vertex.texCoords.y = coordTextureTmp[i+1];
 
-        vertex.normal.x = 0;
-        vertex.normal.y = 0;
-        vertex.normal.z = 0;
+        vertex.normal.x = normals[i];
+        vertex.normal.y = normals[i+1];
+        vertex.normal.z = normals[i+2];
 
         vertex.position.x = vertices[i];
         vertex.position.y = vertices[i+1];
