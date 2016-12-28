@@ -36,15 +36,11 @@ private:
 	std::vector<Ennemi*> ennemis;
 
 
-
 	void drawKeys(Game *g);
 	void drawBonus(Game *g);
 	void drawDoors(Game *g);
 	void drawWalls(Game *g);
 	void drawEnnemis(Game *g);
-
-	// std::vector< std::vector<int> > matriceMap;
-
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex

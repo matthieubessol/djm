@@ -13,7 +13,6 @@
 
 static const std::string MAP_PATH = "/map/map.ppm";
 
-//namespace glimac {
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -168,11 +167,12 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	Player *_player = dynamic_cast<Player*>(element);
 	if(!_player){
 		if(isPlayer(position)){
-			std::cout<<"JE LE TUE !!!"<<std::endl;
+			//std::cout<<"JE LE TUE !!!"<<std::endl;
+			player->kill();
 		}
 	}
 	else if(isEnnemi(position)){
-		std::cout<<"JE MEURS !!!"<<std::endl;
+		//std::cout<<"JE MEURS !!!"<<std::endl;
 		player->kill();
 		return true;
 	}
@@ -312,7 +312,6 @@ bool Terrain::keyEvent(int  key){
 			break;
 		default:
 			break;
-
 	}
 	return false;
 }
@@ -349,32 +348,31 @@ void Terrain::draw(Game *g){
 
 void Terrain::drawKeys(Game *g){
 	for (unsigned int i=0; i<keys.size();++i){
-		g->drawKey(keys.at(i)->getPosition());
+		g->drawSphere("key", keys.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawBonus(Game *g){
 	for (unsigned int i=0; i<bonus.size();++i){
-		g->drawBonus(bonus.at(i)->getPosition());
+		g->drawSphere("bonus", bonus.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawWalls(Game *g){
 	for (unsigned int i=0; i<walls.size();++i){
-		g->drawWall(walls.at(i)->getPosition());
+		g->drawCube("wall", walls.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 2, 0.5));
 	}
 }
 
 void Terrain::drawDoors(Game *g){
 	for (unsigned int i=0; i<doors.size();++i){
-		g->drawDoor(doors.at(i)->getPosition());
+		g->drawCube("door", doors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
-		g->drawKey(ennemis.at(i)->getPosition());
+		g->drawSphere("key", ennemis.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
-//}

@@ -10,18 +10,20 @@
 
 static const int MOOV_FRONT_VALUE = 1;
 static const float ROTATE_ANGLE = 90.;
+static const int REANIMATION_DURATION = 2000;
 
-//namespace glimac {
 Player::Player(){
-	this->health = 0;
+	this->nbLife = 0;
 	this->camera = NULL;
+	timer = 0;
 }
 
 
 Player::Player(glm::vec3 pos) : SceneElement(pos) {
-	this->health = 100;
+	this->nbLife = 3;
 	this->camera = new FreeflyCamera();
 	camera->setPosition(pos);
+	timer=0;
 }
 
 Player::~Player() {
@@ -65,7 +67,13 @@ bool Player::hasItem(PlayerItem *item){
 }
 
 void Player::kill(){
-	health = 0;
+	if(clock() - timer > REANIMATION_DURATION){
+		if(--nbLife < 1){
+			std::cout<<"fin du game"<<std::endl;
+		}
+		std::cout<<"KILL !!! vie restante = "<< nbLife<<std::endl;
+		timer = clock();
+	}
 }
 
 glm::mat4 Player::getViewMatrix(){
@@ -75,5 +83,3 @@ glm::mat4 Player::getViewMatrix(){
 glm::vec3 Player::getFrontVector() {
 	return camera->getFrontVector();
 }
-
-//}
