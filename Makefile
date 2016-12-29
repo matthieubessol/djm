@@ -34,7 +34,8 @@ exe      := bin/dungeongame$(dot_exe)
 ifeq ($(host_os),windows)
 SHELL=cmd
 SHELLFLAGS=/c
-ldlibs   := -lmingw32 -lSDL2main -lSDL2  -lopengl32 
+#LIBGLUI = -L./lib 
+ldlibs   := -lmingw32 -lSDL2main -lSDL2  -lopengl32
 endif
 ifeq ($(host_os),linux)
 ldlibs   := -lSDL2 -lGL

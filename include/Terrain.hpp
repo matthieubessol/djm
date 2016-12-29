@@ -12,6 +12,7 @@
 #include "Ennemi.h"
 //#include "Player.hpp"
 
+
 class Game;
 
 //namespace glimac{
@@ -67,6 +68,7 @@ public:
 	Pixel* getPixel(glm::vec3& p);
 	static glm::vec2 get2DIntPosition(glm::vec3& pos);
 	static bool isInTheSameCase(glm::vec3& pos1, glm::vec3& pos2);
+	static bool isInTheSameCase(glm::vec2& pos1, glm::vec3& pos2);
 	void linkDoors();
 	Key* getKey(glm::vec3 pos);
 	Door* getDoor(glm::vec3 pos);

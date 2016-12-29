@@ -162,6 +162,10 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		}
 		return true;
 	}
+	if(isInTheSameCase(finishPosition, position)){
+		std::cout<<"HOURA ! T'as trouve la sortie copain"<<std::endl;
+		return false;
+	}
 
 	// ennemis/players checks
 	Player *_player = dynamic_cast<Player*>(element);
@@ -275,6 +279,12 @@ bool Terrain::isInTheSameCase(glm::vec3& pos1, glm::vec3& pos2){
 	return(pos1_2D == pos2_2D);
 }
 
+bool Terrain::isInTheSameCase(glm::vec2& pos1, glm::vec3& pos2){
+	//glm::vec2 pos1_2D = get2DIntPosition(pos1);
+	glm::vec2 pos2_2D = get2DIntPosition(pos2);
+	return(pos1 == pos2_2D);
+}
+
 Pixel* Terrain::getPixel(glm::vec3& p){
 	glm::vec2 pos = get2DIntPosition(p);
 	return getPixel(pos);
@@ -331,6 +341,7 @@ bool Terrain::isPlayer(glm::vec3 pos){
 		return true;
 	return false;
 }
+
 
 void Terrain::update(){
 	for (unsigned int i=0; i<ennemis.size(); ++i){
