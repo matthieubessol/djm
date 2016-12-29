@@ -22,8 +22,8 @@ Terrain::Terrain(){
 	player = NULL;
 }
 
-Terrain::Terrain(std::string _path, Player* p) {
-	this->path = _path;
+Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
+	this->imgPath = _imgPath;
 	this->width = 0;
 	this->height = 0;
 	this->startPosition = glm::vec2(0,0);
@@ -31,6 +31,11 @@ Terrain::Terrain(std::string _path, Player* p) {
 	this->loadMap();
 	linkDoors();
 	player = p;
+
+	//chargement fichier
+	std::ifstream file(filePath);
+	file >> json;
+	std::cout << json.dump(4) << std::endl;
 }
 
 Terrain::~Terrain() {
@@ -48,7 +53,7 @@ glm::vec3 Terrain::getStartPosition() {
 }
 
 void Terrain::loadMap() {
-	std::ifstream file(path+MAP_PATH);
+	std::ifstream file(imgPath+MAP_PATH);
 	if (file){
 		std::string content;
 		getline(file, content);

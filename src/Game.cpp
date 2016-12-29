@@ -13,6 +13,7 @@ const static std::string FLOOR_TEXT_PATH = "/assets/textures/floor.jpg";
 const static std::string WALL_TEXT_PATH = "/assets/textures/wall.jpg" ;
 const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
+const static std::string TXT_FILE_PATH = "/map/items.json";
 
 
 Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), windowManager(window){
@@ -36,7 +37,9 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
 
-	t = Terrain(dirPath, &player);
+	std::string filePath = dirPath + TXT_FILE_PATH;
+
+	t = Terrain(dirPath, &player, filePath);
 	glm::vec3 start = t.getStartPosition();
 	player = Player(start);
 
