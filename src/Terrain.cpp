@@ -32,11 +32,18 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	linkDoors();
 	player = p;
 
-	//chargement fichier
-	std::ifstream file(filePath);
-	file >> json;
-	std::cout << json.dump(4) << std::endl;
+	//chargement fichier json
+//	std::ifstream file(filePath);
+//	file >> json;
+//	Json::iterator it;
+//	std::cout << json.dump(4)<<"is array : "<<json.is_array() << std::endl;
+//	for (auto& element : json) {
+//		for ( it = element.begin(); it != element.end(); ++it) {
+//		  std::cout << it.key() << " : " << it.value() << "\n";
+//		}
+//	}
 }
+
 
 Terrain::~Terrain() {
 }
