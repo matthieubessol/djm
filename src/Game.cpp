@@ -14,6 +14,8 @@ const static std::string WALL_TEXT_PATH = "/assets/textures/wall.jpg" ;
 const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
 const static std::string HEART_TEXT_PATH = "/assets/textures/heart.jpg";
+const static std::string TRESOR_TEXT_PATH = "/assets/textures/coin.png";
+const static std::string TXT_FILE_PATH = "/map/items.json";
 
 
 Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), windowManager(window){
@@ -34,11 +36,14 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	textures.insert(std::pair<std::string, Texture *>("key",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("bonus",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("heart",new Texture( dirPath + HEART_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("tresor",new Texture( dirPath + TRESOR_TEXT_PATH , program.getGLId())));
 
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
 
-	t = Terrain(dirPath, &player);
+	std::string filePath = dirPath + TXT_FILE_PATH;
+
+	t = Terrain(dirPath, &player, filePath);
 	glm::vec3 start = t.getStartPosition();
 	player = Player(start);
 

@@ -11,6 +11,9 @@
 #include "Key.h"
 #include "Ennemi.h"
 //#include "Player.hpp"
+#include "json.hpp"
+
+using Json = nlohmann::json;
 
 class Game;
 
@@ -22,18 +25,20 @@ class Player;
 // Son axe vertical est (0, 1, 0) et ses axes transversaux sont (1, 0, 0) et (0, 0, 1)
 class Terrain {
 private:
-	std::string path;
+	std::string imgPath;
 	int width;
 	int height;
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;
+	std::vector<SceneElement*> tresors;
 	std::vector<Key*> keys;
 	glm::vec2 startPosition;
 	glm::vec2 finishPosition;
 	std::vector<Bonus*> bonus;
 	Player* player;
 	std::vector<Ennemi*> ennemis;
+	Json json;
 
 
 	void drawKeys(Game *g);
@@ -42,12 +47,14 @@ private:
 	void drawWalls(Game *g);
 	void drawEnnemis(Game *g);
 	void drawInterface(Game *g);
+	void drawTresors(Game *g);
+
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
 	//Terrain();
 	Terrain();
-	Terrain(std::string _path, Player* p);
+	Terrain(std::string _path, Player* p, std::string filePath);
 	~Terrain();
 	int getWidth();
 	int getHeight();
@@ -79,5 +86,6 @@ public:
 	bool isPlayer(glm::vec3 pos);
 	void update();
 	void draw(Game *g);
+	int recoveryTresor(glm::vec3 pos);
 };
 //}
