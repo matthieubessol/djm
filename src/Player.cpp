@@ -107,3 +107,7 @@ glm::vec3 Player::getFrontVector() {
 void Player::moveUpdate(){
 	camera->updateRotation();
 }
+
+int Player::getLife() {
+	return nbLife;
+}
