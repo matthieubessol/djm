@@ -30,7 +30,8 @@ Player::~Player() {
 }
 
 void Player::moovForward(Terrain* t){
-	moov(t, MOOV_FRONT_VALUE);
+	if(!camera->getIsTurning())
+		moov(t, MOOV_FRONT_VALUE);
 }
 
 void Player::moov(Terrain *t, float value){
@@ -43,15 +44,18 @@ void Player::moov(Terrain *t, float value){
 }
 
 void Player::moovBack(Terrain* t){
-	moov(t, -MOOV_FRONT_VALUE);
+	if(!camera->getIsTurning())
+		moov(t, -MOOV_FRONT_VALUE);
 }
 
 void Player::lookLeft(){
-	camera->rotateLeft(ROTATE_ANGLE);
+	camera->setIsTurning(true);
+	camera->setIsLeft(true);
 }
 
 void Player::lookRight(){
-	camera->rotateRight(ROTATE_ANGLE);
+	camera->setIsTurning(true);
+	camera->setIsLeft(false);
 }
 
 void Player::addItem(PlayerItem *item){
@@ -82,4 +86,8 @@ glm::mat4 Player::getViewMatrix(){
 
 glm::vec3 Player::getFrontVector() {
 	return camera->getFrontVector();
+}
+
+void Player::moveUpdate(){
+	camera->updateRotation();
 }

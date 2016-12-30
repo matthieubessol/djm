@@ -11,6 +11,7 @@ namespace glimac {
     FreeflyCamera::FreeflyCamera() : m_Position(glm::vec3(0,0,0)), m_fTheta(0), m_fPhi(M_PI){
         moveFrontValue = 1;
         angleValue = 90;
+        isTurning = false;
         FreeflyCamera::computeDirectionVectors();
     }
 
@@ -71,6 +72,32 @@ namespace glimac {
 
     float FreeflyCamera::getAngleValue() {
         return this->angleValue;
+    }
+
+    void FreeflyCamera::updateRotation() {
+        int speed = 3;
+        if(angleMovingValue < 90 && isTurning){
+            angleMovingValue+=speed;
+            if(isLeft)
+                rotateLeft(speed);
+            else
+                rotateRight(speed);
+        } else {
+            angleMovingValue = 0;
+            isTurning = false;
+        }
+    }
+
+    void FreeflyCamera::setIsTurning(bool _isTurning) {
+        isTurning = _isTurning;
+    }
+
+    void FreeflyCamera::setIsLeft(bool _isLeft) {
+        isLeft = _isLeft;
+    }
+
+    bool FreeflyCamera::getIsTurning() {
+        return isTurning;
     }
 
 }

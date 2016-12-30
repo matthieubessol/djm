@@ -35,6 +35,7 @@ public:
     void addItem(PlayerItem *k);
     bool hasItem(PlayerItem *k);
     void kill();
+    void moveUpdate();
     glm::mat4 getViewMatrix();
     glm::vec3 getFrontVector();
     glm::vec3 getPosition(){return SceneElement::getPosition();}

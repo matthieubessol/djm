@@ -336,6 +336,7 @@ void Terrain::update(){
 	for (unsigned int i=0; i<ennemis.size(); ++i){
 			ennemis.at(i)->moov(this);
 	}
+	player->moveUpdate();
 }
 
 void Terrain::draw(Game *g){
