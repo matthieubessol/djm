@@ -16,6 +16,7 @@ Player::Player(){
 	this->nbLife = 0;
 	this->camera = NULL;
 	timer = 0;
+	money =0;
 }
 
 
@@ -24,6 +25,7 @@ Player::Player(glm::vec3 pos) : SceneElement(pos) {
 	this->camera = new FreeflyCamera();
 	camera->setPosition(pos);
 	timer=0;
+	money =0;
 }
 
 Player::~Player() {
@@ -68,6 +70,16 @@ bool Player::hasItem(PlayerItem *item){
 			return true;
 	}
 	return false;
+}
+
+void Player::addMoney(int value){
+	if(value<0)
+		return;
+	money += value;
+}
+
+int Player::getMoney(){
+	return money;
 }
 
 void Player::kill(){

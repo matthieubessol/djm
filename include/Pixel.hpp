@@ -28,6 +28,7 @@ public:
 	bool isBlue();
 	bool isWhite();
 	bool isWall();
+	bool isTresor();
 	bool operator==(const Pixel& p);
 	bool isKey();
 	bool isDoor();

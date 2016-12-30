@@ -31,6 +31,7 @@ private:
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;
+	std::vector<SceneElement*> tresors;
 	std::vector<Key*> keys;
 	glm::vec2 startPosition;
 	glm::vec2 finishPosition;
@@ -45,6 +46,7 @@ private:
 	void drawDoors(Game *g);
 	void drawWalls(Game *g);
 	void drawEnnemis(Game *g);
+	void drawTresors(Game *g);
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
@@ -82,5 +84,6 @@ public:
 	bool isPlayer(glm::vec3 pos);
 	void update();
 	void draw(Game *g);
+	int recoveryTresor(glm::vec3 pos);
 };
 //}

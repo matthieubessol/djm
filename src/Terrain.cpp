@@ -12,7 +12,7 @@
 
 
 static const std::string MAP_PATH = "/map/map.ppm";
-
+static const int TRESOR_VALUE = 30;
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -135,6 +135,12 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
+	if(p->isTresor()){
+		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
+		tresors.push_back(e);
+		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
+		return;
+	}
 }
 
 
@@ -173,6 +179,12 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 			return false;
 		}
 		return true;
+	}
+	//si c'est un trésor
+	int money = recoveryTresor(position);
+	if(money>0){
+		player->addMoney(money);
+		std::cout<<"player money = "<<player->getMoney()<<std::endl;
 	}
 
 	// ennemis/players checks
@@ -357,6 +369,7 @@ void Terrain::draw(Game *g){
 	drawDoors(g);
 	drawBonus(g);
 	drawEnnemis(g);
+	drawTresors(g);
 }
 
 void Terrain::drawKeys(Game *g){
@@ -377,6 +390,12 @@ void Terrain::drawWalls(Game *g){
 	}
 }
 
+void Terrain::drawTresors(Game *g){
+	for (unsigned int i=0; i<tresors.size();++i){
+		g->drawSphere("tresor", tresors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
+	}
+}
+
 void Terrain::drawDoors(Game *g){
 	for (unsigned int i=0; i<doors.size();++i){
 		g->drawCube("door", doors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
@@ -387,5 +406,16 @@ void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
 		g->drawSphere("key", ennemis.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
+}
+
+int Terrain::recoveryTresor(glm::vec3 pos){
+	for(unsigned int i=0; i<tresors.size(); ++i){
+		glm::vec3 p= tresors.at(i)->getPosition();
+		if(isInTheSameCase(pos, p)){
+			tresors.erase(tresors.begin()+i);
+			return TRESOR_VALUE;
+		}
+	}
+	return 0;
 }
 
