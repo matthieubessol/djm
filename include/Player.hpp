@@ -38,6 +38,7 @@ public:
     int getMoney();
     void kill();
     void moveUpdate();
+    int getLife();
     glm::mat4 getViewMatrix();
     glm::vec3 getFrontVector();
     glm::vec3 getPosition(){return SceneElement::getPosition();}

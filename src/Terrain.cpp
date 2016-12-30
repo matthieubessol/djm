@@ -410,7 +410,9 @@ void Terrain::drawEnnemis(Game *g){
 }
 
 void Terrain::drawInterface(Game *g){
-		g->drawCubeInterface("heart", glm::vec3(0.75,-0.75,-1), glm::vec3(0, 90, 0), glm::vec3(0.2, 0.2, 0.2));
+		for (int i = 0; i < player->getLife(); i++){
+			g->drawCubeInterface("heart", glm::vec3(0.8 - i*0.1,-0.8,-1), glm::vec3(0, 90, 0), glm::vec3(0.05, 0.05, 0.05));
+		}
 }
 
 int Terrain::recoveryTresor(glm::vec3 pos){
