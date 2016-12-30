@@ -97,13 +97,13 @@ void Sphere::initVao() {
     glBindVertexArray(0);
 }
 
-void Sphere::draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale) {
+void Sphere::draw(Texture * texture, glm::vec3 translate, float radian, glm::vec3 scale) {
     this->resetMatrix();
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);
     glActiveTexture(texture->getActiveTexture());
     this->modelMatrix = glm::translate(glm::mat4(1), translate);
-    // this->modelMatrix = glm::rotate(this->modelMatrix, time, rotate);
+    this->modelMatrix = glm::rotate(this->modelMatrix, radian, glm::vec3(1, 1, 1));
     this->modelMatrix = glm::scale(this->modelMatrix, scale);
     glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
 }

@@ -36,6 +36,7 @@ public:
     bool hasItem(PlayerItem *k);
     void addMoney(int value);
     int getMoney();
+    int getNbLife();
     void kill();
     void moveUpdate();
     glm::mat4 getViewMatrix();

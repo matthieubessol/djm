@@ -28,6 +28,7 @@ private:
 	std::string imgPath;
 	int width;
 	int height;
+	float test;
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;

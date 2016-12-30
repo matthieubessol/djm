@@ -13,6 +13,7 @@
 
 static const std::string MAP_PATH = "/map/map.ppm";
 static const int TRESOR_VALUE = 30;
+static const float HEART_OFFSET = 0.2;
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -375,42 +376,46 @@ void Terrain::draw(Game *g){
 
 void Terrain::drawKeys(Game *g){
 	for (unsigned int i=0; i<keys.size();++i){
-		g->drawSphere("key", keys.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
+		g->drawSphere("key", keys.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawBonus(Game *g){
 	for (unsigned int i=0; i<bonus.size();++i){
-		g->drawSphere("bonus", bonus.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawWalls(Game *g){
 	for (unsigned int i=0; i<walls.size();++i){
-		g->drawCube("wall", walls.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 2, 0.5));
+		g->drawCube("wall", walls.at(i)->getPosition(), 0, glm::vec3(0.5, 2, 0.5));
 	}
 }
 
 void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
-		g->drawSphere("tresor", tresors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
+		g->drawCube("tresor", tresors.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawDoors(Game *g){
 	for (unsigned int i=0; i<doors.size();++i){
-		g->drawCube("door", doors.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.5, 0.5, 0.5));
+		g->drawCube("door", doors.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
 	}
 }
 
 void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
-		g->drawSphere("key", ennemis.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
+		g->drawSphere("key", ennemis.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawInterface(Game *g){
-		g->drawCubeInterface("heart", glm::vec3(0.75,-0.75,-1), glm::vec3(0, 90, 0), glm::vec3(0.2, 0.2, 0.2));
+	float offset = 0.;
+	for(int i=0; i < player->getNbLife(); i++){
+		g->drawCubeInterface("heart", glm::vec3(-0.75+offset,-0.75,-0.75), -M_PI/2, glm::vec3(0.1, 0.1, 0.1));
+		offset += HEART_OFFSET;
+	}
 }
 
 int Terrain::recoveryTresor(glm::vec3 pos){

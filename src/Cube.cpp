@@ -44,23 +44,41 @@ void Cube::build() {
 
                         -1,0,0,-1,0,0,-1,0,0,
                        -1,0,0,-1,0,0,-1,0,0};      // Face 6
-    float coordTextureTmp[] = { 0, 0,0,   1, 0,0,   1, 1,0,     // Face 1
-                                0, 0,0,   0, 1,0,   1, 1,0,     // Face 1
+//    float coordTextureTmp[] = { 0, 0,0,   1, 0,0,   1, 1,0,     // Face 1
+//                                0, 0,0,   0, 1,0,   1, 1,0,     // Face 1
+//
+//                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 2
+//                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 2
+//
+//                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 3
+//                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 3
+//
+//                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 4
+//                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 4
+//
+//                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 5
+//                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 5
+//
+//                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 6
+//                                  0, 0,0,   0, 1,0,   1, 1,0};    // Face 6
 
-                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 2
-                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 2
+    float coordTextureTmp[] = { 0, 0,0,   0, 1,0,   1, 1,0,     // Face 1
+    							0, 0,0,   1, 0,0,   1, 1,0,
 
-                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 3
-                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 3
+								0, 0,0,   0, 1,0,   1, 1,0,     // Face 2
+								0, 0,0,   1, 0,0,   1, 1,0,
 
-                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 4
-                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 4
+								0, 0,0,   0, 1,0,   1, 1,0,     // Face 3
+								0, 0,0,   1, 0,0,   1, 1,0,
 
-                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 5
-                                  0, 0,0,   0, 1,0,   1, 1,0,     // Face 5
+								0, 0,0,   0, 1,0,   1, 1,0,     // Face 4
+								0, 0,0,   1, 0,0,   1, 1,0,
 
-                                  0, 0,0,   1, 0,0,   1, 1,0,     // Face 6
-                                  0, 0,0,   0, 1,0,   1, 1,0};    // Face 6
+								0, 0,0,   0, 1,0,   1, 1,0,     // Face 5
+								0, 0,0,   1, 0,0,   1, 1,0,
+
+								0, 0,0,   0, 1,0,   1, 1,0,     // Face 6
+								0, 0,0,   1, 0,0,   1, 1,0};
 
 
     // Construit l'ensemble des vertex
@@ -150,13 +168,14 @@ void Cube::drawPlane(Texture * texture, float scale, float translateX, float tra
   // glDrawArrays(GL_TRIANGLES,0, this->getVertexCount());
 }
 
-void Cube::draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale) {
+void Cube::draw(Texture * texture, glm::vec3 translate, float radian, glm::vec3 scale) {
   this->resetMatrix();
   glBindTexture(GL_TEXTURE_2D, 0);
   glDisable(GL_TEXTURE_2D);
+
   glActiveTexture(texture->getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), translate);
-  // this->modelMatrix = glm::rotate(this->modelMatrix, time, rotate);
+  this->modelMatrix = glm::rotate(this->modelMatrix, radian, glm::vec3(0, 0, 1));
   this->modelMatrix = glm::scale(this->modelMatrix, scale);
   glBindTexture(GL_TEXTURE_2D,texture->getidTexture());
 }

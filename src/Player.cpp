@@ -82,6 +82,10 @@ int Player::getMoney(){
 	return money;
 }
 
+int Player::getNbLife(){
+	return nbLife;
+}
+
 void Player::kill(){
 	if(clock() - timer > REANIMATION_DURATION){
 		if(--nbLife < 1){

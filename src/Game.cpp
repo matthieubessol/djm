@@ -13,7 +13,7 @@ const static std::string FLOOR_TEXT_PATH = "/assets/textures/floor.jpg";
 const static std::string WALL_TEXT_PATH = "/assets/textures/wall.jpg" ;
 const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
-const static std::string HEART_TEXT_PATH = "/assets/textures/heart.jpg";
+const static std::string HEART_TEXT_PATH = "/assets/textures/heart.png";
 const static std::string TRESOR_TEXT_PATH = "/assets/textures/coin.png";
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -105,13 +105,13 @@ void Game::play(){
 
 		glm::mat4 MVMatrix;
 
-		cubes.draw(textures.at("skybox"), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), windowManager->getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
+		cubes.draw(textures.at("skybox"), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), 0, glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
 		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
 		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 		glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 
-		cubes.draw(textures.at("floor"), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), windowManager->getTime(), glm::vec3(1,1,1), glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
+		cubes.draw(textures.at("floor"), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), 0, glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
 		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
 		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -119,7 +119,7 @@ void Game::play(){
 
 		glBindVertexArray(0);
 		glBindVertexArray(sphere.getVao());
-		sphere.draw(textures.at("floor"), glm::vec3(0,0,0), windowManager->getTime(), glm::vec3(0,0,0), glm::vec3(5,5,5));
+		sphere.draw(textures.at("floor"), glm::vec3(0,0,0), 0, glm::vec3(5,5,5));
 		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
 		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -137,7 +137,7 @@ Game::~Game() {
 }
 
 
-void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+void Game::drawSphere(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale){
 	glm::mat4 MVMatrix;
 
 	Texture *text = textures.at(texture);
@@ -145,7 +145,7 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate
 		return;
 
 	glBindVertexArray(sphere.getVao());
-	sphere.draw(text, translate, windowManager->getTime(), rotate, scale);
+	sphere.draw(text, translate, rotate, scale);
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -162,7 +162,7 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, glm::vec3 rotate
 	//std::cout<<"draw sphere pos"<<translate<<std::endl;
 }
 
-void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale){
 	glm::mat4 MVMatrix;
 
 	Texture *text = textures.at(texture);
@@ -170,7 +170,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, 
 		return;
 
 	glBindVertexArray(cubes.getVao());
-	cubes.draw(text, translate, windowManager->getTime(), rotate, scale);
+	cubes.draw(text, translate, rotate, scale);
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
@@ -185,7 +185,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, 
 	//std::cout<<"draw cube pos"<<translate<<std::endl;
 }
 
-void Game::drawCubeInterface(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+void Game::drawCubeInterface(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale){
 	glm::mat4 MVMatrix;
 
 	Texture *text = textures.at(texture);
@@ -193,7 +193,7 @@ void Game::drawCubeInterface(std::string texture, glm::vec3 translate, glm::vec3
 		return;
 
 	glBindVertexArray(cubes.getVao());
-	cubes.draw(text, translate, windowManager->getTime(), rotate, scale);
+	cubes.draw(text, translate, rotate, scale);
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(glm::mat4(1) * cubes.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));

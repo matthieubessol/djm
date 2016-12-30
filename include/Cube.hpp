@@ -38,7 +38,7 @@ public:
     GLuint getVao();
     glm::mat4 getModelMatrix();
     void draw(Texture * texture, int i , int j);
-    void draw(Texture * texture, glm::vec3 translate, int time, glm::vec3 rotate, glm::vec3 scale);
+    void draw(Texture * texture, glm::vec3 translate, float radian, glm::vec3 scale);
     void drawPlane(Texture * texture, float scale, float translateX, float translateY);
     void resetMatrix();
     void freeTextures();
