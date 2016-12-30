@@ -41,6 +41,7 @@ private:
 	void drawDoors(Game *g);
 	void drawWalls(Game *g);
 	void drawEnnemis(Game *g);
+	void drawInterface(Game *g);
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex

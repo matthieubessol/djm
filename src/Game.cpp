@@ -13,6 +13,7 @@ const static std::string FLOOR_TEXT_PATH = "/assets/textures/floor.jpg";
 const static std::string WALL_TEXT_PATH = "/assets/textures/wall.jpg" ;
 const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
+const static std::string HEART_TEXT_PATH = "/assets/textures/heart.jpg";
 
 
 Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), windowManager(window){
@@ -32,6 +33,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	textures.insert(std::pair<std::string, Texture *>("door",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("key",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("bonus",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("heart",new Texture( dirPath + HEART_TEXT_PATH , program.getGLId())));
 
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
@@ -171,6 +173,29 @@ void Game::drawCube(std::string texture, glm::vec3 translate, glm::vec3 rotate, 
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0.4,0.4,0.4)));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
+
+	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
+	glBindVertexArray(0);
+	//std::cout<<"draw cube pos"<<translate<<std::endl;
+}
+
+void Game::drawCubeInterface(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale){
+	glm::mat4 MVMatrix;
+
+	Texture *text = textures.at(texture);
+	if(!text)
+		return;
+
+	glBindVertexArray(cubes.getVao());
+	cubes.draw(text, translate, windowManager->getTime(), rotate, scale);
+	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(glm::mat4(1) * cubes.getModelMatrix()));
+	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
+	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0,0,0)));
+	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0,0,0)));
+	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
 
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());

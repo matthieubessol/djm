@@ -345,6 +345,7 @@ void Terrain::draw(Game *g){
 	drawDoors(g);
 	drawBonus(g);
 	drawEnnemis(g);
+	drawInterface(g);
 }
 
 void Terrain::drawKeys(Game *g){
@@ -375,5 +376,9 @@ void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
 		g->drawSphere("key", ennemis.at(i)->getPosition(), glm::vec3(0, 0, 0), glm::vec3(0.2, 0.2, 0.2));
 	}
+}
+
+void Terrain::drawInterface(Game *g){
+		g->drawCubeInterface("heart", glm::vec3(0.75,-0.75,-1), glm::vec3(0, 90, 0), glm::vec3(0.2, 0.2, 0.2));
 }
 

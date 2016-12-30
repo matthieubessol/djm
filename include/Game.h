@@ -40,6 +40,7 @@ public:
 	virtual ~Game();
 	void drawSphere	(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale);
 	void drawCube	(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale);
+	void drawCubeInterface	(std::string texture, glm::vec3 translate, glm::vec3 rotate, glm::vec3 scale);
 };
 
 #endif /* SRC_GAME_H_ */
