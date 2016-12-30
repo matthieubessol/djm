@@ -174,6 +174,8 @@ void Cube::draw(Texture * texture, glm::vec3 translate, float radian, glm::vec3 
   glDisable(GL_TEXTURE_2D);
 
   glActiveTexture(texture->getActiveTexture());
+
+  glActiveTexture(texture->getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), translate);
   this->modelMatrix = glm::rotate(this->modelMatrix, radian, glm::vec3(0, 0, 1));
   this->modelMatrix = glm::scale(this->modelMatrix, scale);
