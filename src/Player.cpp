@@ -96,6 +96,10 @@ void Player::kill(){
 	}
 }
 
+glm::vec3 Player::getNextFrontPosition(){
+	return camera->getFuturePosition(MOOV_FRONT_VALUE);
+}
+
 glm::mat4 Player::getViewMatrix(){
 	return camera->getViewMatrix();
 }

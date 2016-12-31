@@ -7,7 +7,8 @@
 #include <fstream>
 #include <glimac/Program.hpp>
 
-namespace glimac {
+using namespace glimac;
+
 Texture::Texture(std::string _path, GLuint glId) {
     std::unique_ptr<Image> img = loadImage(_path);
     if(img == NULL) {
@@ -42,4 +43,3 @@ GLuint Texture::getUTexture(){
     return this->uTexture;
 }
 
-}

@@ -6,7 +6,6 @@
 #include <glimac/Program.hpp>
 #include "Pixel.hpp"
 
-namespace glimac {
 
 class Texture {
 private:
@@ -22,5 +21,3 @@ public:
     GLuint getidTexture();
     GLuint getUTexture();
 };
-
-}

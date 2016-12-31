@@ -6,6 +6,7 @@
  */
 
 #include "Game.h"
+#include "Button.h"
 
 const static std::string VS_SHADER_PATH = "/shaders/3D.vs.glsl";
 const static std::string FS_SHADER_PATH = "/shaders/multiTex3D.fs.glsl";
@@ -23,10 +24,14 @@ const static std::string BLACK_TEXT_PATH = "/assets/textures/black.jpg";
 const static std::string RED_TEXT_PATH = "/assets/textures/rouge.jpg";
 const static std::string GREEN_TEXT_PATH = "/assets/textures/green.jpg";
 const static std::string WHITE_TEXT_PATH = "/assets/textures/white.jpg";
+const static std::string BEGIN_MENU_TEXT_PATH = "/assets/textures/menu_deb.png";
+const static std::string CURSOR_TEXT_PATH = "/assets/textures/cursor.png";
+
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
 
-Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), windowManager(window){
+Game::Game(std::string dirPath, SDLWindowManager* window) :
+		sphere(1,32,16), windowManager(window){
 	Program program = loadProgram(dirPath + VS_SHADER_PATH,
 								  dirPath + FS_SHADER_PATH);
 	program.use();
@@ -53,6 +58,13 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
+
+
+	beginMenu = new BeginMenu("beginMenu");
+	currentMenu = beginMenu;
+	menuDisplayed = true;
 
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
@@ -91,21 +103,28 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 
 void Game::play(){
 	// Application loop:
+	glm::vec2 cursorPosition;
 	bool done = false;
 	while(!done) {
 		// Event loop:
 		SDL_Event e;
 		while(windowManager->pollEvent(e)) {
-			if(e.type == SDL_KEYDOWN) {
-				t.keyEvent(e.key.keysym.sym) ;
-				break;
-			}
-			if(e.type == SDL_QUIT) {
-				done = true; // Leave the loop after this iteration
+			switch(e.type){
+				case SDL_MOUSEMOTION:
+					cursorPosition = glm::vec2(e.button.x, e.button.y);
+					if(menuDisplayed){
+
+					}
+					break;
+				case SDL_KEYDOWN:
+					t.keyEvent(e.key.keysym.sym) ;
+					break;
+
+				case SDL_QUIT:
+					done = true; // Leave the loop after this iteration
+					break;
 			}
 		}
-
-		t.update();
 
 		/*********************************
 		 * HERE SHOULD COME THE RENDERING CODE
@@ -118,6 +137,14 @@ void Game::play(){
 
 		ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * vm;
 		MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;
+
+		if(menuDisplayed){
+			drawMenu();
+			drawMouseCursor(cursorPosition.x, cursorPosition.y);
+			windowManager->swapBuffers();
+			continue;
+		}
+		t.update();
 
 		glm::mat4 MVMatrix;
 
@@ -199,6 +226,29 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 	//std::cout<<"draw cube pos"<<translate<<std::endl;
+}
+
+void Game::drawButton(Button *btn){
+	std::string text = btn->getTexture();
+	glm::vec3 pos(btn->getPosX(), 0, btn->getPosY());
+	glm::vec3 scale(btn->getWidth()/1000, 0.1, btn->getHeight()/1000);
+	drawCubeInterface(text, pos, 0, scale);
+}
+
+void Game::drawMouseCursor(int x, int y){
+	glm::vec3 pos(x/800., -y/600., 0);
+	float size = 0.05;
+	std::cout<<"mouse pos "<<pos<<std::endl;
+	drawCubeInterface("cursor", glm::vec3(2*pos.x - size/2 -1,2*pos.y - size/2 +1,-1), -M_PI/2, glm::vec3(size, size, size));
+
+}
+
+void Game::drawMenu(){
+	glm::vec3 pos = player.getNextFrontPosition();
+	drawCube(currentMenu->getTexture(), pos, 0, glm::vec3(0.5, 0.5, 0.5));
+	for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
+		drawButton(currentMenu->getButtons().at(i));
+	}
 }
 
 void Game::drawCubeInterface(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale){
