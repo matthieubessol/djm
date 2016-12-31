@@ -20,6 +20,7 @@
 #include <map>
 #include "Cube.hpp"
 #include "Player.hpp"
+#include "BeginMenu.h"
 //#include "Terrain.hpp"
 
 using namespace glimac;
@@ -33,6 +34,12 @@ class Game {
 	Player player;
 	GLint uMVPMatrix,uMVMatrix,uNormalMatrix,uKd,uKs,uLightDir_vs,uLightIntensity;
 	glm::mat4 ProjMatrix, MVMatrix, NormalMatrix;
+	Menu *beginMenu, *endMenu;
+	Menu *currentMenu;
+	bool menuDisplayed;
+
+	void drawButton(Button *btn);
+	void drawMouseCursor(int x, int y);
 
 public:
 	Game(std::string dirPath, SDLWindowManager* window);
@@ -41,6 +48,9 @@ public:
 	void drawSphere	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawCube	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawCubeInterface	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
+	void drawMenu();
+
+
 };
 
 #endif /* SRC_GAME_H_ */

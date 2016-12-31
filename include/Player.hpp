@@ -38,6 +38,7 @@ public:
     int getMoney();
     int getNbLife();
     void kill();
+    glm::vec3 getNextFrontPosition();
     void moveUpdate();
     int getLife();
     glm::mat4 getViewMatrix();
