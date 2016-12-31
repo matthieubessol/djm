@@ -88,5 +88,7 @@ public:
 	void update();
 	void draw(Game *g);
 	int recoveryTresor(glm::vec3 pos);
+	void drawMinimap(Game *g);
+	std::string getPixelSignificationString(Pixel* p);
 };
 //}

@@ -15,6 +15,14 @@ const static std::string SKYBOX_TEXT_PATH = "/assets/textures/skybox.jpg";
 const static std::string DOOR_TEXT_PATH = "/assets/textures/door.jpg";
 const static std::string HEART_TEXT_PATH = "/assets/textures/heart.png";
 const static std::string TRESOR_TEXT_PATH = "/assets/textures/coin.png";
+const static std::string GRIS_TEXT_PATH = "/assets/textures/gris.jpg";
+const static std::string BLUE_TEXT_PATH = "/assets/textures/blue.jpg";
+const static std::string LIGHTBLUE_TEXT_PATH = "/assets/textures/light-blue.jpg";
+const static std::string YELLOW_TEXT_PATH = "/assets/textures/jaune.jpg";
+const static std::string BLACK_TEXT_PATH = "/assets/textures/black.jpg";
+const static std::string RED_TEXT_PATH = "/assets/textures/rouge.jpg";
+const static std::string GREEN_TEXT_PATH = "/assets/textures/green.jpg";
+const static std::string WHITE_TEXT_PATH = "/assets/textures/white.jpg";
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
 
@@ -37,6 +45,14 @@ Game::Game(std::string dirPath, SDLWindowManager* window) : sphere(1,32,16), win
 	textures.insert(std::pair<std::string, Texture *>("bonus",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("heart",new Texture( dirPath + HEART_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("tresor",new Texture( dirPath + TRESOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("gris",new Texture( dirPath + GRIS_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("green",new Texture( dirPath + GREEN_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("light-blue",new Texture( dirPath + LIGHTBLUE_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("blue",new Texture( dirPath + BLUE_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("yellow",new Texture( dirPath + YELLOW_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
 
 
 	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);

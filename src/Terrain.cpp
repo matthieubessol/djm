@@ -13,7 +13,7 @@
 
 static const std::string MAP_PATH = "/map/map.ppm";
 static const int TRESOR_VALUE = 30;
-static const float HEART_OFFSET = 0.2;
+static const float HEART_OFFSET = 0.1;
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -142,6 +142,31 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
+}
+
+std::string Terrain::getPixelSignificationString(Pixel* p){
+	if(p->isStart()){
+		return "green";
+	}
+	if(p->isEnd()){
+		return "red";
+	}
+	if(p->isDoor()){
+		return "blue";
+	}
+	if(p->isKey()){
+		return "light-blue";
+	}
+	if(p->isEnnemi()){
+		return "black";
+	}
+	if(p->isWall()){
+		return "gris";
+	}
+	if(p->isTresor()){
+		return "yellow";
+	}
+	return "black";
 }
 
 
@@ -413,12 +438,38 @@ void Terrain::drawEnnemis(Game *g){
 void Terrain::drawInterface(Game *g){
 	float offset = 0.;
 	for(int i=0; i < player->getNbLife(); i++){
-		g->drawCubeInterface("heart", glm::vec3(-0.75+offset,-0.75,-0.75), -M_PI/2, glm::vec3(0.1, 0.1, 0.1));
+		g->drawCubeInterface("heart", glm::vec3(-0.75+offset,-0.75,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 		offset += HEART_OFFSET;
 	}
+	g->drawCubeInterface("tresor", glm::vec3(-0.75,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+
+	drawMinimap(g);
 //		for (int i = 0; i < player->getLife(); i++){
 //			g->drawCubeInterface("heart", glm::vec3(0.8 - i*0.1,-0.8,-1), glm::vec3(0, 90, 0), glm::vec3(0.05, 0.05, 0.05));
 //		}
+}
+
+void Terrain::drawMinimap(Game *g) {
+	// Draw player.
+	float scale = 0.01;
+	g->drawCubeInterface("red", glm::vec3(-0.1+scale+scale*player->getPosition().x,-0.75+19*scale-scale*player->getPosition().z,-0.75), -M_PI/2, glm::vec3(scale, scale/2, scale));
+
+	for (unsigned int i=0; i<ennemis.size(); ++i){
+		glm::vec3 p =ennemis.at(i)->getPosition();
+		g->drawCubeInterface("black", glm::vec3(-0.1+scale+scale*p.x,-0.75+19*scale-scale*p.z,-0.75), -M_PI/2, glm::vec3(scale, scale/2, scale));
+	}
+	float offsetX = 0, offsetY = 0;
+	for (int i = 0; i < pixels.at(0)->size(); i++){
+		offsetX += scale;
+		for (int j = pixels.at(0)->size() -1; j > 0; j--){
+			std::string type = getPixelSignificationString(pixels.at(j)->at(i));
+			if(type != "black")
+				g->drawCubeInterface(type, glm::vec3(-0.1+offsetX,-0.75+offsetY,-0.75), -M_PI/2, glm::vec3(scale, scale, scale));
+			offsetY += scale;
+		}
+		offsetY = 0;
+	}
+
 }
 
 int Terrain::recoveryTresor(glm::vec3 pos){
