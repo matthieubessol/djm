@@ -113,10 +113,13 @@ void Game::play(){
 				case SDL_MOUSEMOTION:
 					cursorPosition = glm::vec2(e.button.x, e.button.y);
 					if(menuDisplayed){
-						for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
-							if(currentMenu->getButtons().at(i)->isOnButton(e.button.x,e.button.y))
-								std::cout << "ison" << std::endl;
-						}
+					}
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					std::cout << "click" << e.button.x << " " << e.button.y << std::endl;
+					for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
+						if(currentMenu->getButtons().at(i)->isOnButton(e.button.x,e.button.y))
+							menuDisplayed = false;
 					}
 					break;
 				case SDL_KEYDOWN:
