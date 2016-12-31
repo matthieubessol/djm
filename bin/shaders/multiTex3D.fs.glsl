@@ -23,6 +23,6 @@ vec3 blinnPhong() {
 }
 
 void main() {
-    fFragColor = (texture(uEarthTexture,vTexCoords)+ texture(uCloudTexture,vTexCoords))+ blinnPhong();
+    fFragColor = (texture(uEarthTexture,vTexCoords)+ texture(uCloudTexture,vTexCoords))+ vec4(blinnPhong(),0);
     //fFragColor = blinnPhong();
 }
