@@ -16,8 +16,10 @@ Button::Button(float w, float h, float x, float y, std::string t) {
 }
 
 bool Button::isOnButton(float x, float y){
-	return (x >= posX && x <= posX + width
-				&& y >= posY && y <= posY + height);
+    x = x/800. - 0.5;
+    y = y/600. - 0.5;
+	return (x >= posX - width/2 && x <= posX + width/2
+		&& y >= posY -height/2 && y <= posY + height/2);
 
 }
 

@@ -113,7 +113,10 @@ void Game::play(){
 				case SDL_MOUSEMOTION:
 					cursorPosition = glm::vec2(e.button.x, e.button.y);
 					if(menuDisplayed){
-
+						for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
+							if(currentMenu->getButtons().at(i)->isOnButton(e.button.x,e.button.y))
+								std::cout << "ison" << std::endl;
+						}
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -231,15 +234,14 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 void Game::drawButton(Button *btn){
 	std::string text = btn->getTexture();
 	glm::vec3 pos(btn->getPosX(), 0, btn->getPosY());
-	glm::vec3 scale(btn->getWidth()/1000, 0.1, btn->getHeight()/1000);
+	glm::vec3 scale(btn->getWidth(), 0.1, btn->getHeight());
 	drawCubeInterface(text, pos, 0, scale);
 }
 
 void Game::drawMouseCursor(int x, int y){
 	glm::vec3 pos(x/800., -y/600., 0);
 	float size = 0.05;
-	std::cout<<"mouse pos "<<pos<<std::endl;
-	drawCubeInterface("cursor", glm::vec3(2*pos.x - size/2 -1,2*pos.y - size/2 +1,-1), -M_PI/2, glm::vec3(size, size, size));
+	drawCubeInterface("cursor", glm::vec3(2*pos.x - 1,2*pos.y  +1,-1), -M_PI/2, glm::vec3(size, size, size));
 
 }
 
