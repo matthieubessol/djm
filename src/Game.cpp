@@ -34,7 +34,7 @@ const static std::string TXT_FILE_PATH = "/map/items.json";
 
 
 Game::Game(std::string dirPath, SDLWindowManager* window) :
-		sphere(1,32,16), windowManager(window){
+		sphere(1,32,16), w(window){
 	Program program = loadProgram(dirPath + VS_SHADER_PATH,
 								  dirPath + FS_SHADER_PATH);
 	program.use();
@@ -61,13 +61,21 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
+
 	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("endMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
+
+
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
 
 
-	beginMenu = new BeginMenu("beginMenu");
+	beginMenu = new Menu("beginMenu");
+	beginMenu->addButton(new Button(0.2, 0.1, 0, -0.3, "floor"));
+	endMenu = new Menu("endMenu");
+	endMenu ->addButton(new Button(0.2, 0.1, -0.4, -0.3, "floor"));
+	endMenu ->addButton(new Button(0.2, 0.1, 0.4, -0.3, "floor"));
 	currentMenu = beginMenu;
 	menuDisplayed = true;
 
@@ -89,7 +97,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	uLightIntensity = glGetUniformLocation(program.getGLId(),"uLightIntensity");
 
 
-	ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * player.getViewMatrix();
+	ProjMatrix = glm::perspective(glm::radians(70.f), (float)w->getWidth()/(float)w->getHeight(), 0.1f, 100.f) * player.getViewMatrix();
 	MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * player.getViewMatrix();
 	NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
 
@@ -108,23 +116,26 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 
 void Game::play(){
 	// Application loop:
-	glm::vec2 cursorPosition;
+	glm::vec2 cursorPosition, cursorPositionInGL;
 	bool done = false;
 	while(!done) {
 		// Event loop:
 		SDL_Event e;
-		while(windowManager->pollEvent(e)) {
+		while(w->pollEvent(e)) {
 			switch(e.type){
 				case SDL_MOUSEMOTION:
-					cursorPosition = glm::vec2(e.button.x, e.button.y);
+					cursorPosition = w->getMousePosition();//glm::vec2(e.button.x, e.button.y);
+
 					if(menuDisplayed){
 					}
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					std::cout << "click" << e.button.x << " " << e.button.y << std::endl;
+					cursorPositionInGL = w->getMousePositionInGL(cursorPosition);
+					std::cout << "click " << cursorPositionInGL << std::endl;
 					for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
-						if(currentMenu->getButtons().at(i)->isOnButton(e.button.x,e.button.y))
+						if(currentMenu->getButtons().at(i)->isOnButton(cursorPositionInGL.x, cursorPositionInGL.y)){
 							menuDisplayed = false;
+						}
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -146,21 +157,24 @@ void Game::play(){
 		glDisable(GL_TEXTURE_2D);
 		glm::mat4 vm = player.getViewMatrix();
 
-		ProjMatrix = glm::perspective(glm::radians(70.f), 800.f/600.f, 0.1f, 100.f) * vm;
+		ProjMatrix = glm::perspective(glm::radians(70.f), (float)w->getWidth()/(float)w->getHeight(), 0.1f, 100.f) * vm;
 		MVMatrix   = glm::translate(MVMatrix,glm::vec3(0,0,-5)) * vm;
 
 		if(menuDisplayed){
 			drawMenu();
-			drawMouseCursor(cursorPosition.x, cursorPosition.y);
-			windowManager->swapBuffers();
+			drawMouseCursor(cursorPosition);
+			w->swapBuffers();
 			continue;
 		}
-		t.update();
+		if(!t.update()){
+			currentMenu = endMenu;
+			menuDisplayed = true;
+		}
 
 		glm::mat4 MVMatrix;
 		t.draw(this);
 
-		windowManager->swapBuffers();
+		w->swapBuffers();
 	}
 }
 
@@ -241,14 +255,14 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 
 void Game::drawButton(Button *btn){
 	std::string text = btn->getTexture();
-	glm::vec3 pos(btn->getPosX(), 0, btn->getPosY());
+	glm::vec3 pos(btn->getPosX(), btn->getPosY(), 0);
 	glm::vec3 scale(btn->getWidth(), 0.1, btn->getHeight());
 	drawCubeInterface(text, pos, 0, scale);
 }
 
-void Game::drawMouseCursor(int x, int y){
-	glm::vec3 pos(x/800., -y/600., 0);
-	float size = 0.05;
+void Game::drawMouseCursor(glm::vec2 p){
+	glm::vec3 pos(p.x/(float)w->getWidth(), -p.y/(float)w->getHeight(), 0);
+	float size = 0.035;
 	drawCubeInterface("cursor", glm::vec3(2*pos.x - 1,2*pos.y  +1,-1), -M_PI/2, glm::vec3(size, size, size));
 
 }

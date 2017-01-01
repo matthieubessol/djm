@@ -32,7 +32,7 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	this->loadMap();
 	linkDoors();
 	player = p;
-
+	thisIsTheEnd = false;
 	//chargement fichier json
 //	std::ifstream file(filePath);
 //	file >> json;
@@ -213,6 +213,10 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		std::cout<<"player money = "<<player->getMoney()<<std::endl;
 	}
 
+	if(isEnd(position)){
+		thisIsTheEnd = true;
+	}
+
 	// ennemis/players checks
 	Player *_player = dynamic_cast<Player*>(element);
 	if(!_player){
@@ -265,6 +269,10 @@ bool Terrain::isKey(glm::vec3 pos){
 	if(!key)
 		return false;
 	return true;
+}
+
+bool Terrain::isEnd(glm::vec3 pos){
+	return getPixel(pos)->isEnd();
 }
 
 void Terrain::removeKey(Key* k){
@@ -382,11 +390,14 @@ bool Terrain::isPlayer(glm::vec3 pos){
 	return false;
 }
 
-void Terrain::update(){
+bool Terrain::update(){
 	for (unsigned int i=0; i<ennemis.size(); ++i){
 			ennemis.at(i)->moov(this);
 	}
 	player->moveUpdate();
+	if(thisIsTheEnd || player->isDead())
+		return false;
+	return true;
 }
 
 void Terrain::draw(Game *g){

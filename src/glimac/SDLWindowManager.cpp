@@ -39,6 +39,9 @@ SDLWindowManager::SDLWindowManager(uint32_t width, uint32_t height, const char* 
     SDL_ShowCursor(0);
     SDL_WM_GrabInput(SDL_GRAB_ON);
     */
+
+    this->width = width;
+    this->height = height;
 }
 
 SDLWindowManager::~SDLWindowManager() {
@@ -64,6 +67,12 @@ glm::ivec2 SDLWindowManager::getMousePosition() const {
     glm::ivec2 mousePos;
     SDL_GetMouseState(&mousePos.x, &mousePos.y);
     return mousePos;
+}
+
+glm::vec2 SDLWindowManager::getMousePositionInGL(glm::ivec2 tmp) const {
+    float x = (tmp.x/(float)width)*2 - 1;
+    float y = -(tmp.y/(float)height)*2 + 1;
+    return glm::vec2(x, y);
 }
 
 void SDLWindowManager::wrapMousePosition(float x, float y) {

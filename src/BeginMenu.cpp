@@ -13,7 +13,7 @@ BeginMenu::BeginMenu() : Menu() {
 }
 
 BeginMenu::BeginMenu(std::string t) : Menu(t){
-	addButton(new Button(0.2, 0.1, 0, 0, "start"));
+	addButton(new Button(0.2, 0.1, 0, -0.3, "start"));
 }
 
 BeginMenu::BeginMenu(std::string t, std::vector<Button*> btns) : Menu(t, btns){

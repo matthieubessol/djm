@@ -6,6 +6,7 @@
  */
 
 #include "Button.h"
+#include <iostream>
 
 Button::Button(float w, float h, float x, float y, std::string t) {
 	width =w;
@@ -16,10 +17,9 @@ Button::Button(float w, float h, float x, float y, std::string t) {
 }
 
 bool Button::isOnButton(float x, float y){
-    x = x/800. - 0.5;
-    y = y/600. - 0.5;
-	return (x >= posX - width/2 && x <= posX + width/2
-		&& y >= posY -height/2 && y <= posY + height/2);
+    std::cout << "click " << x <<" " <<y << std::endl;
+	return (x >= posX - width && x <= posX + width
+		&& y >= posY -height && y <= posY + height);
 
 }
 
