@@ -19,8 +19,9 @@
 #include <vector>
 #include <map>
 #include "Cube.hpp"
-#include "Player.hpp"
 #include "BeginMenu.h"
+#include "EndMenu.h"
+#include "Player.hpp"
 //#include "Terrain.hpp"
 
 using namespace glimac;
@@ -38,7 +39,7 @@ class Game {
 	Menu *currentMenu;
 	bool menuDisplayed;
 
-	void drawButton(Button *btn);
+
 	void drawMouseCursor(glm::vec2 pos);
 
 public:
@@ -49,7 +50,9 @@ public:
 	void drawCube	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawCubeInterface	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawMenu();
-
+	void start();
+	void drawButton(Button *btn);
+	void next();
 
 };
 

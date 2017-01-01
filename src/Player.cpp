@@ -13,8 +13,8 @@ static const float ROTATE_ANGLE = 90.;
 static const int REANIMATION_DURATION = 2000;
 
 Player::Player(){
-	this->nbLife = 0;
-	this->camera = NULL;
+	this->nbLife = 3;
+	this->camera = new FreeflyCamera();
 	timer = 0;
 	money =0;
 }
@@ -118,4 +118,9 @@ int Player::getLife() {
 
 bool Player::isDead(){
 	return nbLife<=0;
+}
+
+void Player::setPosition(glm::vec3 pos){
+	camera->setPosition(pos);
+	SceneElement::setPosition(pos);
 }
