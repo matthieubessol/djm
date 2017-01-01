@@ -111,15 +111,17 @@ void Game::play(){
 		while(windowManager->pollEvent(e)) {
 			switch(e.type){
 				case SDL_MOUSEMOTION:
-					cursorPosition = glm::vec2(e.button.x, e.button.y);
+					cursorPosition = windowManager->getMousePosition();//glm::vec2(e.button.x, e.button.y);
+
 					if(menuDisplayed){
 					}
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					std::cout << "click" << e.button.x << " " << e.button.y << std::endl;
+					std::cout << "click " << cursorPosition << std::endl;
 					for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
-						if(currentMenu->getButtons().at(i)->isOnButton(e.button.x,e.button.y))
+						if(currentMenu->getButtons().at(i)->isOnButton(cursorPosition.x, cursorPosition.y)){
 							menuDisplayed = false;
+						}
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -236,7 +238,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 
 void Game::drawButton(Button *btn){
 	std::string text = btn->getTexture();
-	glm::vec3 pos(btn->getPosX(), 0, btn->getPosY());
+	glm::vec3 pos(btn->getPosX(), btn->getPosY(), 0);
 	glm::vec3 scale(btn->getWidth(), 0.1, btn->getHeight());
 	drawCubeInterface(text, pos, 0, scale);
 }
