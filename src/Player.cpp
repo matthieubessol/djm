@@ -115,3 +115,7 @@ void Player::moveUpdate(){
 int Player::getLife() {
 	return nbLife;
 }
+
+bool Player::isDead(){
+	return nbLife<=0;
+}

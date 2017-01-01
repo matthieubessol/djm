@@ -28,7 +28,6 @@ private:
 	std::string imgPath;
 	int width;
 	int height;
-	float test;
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;
@@ -40,6 +39,7 @@ private:
 	Player* player;
 	std::vector<Ennemi*> ennemis;
 	Json json;
+	bool thisIsTheEnd;
 
 
 	void drawKeys(Game *g);
@@ -64,6 +64,7 @@ public:
 	bool isWall(glm::vec3 pos);
 	bool isDoor(glm::vec3 pos);
 	bool isKey(glm::vec3 pos);
+	bool isEnd(glm::vec3 pos);
 	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
@@ -85,7 +86,7 @@ public:
 	bool keyEvent(int  key);
 	bool isEnnemi(glm::vec3 pos);
 	bool isPlayer(glm::vec3 pos);
-	void update();
+	bool update();
 	void draw(Game *g);
 	int recoveryTresor(glm::vec3 pos);
 	void drawMinimap(Game *g);

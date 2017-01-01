@@ -58,11 +58,19 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
+
 	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("endMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
+
+
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 
 
-	beginMenu = new BeginMenu("beginMenu");
+	beginMenu = new Menu("beginMenu");
+	beginMenu->addButton(new Button(0.2, 0.1, 0, -0.3, "floor"));
+	endMenu = new Menu("endMenu");
+	endMenu ->addButton(new Button(0.2, 0.1, -0.4, -0.3, "floor"));
+	endMenu ->addButton(new Button(0.2, 0.1, 0.4, -0.3, "floor"));
 	currentMenu = beginMenu;
 	menuDisplayed = true;
 
@@ -153,7 +161,10 @@ void Game::play(){
 			w->swapBuffers();
 			continue;
 		}
-		t.update();
+		if(!t.update()){
+			currentMenu = endMenu;
+			menuDisplayed = true;
+		}
 
 		glm::mat4 MVMatrix;
 

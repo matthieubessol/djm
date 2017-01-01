@@ -11,6 +11,7 @@ static const Pixel BONUS_POWER = Pixel(150, 150, 150); //#969696
 static const Pixel WALL_COLOR = Pixel(255, 0, 0);
 static const Pixel ENNEMI_COLOR = Pixel(0, 0, 0);
 static const Pixel START_COLOR = Pixel(255, 0, 255);
+static const Pixel END_COLOR = Pixel(0, 255, 0);
 static const Pixel TRESOR_COLOR = Pixel(255, 255, 0);
 
 
@@ -83,7 +84,7 @@ bool Pixel::isTresor(){
 }
 
 bool Pixel::isEnd(){
-	return this->isGreen();
+	return (*this == END_COLOR);
 }
 
 bool Pixel::isStart(){
