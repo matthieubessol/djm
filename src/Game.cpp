@@ -26,6 +26,9 @@ const static std::string GREEN_TEXT_PATH = "/assets/textures/green.jpg";
 const static std::string WHITE_TEXT_PATH = "/assets/textures/white.jpg";
 const static std::string BEGIN_MENU_TEXT_PATH = "/assets/textures/menu_deb.png";
 const static std::string CURSOR_TEXT_PATH = "/assets/textures/cursor.png";
+const static std::string FIRE_TEXT_PATH = "/assets/textures/fire.png";
+const static std::string KEY_TEXT_PATH = "/assets/textures/key.jpg";
+const static std::string START_TEXT_PATH = "/assets/textures/start.jpg";
 
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -46,7 +49,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("wall",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("skybox",new Texture( dirPath + SKYBOX_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("door",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("key",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("key",new Texture( dirPath + KEY_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("bonus",new Texture( dirPath + DOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("heart",new Texture( dirPath + HEART_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("tresor",new Texture( dirPath + TRESOR_TEXT_PATH , program.getGLId())));
@@ -60,6 +63,8 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
 
 
 	beginMenu = new BeginMenu("beginMenu");
@@ -153,28 +158,6 @@ void Game::play(){
 		t.update();
 
 		glm::mat4 MVMatrix;
-
-		cubes.draw(textures.at("skybox"), glm::vec3(t.getWidth()/2,0,t.getHeight()/2), 0, glm::vec3(t.getWidth(),t.getWidth(),t.getWidth()));
-		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-		glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-
-		cubes.draw(textures.at("floor"), glm::vec3(t.getWidth()/2,-0.6,t.getHeight()/2), 0, glm::vec3(t.getWidth()/2,0.1,t.getHeight()/2));
-		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-		glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-
-		glBindVertexArray(0);
-		glBindVertexArray(sphere.getVao());
-		sphere.draw(textures.at("floor"), glm::vec3(0,0,0), 0, glm::vec3(5,5,5));
-		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
-		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-		glDrawArrays(GL_TRIANGLES,0, sphere.getVertexCount());
-		glBindVertexArray(0);
-
 		t.draw(this);
 
 		windowManager->swapBuffers();
@@ -232,6 +215,28 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 	//std::cout<<"draw cube pos"<<translate<<std::endl;
+}
+
+void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale, bool noLight){
+	glm::mat4 MVMatrix;
+
+	Texture *text = textures.at(texture);
+	if(!text)
+		return;
+
+	glBindVertexArray(cubes.getVao());
+	cubes.draw(text, translate, rotate, scale);
+	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
+	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
+	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+
+	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0,0,0)));
+	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0,0,0)));
+	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0,0,0)));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
+
+	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
+	glBindVertexArray(0);
 }
 
 void Game::drawButton(Button *btn){

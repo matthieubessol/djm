@@ -49,6 +49,8 @@ private:
 	void drawEnnemis(Game *g);
 	void drawInterface(Game *g);
 	void drawTresors(Game *g);
+	void drawFloor(Game *g);
+	void drawSkyBox(Game *g);
 
 
 public:

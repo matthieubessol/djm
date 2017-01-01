@@ -47,6 +47,7 @@ public:
 	virtual ~Game();
 	void drawSphere	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawCube	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
+	void drawCube	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale, bool noLight);
 	void drawCubeInterface	(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale);
 	void drawMenu();
 
