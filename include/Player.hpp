@@ -46,7 +46,7 @@ public:
     glm::vec3 getFrontVector();
     //glm::vec3 getPosition(){return SceneElement::getPosition();}
     void setPosition(glm::vec3 pos);
-
+    void reset();
 
 };
 //}

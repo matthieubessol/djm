@@ -419,6 +419,8 @@ void Terrain::draw(Game *g){
 	drawEnnemis(g);
 	drawInterface(g);
 	drawTresors(g);
+	drawFloor(g);
+	drawSkyBox(g);
 }
 
 void Terrain::drawKeys(Game *g){
@@ -431,11 +433,21 @@ void Terrain::drawKeys(Game *g){
 //	for (unsigned int i=0; i<bonus.size();++i){
 //		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
 //	}
-//}
+
+void Terrain::drawFloor(Game *g){
+	int size = pixels.at(0)->size();
+	for (unsigned int i=0; i<size;++i){
+		for (unsigned int j=0; j<size;++j){
+			g->drawCube("floor", glm::vec3(i,-0.5,j), 0, glm::vec3(0.5, 0.01, 0.5));
+		}
+	}
+}
+
 
 void Terrain::drawWalls(Game *g){
 	for (unsigned int i=0; i<walls.size();++i){
-		g->drawCube("wall", walls.at(i)->getPosition(), 0, glm::vec3(0.5, 2, 0.5));
+		glm::vec3 pos = walls.at(i)->getPosition();
+		g->drawCube("wall", glm::vec3(pos.x,0.5,pos.z), 0, glm::vec3(0.5, 1, 0.5));
 	}
 }
 
@@ -443,6 +455,11 @@ void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
 		g->drawCube("tresor", tresors.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
+}
+
+void Terrain::drawSkyBox(Game *g){
+	int size = pixels.at(0)->size();
+	g->drawCube("skybox", glm::vec3(size/2,0,size/2), 0, glm::vec3(size,size,size), true);
 }
 
 void Terrain::drawDoors(Game *g){
@@ -453,7 +470,7 @@ void Terrain::drawDoors(Game *g){
 
 void Terrain::drawEnnemis(Game *g){
 	for (unsigned int i=0; i<ennemis.size();++i){
-		g->drawSphere("key", ennemis.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
+		g->drawSphere("fire", ennemis.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
@@ -545,4 +562,5 @@ void Terrain::reset(){
 		delete pixels.at(i);
 	}
 	pixels.clear();
+	player->reset();
 }

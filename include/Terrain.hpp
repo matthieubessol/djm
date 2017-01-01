@@ -55,6 +55,9 @@ private:
 	void init();
 	void loadMap(std::string map);
 	void reset();
+	void drawFloor(Game *g);
+	void drawSkyBox(Game *g);
+
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex

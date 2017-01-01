@@ -20,7 +20,6 @@ EndMenu::EndMenu(std::string t) : Menu(t){
 
 void EndMenu::checkButtons(glm::vec2 cursor, Game* g){
 	if(next->isOnButton(cursor.x, cursor.y)){
-
 		g->next();
 	}
 }
