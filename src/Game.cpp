@@ -29,11 +29,16 @@ const static std::string CURSOR_TEXT_PATH = "/assets/textures/cursor.png";
 const static std::string FIRE_TEXT_PATH = "/assets/textures/fire.png";
 const static std::string KEY_TEXT_PATH = "/assets/textures/key.jpg";
 const static std::string START_TEXT_PATH = "/assets/textures/start.jpg";
-const static std::string nb30_TEXT_PATH = "/assets/textures/30.png";
-const static std::string nb60_TEXT_PATH = "/assets/textures/60.png";
-const static std::string nb90_TEXT_PATH = "/assets/textures/90.png";
-const static std::string nb120_TEXT_PATH = "/assets/textures/120.png";
 const static std::string nb0_TEXT_PATH = "/assets/textures/0.png";
+const static std::string nb1_TEXT_PATH = "/assets/textures/1.png";
+const static std::string nb2_TEXT_PATH = "/assets/textures/2.png";
+const static std::string nb3_TEXT_PATH = "/assets/textures/3.png";
+const static std::string nb4_TEXT_PATH = "/assets/textures/4.png";
+const static std::string nb5_TEXT_PATH = "/assets/textures/5.png";
+const static std::string nb6_TEXT_PATH = "/assets/textures/6.png";
+const static std::string nb7_TEXT_PATH = "/assets/textures/7.png";
+const static std::string nb8_TEXT_PATH = "/assets/textures/8.png";
+const static std::string nb9_TEXT_PATH = "/assets/textures/9.png";
 
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -72,11 +77,17 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("30",new Texture( dirPath + nb30_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("60",new Texture( dirPath + nb60_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("90",new Texture( dirPath + nb90_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("120",new Texture( dirPath + nb120_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("0",new Texture( dirPath + nb0_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("1",new Texture( dirPath + nb1_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("2",new Texture( dirPath + nb2_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("3",new Texture( dirPath + nb3_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("4",new Texture( dirPath + nb4_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("5",new Texture( dirPath + nb5_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("6",new Texture( dirPath + nb6_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("7",new Texture( dirPath + nb7_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("8",new Texture( dirPath + nb8_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("9",new Texture( dirPath + nb9_TEXT_PATH , program.getGLId())));
+
 
 
 
