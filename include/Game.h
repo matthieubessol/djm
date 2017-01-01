@@ -26,7 +26,7 @@
 using namespace glimac;
 
 class Game {
-	SDLWindowManager *windowManager;
+	SDLWindowManager *w;
 	std::map<std::string, Texture *> textures;
 	Terrain t;
 	Cube cubes;
@@ -39,7 +39,7 @@ class Game {
 	bool menuDisplayed;
 
 	void drawButton(Button *btn);
-	void drawMouseCursor(int x, int y);
+	void drawMouseCursor(glm::vec2 pos);
 
 public:
 	Game(std::string dirPath, SDLWindowManager* window);
