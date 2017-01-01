@@ -9,21 +9,26 @@
 #define MENU_H_
 #include "Button.h"
 #include <vector>
+#include <glimac/glm.hpp>
 
 class Game;
 
 class Menu {
-	std::vector<Button *> buttons;
+	//std::vector<Button *> buttons;
+protected:
 	std::string texture;
 
 public:
 	Menu();
 	Menu(std::string t);
-	Menu(std::string t, std::vector<Button*> btns);
-	void addButton(Button *b);
-	std::vector<Button*> getButtons(){return buttons;}
+	//Menu(std::string t, std::vector<Button*> btns);
+	//void addButton(Button *b);
+	//std::vector<Button*> getButtons(){return buttons;}
 	virtual ~Menu();
+	virtual void checkButtons(glm::vec2 cursor, Game* g)=0;
+	virtual void draw(Game *g)=0;
 	std::string getTexture(){return texture;}
+
 };
 
 #endif /* MENU_H_ */

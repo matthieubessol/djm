@@ -28,18 +28,21 @@ private:
 	std::string imgPath;
 	int width;
 	int height;
+
 	std::vector<std::vector<Pixel*>*> pixels;
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;
 	std::vector<SceneElement*> tresors;
 	std::vector<Key*> keys;
-	glm::vec2 startPosition;
-	glm::vec2 finishPosition;
-	std::vector<Bonus*> bonus;
-	Player* player;
 	std::vector<Ennemi*> ennemis;
+	std::vector<std::string> maps;
+
+	glm::vec3 startPosition;
+	glm::vec3 finishPosition;
+	Player* player;
 	Json json;
 	bool thisIsTheEnd;
+	int indMap;
 
 
 	void drawKeys(Game *g);
@@ -49,6 +52,9 @@ private:
 	void drawEnnemis(Game *g);
 	void drawInterface(Game *g);
 	void drawTresors(Game *g);
+	void init();
+	void loadMap(std::string map);
+	void reset();
 	void drawFloor(Game *g);
 	void drawSkyBox(Game *g);
 
@@ -61,7 +67,7 @@ public:
 	~Terrain();
 	int getWidth();
 	int getHeight();
-	void loadMap();
+
 	glm::vec3 getStartPosition();
 	bool isWall(glm::vec3 pos);
 	bool isDoor(glm::vec3 pos);
@@ -93,5 +99,6 @@ public:
 	int recoveryTresor(glm::vec3 pos);
 	void drawMinimap(Game *g);
 	std::string getPixelSignificationString(Pixel* p);
+	void next();
 };
 //}

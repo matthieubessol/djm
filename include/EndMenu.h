@@ -5,22 +5,21 @@
  *      Author: Antoine
  */
 
-#ifndef SRC_BEGINMENU_H_
-#define SRC_BEGINMENU_H_
+#ifndef SRC_ENDMENU_H_
+#define SRC_ENDMENU_H_
 
 #include "Menu.h"
 
-class BeginMenu : public Menu{
-	Button *start;
+class EndMenu : public Menu{
+	Button *restart, *quit, *next;
 public:
-	BeginMenu();
-	BeginMenu(std::string t);
+	EndMenu();
+	EndMenu(std::string t);
 	void checkButtons(glm::vec2 cursor, Game* g);
 	void draw(Game*g);
 	//BeginMenu(std::string t, std::vector<Button*> btns);
-	virtual ~BeginMenu();
-
+	virtual ~EndMenu();
 
 };
 
-#endif /* SRC_BEGINMENU_H_ */
+#endif /* SRC_ENDMENU_H_ */

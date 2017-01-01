@@ -12,16 +12,16 @@
 #include "Player.hpp"
 #include "Game.h"
 
-
-static const std::string MAP_PATH = "/map/map.ppm";
+static const int NB_MAPS = 3;
+static const std::string MAP_1 = "/map/map.ppm";
+static const std::string MAP_2 = "/map/map2.ppm";
+static const std::string MAP_3 = "/map/map3.ppm";
 static const int TRESOR_VALUE = 30;
 static const float HEART_OFFSET = 0.1;
 
 Terrain::Terrain(){
 	this->width = 0;
 	this->height = 0;
-	this->startPosition = glm::vec2(0,0);
-	this->finishPosition = glm::vec2(0,0);
 	player = NULL;
 }
 
@@ -29,12 +29,13 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	this->imgPath = _imgPath;
 	this->width = 0;
 	this->height = 0;
-	this->startPosition = glm::vec2(0,0);
-	this->finishPosition = glm::vec2(0,0);
-	this->loadMap();
-	linkDoors();
+	maps.push_back(MAP_1);
+	maps.push_back(MAP_2);
+	maps.push_back(MAP_3);
+	indMap = 0;
 	player = p;
-	thisIsTheEnd = false;
+	init();
+
 	//chargement fichier json
 //	std::ifstream file(filePath);
 //	file >> json;
@@ -45,6 +46,18 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 //		  std::cout << it.key() << " : " << it.value() << "\n";
 //		}
 //	}
+}
+
+void Terrain::init(){
+//	if(mapIterator == maps.end()){
+//		mapIterator = maps.begin();
+//	}
+	int ind = indMap%NB_MAPS;
+	this->loadMap(maps.at(ind));
+	linkDoors();
+	player->setPosition(startPosition);
+	thisIsTheEnd = false;
+	indMap++;
 }
 
 
@@ -62,8 +75,8 @@ glm::vec3 Terrain::getStartPosition() {
 	return glm::vec3(startPosition.x, 0, startPosition.y);
 }
 
-void Terrain::loadMap() {
-	std::ifstream file(imgPath+MAP_PATH);
+void Terrain::loadMap(std::string map) {
+	std::ifstream file(imgPath+map);
 	if (file){
 		std::string content;
 		getline(file, content);
@@ -107,11 +120,11 @@ void Terrain::loadMap() {
 
 void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isStart()){
-		this->startPosition = glm::vec2(x,y);
+		this->startPosition = glm::vec3(x, 0, y);
 		return;
 	}
 	if(p->isEnd()){
-		this->finishPosition = glm::vec2(x,y);
+		this->finishPosition = glm::vec3(x, 0, y);
 		return;
 	}
 	if(p->isDoor()){
@@ -345,7 +358,6 @@ Pixel* Terrain::getPixel(glm::vec2& pos){
 	if(!isInTerrain(pos)){
 		exit(EXIT_FAILURE);
 	}
-
 	return pixels.at(pos.y)->at(pos.x);
 }
 
@@ -406,7 +418,6 @@ void Terrain::draw(Game *g){
 	drawKeys(g);
 	drawWalls(g);
 	drawDoors(g);
-	drawBonus(g);
 	drawEnnemis(g);
 	drawInterface(g);
 	drawTresors(g);
@@ -420,6 +431,11 @@ void Terrain::drawKeys(Game *g){
 	}
 }
 
+//void Terrain::drawBonus(Game *g){
+//	for (unsigned int i=0; i<bonus.size();++i){
+//		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
+//	}
+
 void Terrain::drawFloor(Game *g){
 	int size = pixels.at(0)->size();
 	for (unsigned int i=0; i<size;++i){
@@ -429,11 +445,6 @@ void Terrain::drawFloor(Game *g){
 	}
 }
 
-void Terrain::drawBonus(Game *g){
-	for (unsigned int i=0; i<bonus.size();++i){
-		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
-	}
-}
 
 void Terrain::drawWalls(Game *g){
 	for (unsigned int i=0; i<walls.size();++i){
@@ -516,3 +527,45 @@ int Terrain::recoveryTresor(glm::vec3 pos){
 	return 0;
 }
 
+void Terrain::next(){
+	reset();
+	init();
+}
+
+void Terrain::reset(){
+	std::cout<<"reset"<<std::endl;
+	for (std::vector<Door*>::iterator it = doors.begin() ; it != doors.end(); ++it){
+		delete (*it);
+	}
+	doors.clear();
+
+	for (std::vector<Key*>::iterator it = keys.begin() ; it != keys.end(); ++it){
+		delete (*it);
+	}
+	keys.clear();
+
+	for (std::vector<SceneElement*>::iterator it = walls.begin() ; it != walls.end(); ++it){
+		delete (*it);
+	}
+	walls.clear();
+
+	for (std::vector<SceneElement*>::iterator it = tresors.begin() ; it != tresors.end(); ++it){
+		delete (*it);
+	}
+	tresors.clear();
+
+
+	for (std::vector<Ennemi*>::iterator it = ennemis.begin() ; it != ennemis.end(); ++it){
+		delete (*it);
+	}
+	ennemis.clear(); ;
+
+	for(unsigned int i=0; i<pixels.size(); i++){
+		for(unsigned int j=0; j<pixels.at(i)->size();++j){
+			delete pixels.at(i)->at(j);
+		}
+		delete pixels.at(i);
+	}
+	pixels.clear();
+	player->reset();
+}

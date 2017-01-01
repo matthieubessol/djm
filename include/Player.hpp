@@ -44,8 +44,9 @@ public:
     bool isDead();
     glm::mat4 getViewMatrix();
     glm::vec3 getFrontVector();
-    glm::vec3 getPosition(){return SceneElement::getPosition();}
-
+    //glm::vec3 getPosition(){return SceneElement::getPosition();}
+    void setPosition(glm::vec3 pos);
+    void reset();
 
 };
 //}
