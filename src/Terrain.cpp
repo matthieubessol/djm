@@ -1,12 +1,14 @@
 #include <cmath>
 #include <vector>
 #include <iostream>
+#include <stdio.h>
 #include <stdexcept>
 
 #include "glimac/common.hpp"
 #include "Terrain.hpp"
 #include <fstream>
 #include <GL/glew.h>
+#include <GLUT/glut.h>
 #include "Player.hpp"
 #include "Game.h"
 
@@ -470,8 +472,11 @@ void Terrain::drawInterface(Game *g){
 		offset += HEART_OFFSET;
 	}
 	g->drawCubeInterface("tresor", glm::vec3(-0.75,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+	g->drawCubeInterface(std::to_string(player->getMoney()), glm::vec3(-0.62,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 
 	drawMinimap(g);
+	// glRasterPos2i( 0, 0); // location to start printing text
+	// glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, "yolo");
 //		for (int i = 0; i < player->getLife(); i++){
 //			g->drawCubeInterface("heart", glm::vec3(0.8 - i*0.1,-0.8,-1), glm::vec3(0, 90, 0), glm::vec3(0.05, 0.05, 0.05));
 //		}

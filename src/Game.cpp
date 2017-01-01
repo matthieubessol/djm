@@ -29,6 +29,11 @@ const static std::string CURSOR_TEXT_PATH = "/assets/textures/cursor.png";
 const static std::string FIRE_TEXT_PATH = "/assets/textures/fire.png";
 const static std::string KEY_TEXT_PATH = "/assets/textures/key.jpg";
 const static std::string START_TEXT_PATH = "/assets/textures/start.jpg";
+const static std::string nb30_TEXT_PATH = "/assets/textures/30.png";
+const static std::string nb60_TEXT_PATH = "/assets/textures/60.png";
+const static std::string nb90_TEXT_PATH = "/assets/textures/90.png";
+const static std::string nb120_TEXT_PATH = "/assets/textures/120.png";
+const static std::string nb0_TEXT_PATH = "/assets/textures/0.png";
 
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -38,7 +43,6 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	Program program = loadProgram(dirPath + VS_SHADER_PATH,
 								  dirPath + FS_SHADER_PATH);
 	program.use();
-
 	/*********************************
 	 * HERE SHOULD COME THE INITIALIZATION CODE
 	 *********************************/
@@ -69,10 +73,15 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("30",new Texture( dirPath + nb30_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("60",new Texture( dirPath + nb60_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("90",new Texture( dirPath + nb90_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("120",new Texture( dirPath + nb120_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("0",new Texture( dirPath + nb0_TEXT_PATH , program.getGLId())));
 
 
 	beginMenu = new Menu("beginMenu");
-	beginMenu->addButton(new Button(0.2, 0.1, 0, -0.3, "floor"));
+	beginMenu->addButton(new Button(0.2, 0.1, 0, -0.3, "start"));
 	endMenu = new Menu("endMenu");
 	endMenu ->addButton(new Button(0.2, 0.1, -0.4, -0.3, "floor"));
 	endMenu ->addButton(new Button(0.2, 0.1, 0.4, -0.3, "floor"));
