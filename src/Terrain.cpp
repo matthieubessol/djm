@@ -8,7 +8,7 @@
 #include "Terrain.hpp"
 #include <fstream>
 #include <GL/glew.h>
-#include <GLUT/glut.h>
+//#include <GLUT/glut.h>
 #include "Player.hpp"
 #include "Game.h"
 
