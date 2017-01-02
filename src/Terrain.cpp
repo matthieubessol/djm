@@ -31,28 +31,16 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	this->imgPath = _imgPath;
 	this->width = 0;
 	this->height = 0;
-	maps.push_back(MAP_1);
 	maps.push_back(MAP_4);
+	maps.push_back(MAP_1);
 	maps.push_back(MAP_2);
 	maps.push_back(MAP_3);
 	indMap = 0;
 	player = p;
 	init();
-
-	//chargement fichier json
-//	std::ifstream file(filePath);
-//	file >> json;
-//	Json::iterator it;
-//	std::cout << json.dump(4)<<"is array : "<<json.is_array() << std::endl;
-//	for (auto& element : json) {
-//		for ( it = element.begin(); it != element.end(); ++it) {
-//		  std::cout << it.key() << " : " << it.value() << "\n";
-//		}
-//	}
 }
 
 void Terrain::init(){
-	std::cout << "MAPS ind = "<<indMap<<std::endl;
 	this->loadMap(maps.at(indMap));
 	linkDoors();
 	player->setPosition(startPosition);
