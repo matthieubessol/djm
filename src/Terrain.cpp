@@ -12,8 +12,9 @@
 #include "Player.hpp"
 #include "Game.h"
 
-static const int NB_MAPS = 3;
+static const int NB_MAPS = 4;
 static const std::string MAP_1 = "/map/map1.ppm";
+static const std::string MAP_4 = "/map/map4.ppm";
 static const std::string MAP_2 = "/map/map2.ppm";
 static const std::string MAP_3 = "/map/map3.ppm";
 static const int TRESOR_VALUE = 5;
@@ -31,6 +32,7 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	this->width = 0;
 	this->height = 0;
 	maps.push_back(MAP_1);
+	maps.push_back(MAP_4);
 	maps.push_back(MAP_2);
 	maps.push_back(MAP_3);
 	indMap = 0;
