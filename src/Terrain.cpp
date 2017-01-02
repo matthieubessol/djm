@@ -422,7 +422,7 @@ void Terrain::draw(Game *g){
 	drawInterface(g);
 	drawTresors(g);
 	drawFloor(g);
-	drawSkyBox(g);
+	// drawSkyBox(g);
 }
 
 void Terrain::drawKeys(Game *g){

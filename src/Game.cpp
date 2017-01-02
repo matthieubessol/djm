@@ -112,6 +112,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	uKs 	  	  = glGetUniformLocation(program.getGLId(),"uKs");
 	uLightDir_vs    = glGetUniformLocation(program.getGLId(),"uLightDir_vs");
 	uLightIntensity = glGetUniformLocation(program.getGLId(),"uLightIntensity");
+	uIsTransparent = glGetUniformLocation(program.getGLId(),"uIsTransparent");
 
 
 	ProjMatrix = glm::perspective(glm::radians(70.f), (float)w->getWidth()/(float)w->getHeight(), 0.1f, 100.f) * player.getViewMatrix();
@@ -218,8 +219,9 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, float rotate, gl
 
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
-	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(01,01,01)));
-	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
+	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1,1,1)));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(player.getPosition().x*0.01,player.getPosition().y+1,player.getPosition().z*0.01)*glm::mat3(player.getViewMatrix())));
+	glUniform1i(uIsTransparent, 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, sphere.getVertexCount());
 	glBindVertexArray(0);
@@ -239,10 +241,11 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
-	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
-	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
-	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0.4,0.4,0.4)));
-	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
+	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
+	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(player.getPosition().x*0.01,player.getPosition().y+1,player.getPosition().z*0.01)*glm::mat3(player.getViewMatrix())));
+	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1,1,1)));
+	glUniform1i(uIsTransparent, 0);
 
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
@@ -266,7 +269,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
-
+	glUniform1i(uIsTransparent, 0);
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 }
@@ -309,7 +312,7 @@ void Game::drawCubeInterface(std::string texture, glm::vec3 translate, float rot
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
-
+	glUniform1i(uIsTransparent, 1);
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 	//std::cout<<"draw cube pos"<<translate<<std::endl;
