@@ -136,7 +136,7 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isDoor()){
 		Door *door = new Door(glm::vec3(x, 0, y), p);
 		doors.push_back(door);
-		//std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
+		std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isKey()){
@@ -160,7 +160,7 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isTresor()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		tresors.push_back(e);
-		std::cout << "tresor in : " << glm::vec2(x, y)<< std::endl;
+		//std::cout << "tresor in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 }
@@ -210,6 +210,15 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		//std::cout<<"wall pos "<<playerPosition<<std::endl;
 		return true;
 	}
+	//si on verifie les collision d'un ennemi
+	Player *_player = dynamic_cast<Player*>(element);
+	if(!_player){
+		if(isPlayer(position)){
+			player->kill();
+		}
+		return false;
+	}
+
 	//si c'est une clé
 	Key *k = recoverKey(position);
 	if(k!=NULL){
@@ -220,6 +229,7 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	//si c'est une porte
 	Door *d = getDoor(position);
 	if(d){
+		std::cout<<"YA UNE PORTE EN "<< position <<std::endl;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
 		if(player->findAndRemove(item)){
 			removeDoor(d);
@@ -228,31 +238,19 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		return true;
 	}
 
-
 	if(isEnd(position)){
 		thisIsTheEnd = true;
 	}
 
-	// ennemis/players checks
-	Player *_player = dynamic_cast<Player*>(element);
-	if(!_player){
-		if(isPlayer(position)){
-			//std::cout<<"JE LE TUE !!!"<<std::endl;
-			player->kill();
-		}
+	//si c'est un trésor
+	int money = recoveryTresor(position);
+	if(money>0){
+		player->addMoney(money);
 	}
-	else{
-		//si c'est un trésor
-		int money = recoveryTresor(position);
-		if(money>0){
-			player->addMoney(money);
-			std::cout<<"player money = "<<player->getMoney()<<std::endl;
-		}
-		//si c'est un ennemi
-		if(isEnnemi(position)){
-			player->kill();
-			return true;
-		}
+	//si c'est un ennemi
+	if(isEnnemi(position)){
+		player->kill();
+		return true;
 	}
 
 	return false;
