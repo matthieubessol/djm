@@ -13,7 +13,7 @@
 #include "Game.h"
 
 static const int NB_MAPS = 3;
-static const std::string MAP_1 = "/map/map.ppm";
+static const std::string MAP_1 = "/map/mapt.ppm";
 static const std::string MAP_2 = "/map/map2.ppm";
 static const std::string MAP_3 = "/map/map3.ppm";
 static const int TRESOR_VALUE = 5;
@@ -84,14 +84,19 @@ void Terrain::loadMap(std::string map) {
 		getline(file, content);
 		getline(file, content);
 		int i = 0;
-		std::string nbzones = "";
+		std::string w = "";
+		std::string h = "";
 		while (content[i] != ' '){
-			nbzones += content[i];
+			w += content[i];
 			i++;
 		}
-		int zones = stoi(nbzones);
-		this->width = zones;
-		this->height = zones;
+		i++;
+		while (content[i] != ' '){
+			h += content[i];
+			i++;
+		}
+		this->width = (int) stoi(w);
+		this->height = (int) stoi(h);
 		getline(file, content);
 		int r, g, b;
 		for (int y = 0; y < height; y++) {
