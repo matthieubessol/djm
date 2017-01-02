@@ -21,7 +21,7 @@ vec3 blinnPhong() {
 // Directionnelle
     //return (uLightIntensity * (uKd*(dot( uLightDir_vs , vNormal_vs )) + uKs*pow(dot( (uLightDir_vs+normalize(-vPosition_vs))/2, vNormal_vs ),0.8)));
 // Ponctuelle
-    return (uLightIntensity /(distance( (vec3(vTotal) +0.5*vPosition_vs),uLightDir_vs)*distance((vec3(vTotal) +vPosition_vs),uLightDir_vs)) * (uKd*(dot( normalize(uLightDir_vs - vPosition_vs) , vNormal_vs )) + uKs*pow(dot( (normalize(uLightDir_vs - vPosition_vs)+normalize(-vPosition_vs))/2, vNormal_vs ),0.1)));
+    return (uLightIntensity /(distance( (vec3(vTotal)+vPosition_vs),uLightDir_vs)*distance((vec3(vTotal)+vPosition_vs),uLightDir_vs)) * (uKd*(dot( normalize(uLightDir_vs - vPosition_vs) , vNormal_vs )) + uKs*pow(dot( (normalize(uLightDir_vs - vPosition_vs)+normalize(-vPosition_vs))/2, vNormal_vs ),0.1)));
 }
 
 void main() {
