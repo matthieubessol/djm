@@ -107,10 +107,7 @@ int Player::getNbKey(){
 
 void Player::kill(){
 	if(clock() - timer > REANIMATION_DURATION){
-		if(--nbLife < 1){
-			std::cout<<"fin du game"<<std::endl;
-		}
-		std::cout<<"KILL !!! vie restante = "<< nbLife<<std::endl;
+		--nbLife;
 		timer = clock();
 	}
 }

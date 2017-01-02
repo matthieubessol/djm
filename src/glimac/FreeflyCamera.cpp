@@ -77,7 +77,7 @@ namespace glimac {
     }
 
     void FreeflyCamera::updateRotation() {
-        int speed = 10;
+        int speed = 15;
         if(angleMovingValue < 90 && isTurning){
             angleMovingValue+=speed;
             if(isLeft)
@@ -91,7 +91,7 @@ namespace glimac {
     }
 
     void FreeflyCamera::updateMoving() {
-        int speed = 5;
+        int speed = 10;
         if(forwardMovingValue < 100 && isMoving){
             forwardMovingValue+=speed;
             if(isForward)

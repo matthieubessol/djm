@@ -8,7 +8,7 @@
 #include "Ennemi.h"
 #include "Terrain.hpp"
 
-static const float PAS = 50;
+static const float PAS = 25;
 static const Direction DIRECTION = NORTH;
 
 Ennemi::Ennemi(glm::vec3 pos) : SceneElement(pos) {
@@ -18,7 +18,6 @@ Ennemi::Ennemi(glm::vec3 pos) : SceneElement(pos) {
 }
 
 Ennemi::~Ennemi() {
-	// TODO Auto-generated destructor stub
 }
 
 void Ennemi::moov(Terrain *t){
@@ -26,13 +25,11 @@ void Ennemi::moov(Terrain *t){
 	if(!validDirection){
 		while(t->checkCollision(nextPos, this)){
 			direction = Ennemi::getNextDirection(direction);
-			//std::cout << "change dir : "<< Direction(direction) << std::endl;
 			nextPos = getNextTestPos();
 		}
 		validDirection = true;
 	}
 	else if(t->checkCollision(nextPos, this)){
-		//std::cout<<"next pos : "<<nextPos <<std::endl;
 		direction = Ennemi::getInverseDirection(direction);
 	}
 	nextPos = getNextPos();

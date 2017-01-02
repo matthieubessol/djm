@@ -13,7 +13,7 @@
 #include "Game.h"
 
 static const int NB_MAPS = 3;
-static const std::string MAP_1 = "/map/mapt.ppm";
+static const std::string MAP_1 = "/map/map1.ppm";
 static const std::string MAP_2 = "/map/map2.ppm";
 static const std::string MAP_3 = "/map/map3.ppm";
 static const int TRESOR_VALUE = 5;
@@ -160,7 +160,7 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isTresor()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		tresors.push_back(e);
-		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
+		std::cout << "tresor in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 }
@@ -227,12 +227,7 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		}
 		return true;
 	}
-	//si c'est un trésor
-	int money = recoveryTresor(position);
-	if(money>0){
-		player->addMoney(money);
-		std::cout<<"player money = "<<player->getMoney()<<std::endl;
-	}
+
 
 	if(isEnd(position)){
 		thisIsTheEnd = true;
@@ -246,10 +241,18 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 			player->kill();
 		}
 	}
-	else if(isEnnemi(position)){
-		//std::cout<<"JE MEURS !!!"<<std::endl;
-		player->kill();
-		return true;
+	else{
+		//si c'est un trésor
+		int money = recoveryTresor(position);
+		if(money>0){
+			player->addMoney(money);
+			std::cout<<"player money = "<<player->getMoney()<<std::endl;
+		}
+		//si c'est un ennemi
+		if(isEnnemi(position)){
+			player->kill();
+			return true;
+		}
 	}
 
 	return false;
