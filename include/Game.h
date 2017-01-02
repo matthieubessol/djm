@@ -54,6 +54,7 @@ public:
 	void start();
 	void drawButton(Button *btn);
 	void next();
+	void restart();
 
 };
 

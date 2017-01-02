@@ -22,7 +22,11 @@ void EndMenu::checkButtons(glm::vec2 cursor, Game* g){
 	if(next->isOnButton(cursor.x, cursor.y)){
 		g->next();
 	}
+	else if(restart->isOnButton(cursor.x, cursor.y)){
+		g->restart();
+	}
 }
+
 void EndMenu::draw(Game *g){
 	g->drawButton(next);
 	g->drawButton(restart);

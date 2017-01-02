@@ -8,7 +8,8 @@
 
 namespace glimac {
 
-    FreeflyCamera::FreeflyCamera() : m_Position(glm::vec3(0,0,0)), m_fTheta(0), m_fPhi(M_PI){
+    FreeflyCamera::FreeflyCamera() : m_Position(glm::vec3(0,0,0)), m_fTheta(0){
+    	m_fPhi = M_PI;
         moveFrontValue = 1;
         forwardMovingValue = 0;
         angleValue = 90;
@@ -134,6 +135,9 @@ namespace glimac {
         isMoving  = false;
         isForward = false;
         isLeft    = false;
+        float test = angleMovingValue / 180 * M_PI;
+        m_fPhi -= angleMovingValue / 180 * M_PI;
+
         angleMovingValue = 0;
         forwardMovingValue = 0;
     }

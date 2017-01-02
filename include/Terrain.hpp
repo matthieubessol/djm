@@ -99,5 +99,6 @@ public:
 	void drawMinimap(Game *g);
 	std::string getPixelSignificationString(Pixel* p);
 	void next();
+	void restart();
 };
 //}

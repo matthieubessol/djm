@@ -145,6 +145,10 @@ void Player::setPosition(glm::vec3 pos){
 }
 
 void Player::reset(){
+	for (std::vector<PlayerItem*>::iterator it = items.begin() ; it != items.end(); ++it){
+		delete (*it);
+	}
+	items.clear();
 	nbLife = NB_LIFE;
 	camera->resetValues();
 }

@@ -332,7 +332,12 @@ void Game::start(){
 }
 
 void Game::next(){
-	std::cout<<"next"<<std::endl;
 	t.next();
+	menuDisplayed = false;
+}
+
+void Game::restart(){
+	std::cout<<"restart"<<std::endl;
+	t.restart();
 	menuDisplayed = false;
 }
