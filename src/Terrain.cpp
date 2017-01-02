@@ -146,6 +146,12 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
+	if(p->isLife()){
+		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
+		lifes.push_back(e);
+		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
+		return;
+	}
 	if(p->isWall()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		walls.push_back(e);
@@ -214,6 +220,8 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		return false;
 	}
 
+
+
 	//si c'est une clé
 	Key *k = recoverKey(position);
 	if(k!=NULL){
@@ -232,8 +240,14 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		return true;
 	}
 
+	//si c'est la position de fin
 	if(isEnd(position)){
 		thisIsTheEnd = true;
+	}
+
+	//si c'est une vie
+	if(recoveryLife(position)){
+		player->increaseLife();
 	}
 
 	//si c'est un trésor
@@ -241,6 +255,7 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	if(money>0){
 		player->addMoney(money);
 	}
+
 	//si c'est un ennemi
 	if(isEnnemi(position)){
 		player->kill();
@@ -423,6 +438,7 @@ void Terrain::draw(Game *g){
 	drawInterface(g);
 	drawTresors(g);
 	drawFloor(g);
+	drawLife(g);
 	// drawSkyBox(g);
 }
 
@@ -432,10 +448,11 @@ void Terrain::drawKeys(Game *g){
 	}
 }
 
-//void Terrain::drawBonus(Game *g){
-//	for (unsigned int i=0; i<bonus.size();++i){
-//		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
-//	}
+void Terrain::drawLife(Game *g){
+	for (unsigned int i=0; i<lifes.size();++i){
+		g->drawCube("heart", lifes.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
+	}
+}
 
 void Terrain::drawFloor(Game *g){
 	int size = pixels.at(0)->size();
@@ -547,6 +564,17 @@ int Terrain::recoveryTresor(glm::vec3 pos){
 		}
 	}
 	return 0;
+}
+
+bool Terrain::recoveryLife(glm::vec3 pos){
+	for(unsigned int i=0; i<lifes.size(); ++i){
+		glm::vec3 p= lifes.at(i)->getPosition();
+		if(isInTheSameCase(pos, p)){
+			lifes.erase(lifes.begin()+i);
+			return true;
+		}
+	}
+	return false;
 }
 
 void Terrain::next(){

@@ -12,6 +12,7 @@ static const Pixel WALL_COLOR = Pixel(255, 0, 0);
 static const Pixel ENNEMI_COLOR = Pixel(0, 0, 0);
 static const Pixel START_COLOR = Pixel(255, 0, 255);
 static const Pixel END_COLOR = Pixel(0, 255, 0);
+static const Pixel LIFE_COLOR = Pixel(188, 0, 188);
 static const Pixel TRESOR_COLOR = Pixel(255, 255, 0);
 
 
@@ -77,6 +78,10 @@ bool Pixel::isDoor(){
 
 bool Pixel::isWall(){
 	return (*this == WALL_COLOR);
+}
+
+bool Pixel::isLife(){
+	return (*this == LIFE_COLOR);
 }
 
 bool Pixel::isTresor(){

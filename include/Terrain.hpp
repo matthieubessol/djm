@@ -32,6 +32,7 @@ private:
 	std::vector<Door*> doors;
 	std::vector<SceneElement*> walls;
 	std::vector<SceneElement*> tresors;
+	std::vector<SceneElement*> lifes;
 	std::vector<Key*> keys;
 	std::vector<Ennemi*> ennemis;
 	std::vector<std::string> maps;
@@ -49,6 +50,7 @@ private:
 	void drawDoors(Game *g);
 	void drawWalls(Game *g);
 	void drawEnnemis(Game *g);
+	void drawLife(Game *g);
 	void drawInterface(Game *g);
 	void drawTresors(Game *g);
 	void init();
@@ -56,7 +58,8 @@ private:
 	void reset();
 	void drawFloor(Game *g);
 	void drawSkyBox(Game *g);
-
+	int recoveryTresor(glm::vec3 pos);
+	bool recoveryLife(glm::vec3 pos);
 
 public:
 	// Constructeur: alloue le tableau de données et construit les attributs des vertex
@@ -95,7 +98,7 @@ public:
 	bool isPlayer(glm::vec3 pos);
 	bool update();
 	void draw(Game *g);
-	int recoveryTresor(glm::vec3 pos);
+
 	void drawMinimap(Game *g);
 	std::string getPixelSignificationString(Pixel* p);
 	void next();

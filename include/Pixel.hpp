@@ -37,6 +37,7 @@ public:
 	bool isMyKey(Pixel *p);
 	bool isMyDoor(Pixel* door);
 	bool isEnnemi();
+	bool isLife();
 	std::ostream& operator<<(Pixel& p);
 };
 
