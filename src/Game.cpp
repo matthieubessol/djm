@@ -42,6 +42,8 @@ const static std::string nb6_TEXT_PATH = "/assets/textures/6.png";
 const static std::string nb7_TEXT_PATH = "/assets/textures/7.png";
 const static std::string nb8_TEXT_PATH = "/assets/textures/8.png";
 const static std::string nb9_TEXT_PATH = "/assets/textures/9.png";
+const static std::string ALIEN_TEXT_PATH = "/assets/textures/alien.jpg";
+const static std::string ALIEN2_TEXT_PATH = "/assets/textures/alien2.jpg";
 
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -72,8 +74,6 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
-	textures.insert(std::pair<std::string, Texture *>("endMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
@@ -90,12 +90,14 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("9",new Texture( dirPath + nb9_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("continuer",new Texture( dirPath + CONTINUER_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("restart",new Texture( dirPath + RESTART_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("alien",new Texture( dirPath + ALIEN_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("alien2",new Texture( dirPath + ALIEN2_TEXT_PATH , program.getGLId())));
 
 
 
 
-	beginMenu = new BeginMenu("beginMenu");
-	endMenu = new EndMenu("endMenu");
+	beginMenu = new BeginMenu("alien");
+	endMenu = new EndMenu("alien2");
 	currentMenu = beginMenu;
 	menuDisplayed = true;
 
@@ -293,7 +295,7 @@ void Game::drawMouseCursor(glm::vec2 p){
 
 void Game::drawMenu(){
 	glm::vec3 pos = player.getNextFrontPosition();
-	drawCube(currentMenu->getTexture(), pos, 0, glm::vec3(0.5, 0.5, 0.5));
+	drawCubeInterface(currentMenu->getTexture(), glm::vec3(0,0,-1), 0, glm::vec3(1	, 1	, 1	));
 	currentMenu->draw(this);
 
 }
@@ -311,11 +313,11 @@ void Game::drawCubeInterface(std::string texture, glm::vec3 translate, float rot
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(glm::mat4(1)));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
 
+	glUniform1i(uIsTransparent, 1);
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(0,0,0)));
-	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(1,1,1)));
-	glUniform1i(uIsTransparent, 1);
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
 	//std::cout<<"draw cube pos"<<translate<<std::endl;

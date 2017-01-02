@@ -28,6 +28,6 @@ void main() {
     if(uIsTransparent == 0) {
         fFragColor = ((texture(uEarthTexture,vTexCoords)+ texture(uCloudTexture,vTexCoords))* vec4(blinnPhong(),1));
     } else {
-        fFragColor = texture(uEarthTexture,vTexCoords)+ texture(uCloudTexture,vTexCoords);
+        fFragColor = texture(uEarthTexture,vTexCoords);
     }
 }
