@@ -18,7 +18,6 @@ Player::Player(){
 	this->camera = new FreeflyCamera();
 	timer = 0;
 	money =0;
-	nbKey =0;
 }
 
 
@@ -73,9 +72,6 @@ void Player::lookRight(){
 }
 
 void Player::addItem(PlayerItem *item){
-	Key *test = dynamic_cast<Key*>(item);
-	if(!test)
-		nbKey++;
 	items.push_back(item);
 }
 
@@ -85,7 +81,6 @@ bool Player::findAndRemove(PlayerItem *item){
 		if(items.at(i) == item){
 			items.erase(items.begin()+i);
 			Key *test = dynamic_cast<Key*>(item);
-			if(!test) nbKey--;
 			return true;
 		}
 	}
@@ -107,7 +102,7 @@ int Player::getNbLife(){
 }
 
 int Player::getNbKey(){
-	return nbKey;
+	return items.size();
 }
 
 void Player::kill(){

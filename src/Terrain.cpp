@@ -16,8 +16,9 @@ static const int NB_MAPS = 3;
 static const std::string MAP_1 = "/map/map.ppm";
 static const std::string MAP_2 = "/map/map2.ppm";
 static const std::string MAP_3 = "/map/map3.ppm";
-static const int TRESOR_VALUE = 30;
+static const int TRESOR_VALUE = 5;
 static const float HEART_OFFSET = 0.1;
+static const float KEY_OFFSET = 0.15;
 
 Terrain::Terrain(){
 	this->width = 0;
@@ -455,7 +456,7 @@ void Terrain::drawWalls(Game *g){
 
 void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
-		g->drawCube("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.2, 0.2, 0.2));
+		g->drawCube("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.1, 0.1, 0.1));
 	}
 }
 
@@ -484,8 +485,8 @@ void Terrain::drawInterface(Game *g){
 	}
 	offset = 0.;
 	for(int i=0; i < player->getNbKey(); i++){
-		g->drawCubeInterface("mini_key", glm::vec3( 0.75+offset, -0.75, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
-		offset += HEART_OFFSET;
+		g->drawCubeInterface("mini_key", glm::vec3( 0.9-offset, -0.75, 0.1), -M_PI/2, glm::vec3(0.09, 0.09, 0.09));
+		offset += KEY_OFFSET;
 	}
 	g->drawCubeInterface("tresor", glm::vec3(-0.75, 0.60, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 
