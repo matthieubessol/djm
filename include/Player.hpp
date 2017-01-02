@@ -16,7 +16,7 @@ using namespace glimac;
 class Player : public SceneElement{
 private:
     FreeflyCamera * camera;
-    int nbLife, money;
+    int nbLife, money, nbKey;
     clock_t timer;
     std::vector<PlayerItem*> items;
 
@@ -33,10 +33,11 @@ public:
     void lookLeft();
     void lookRight();
     void addItem(PlayerItem *k);
-    bool hasItem(PlayerItem *k);
+    bool findAndRemove(PlayerItem *k);
     void addMoney(int value);
     int getMoney();
     int getNbLife();
+    int getNbKey();
     void kill();
     glm::vec3 getNextFrontPosition();
     void moveUpdate();

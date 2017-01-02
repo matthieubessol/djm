@@ -28,6 +28,7 @@ const static std::string BEGIN_MENU_TEXT_PATH = "/assets/textures/menu_deb.png";
 const static std::string CURSOR_TEXT_PATH = "/assets/textures/cursor.png";
 const static std::string FIRE_TEXT_PATH = "/assets/textures/fire.png";
 const static std::string KEY_TEXT_PATH = "/assets/textures/key.jpg";
+const static std::string MINI_KEY_TEXT_PATH = "/assets/textures/mini_key.png";
 const static std::string START_TEXT_PATH = "/assets/textures/start.jpg";
 const static std::string nb0_TEXT_PATH = "/assets/textures/0.png";
 const static std::string nb1_TEXT_PATH = "/assets/textures/1.png";
@@ -74,6 +75,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("mini_key",new Texture( dirPath + MINI_KEY_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("0",new Texture( dirPath + nb0_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("1",new Texture( dirPath + nb1_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("2",new Texture( dirPath + nb2_TEXT_PATH , program.getGLId())));

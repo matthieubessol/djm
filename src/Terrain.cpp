@@ -215,7 +215,7 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	Door *d = getDoor(position);
 	if(d){
 		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
-		if(player->hasItem(item)){
+		if(player->findAndRemove(item)){
 			removeDoor(d);
 			return false;
 		}
@@ -455,7 +455,7 @@ void Terrain::drawWalls(Game *g){
 
 void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
-		g->drawCube("tresor", tresors.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
+		g->drawCube("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
@@ -479,14 +479,19 @@ void Terrain::drawEnnemis(Game *g){
 void Terrain::drawInterface(Game *g){
 	float offset = 0.;
 	for(int i=0; i < player->getNbLife(); i++){
-		g->drawCubeInterface("heart", glm::vec3(-0.75+offset,-0.75,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+		g->drawCubeInterface("heart", glm::vec3(-0.75+offset, 0.75, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 		offset += HEART_OFFSET;
 	}
-	g->drawCubeInterface("tresor", glm::vec3(-0.75,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+	offset = 0.;
+	for(int i=0; i < player->getNbKey(); i++){
+		g->drawCubeInterface("mini_key", glm::vec3( 0.75+offset, -0.75, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+		offset += HEART_OFFSET;
+	}
+	g->drawCubeInterface("tresor", glm::vec3(-0.75, 0.60, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 
 	std::string moneyStr = std::to_string(player->getMoney());
 	for (int i = 0; i < moneyStr.length(); ++i){
-		g->drawCubeInterface(moneyStr.substr(i, 1).c_str(), glm::vec3(-0.62+0.1*i,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+		g->drawCubeInterface(moneyStr.substr(i, 1).c_str(), glm::vec3(-0.62+0.1*i, 0.60, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 	}
 
 	drawMinimap(g);
@@ -494,24 +499,41 @@ void Terrain::drawInterface(Game *g){
 
 void Terrain::drawMinimap(Game *g) {
 	// Draw player.
-	float scale = 0.01;
-	g->drawCubeInterface("red", glm::vec3(-0.1+scale+scale*player->getPosition().x,-0.75+19*scale-scale*player->getPosition().z,-0.75), -M_PI/2, glm::vec3(scale, scale/2, scale));
+	float scale = 0.015;
+	g->drawCubeInterface("red", glm::vec3(0.5+scale+scale*player->getPosition().x, 0.5+19*scale-scale*player->getPosition().z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
 
 	for (unsigned int i=0; i<ennemis.size(); ++i){
 		glm::vec3 p =ennemis.at(i)->getPosition();
-		g->drawCubeInterface("black", glm::vec3(-0.1+scale+scale*p.x,-0.75+19*scale-scale*p.z,-0.75), -M_PI/2, glm::vec3(scale, scale/2, scale));
+		g->drawCubeInterface("black", glm::vec3(0.5+scale+scale*p.x, 0.5+19*scale-scale*p.z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
 	}
-	float offsetX = 0, offsetY = 0;
-	for (int i = 0; i < pixels.at(0)->size(); i++){
-		offsetX += scale;
-		for (int j = pixels.at(0)->size() -1; j > 0; j--){
-			std::string type = getPixelSignificationString(pixels.at(j)->at(i));
-			if(type != "black")
-				g->drawCubeInterface(type, glm::vec3(-0.1+offsetX,-0.75+offsetY,-0.75), -M_PI/2, glm::vec3(scale, scale, scale));
-			offsetY += scale;
-		}
-		offsetY = 0;
+	for (unsigned int i=0; i<keys.size(); ++i){
+		glm::vec3 p =keys.at(i)->getPosition();
+		g->drawCubeInterface("blue", glm::vec3(0.5+scale+scale*p.x, 0.5+19*scale-scale*p.z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
 	}
+	for (unsigned int i=0; i<tresors.size(); ++i){
+		glm::vec3 p =tresors.at(i)->getPosition();
+		g->drawCubeInterface("yellow", glm::vec3(0.5+scale+scale*p.x, 0.5+19*scale-scale*p.z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
+	}
+	for (unsigned int i=0; i<walls.size(); ++i){
+		glm::vec3 p =walls.at(i)->getPosition();
+		g->drawCubeInterface("white", glm::vec3(0.5+scale+scale*p.x, 0.5+19*scale-scale*p.z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
+	}
+	for (unsigned int i=0; i<doors.size(); ++i){
+		glm::vec3 p =doors.at(i)->getPosition();
+		g->drawCubeInterface("green", glm::vec3(0.5+scale+scale*p.x, 0.5+19*scale-scale*p.z, 0.1), -M_PI/2, glm::vec3(scale, scale/2, scale));
+	}
+
+//	float offsetX = 0, offsetY = 0;
+//	for (int i = 0; i < pixels.at(0)->size(); i++){
+//		offsetX += scale;
+//		for (int j = pixels.at(0)->size() -1; j > 0; j--){
+//			std::string type = getPixelSignificationString(pixels.at(j)->at(i));
+//			if(type != "black")
+//				g->drawCubeInterface(type, glm::vec3(-0.1+offsetX,-0.75+offsetY,-0.75), -M_PI/2, glm::vec3(scale, scale, scale));
+//			offsetY += scale;
+//		}
+//		offsetY = 0;
+//	}
 
 }
 

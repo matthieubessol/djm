@@ -91,7 +91,7 @@ namespace glimac {
     }
 
     void FreeflyCamera::updateMoving() {
-        int speed = 20;
+        int speed = 5;
         if(forwardMovingValue < 100 && isMoving){
             forwardMovingValue+=speed;
             if(isForward)
