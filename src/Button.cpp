@@ -24,6 +24,5 @@ bool Button::isOnButton(float x, float y){
 }
 
 Button::~Button() {
-	// TODO Auto-generated destructor stub
 }
 

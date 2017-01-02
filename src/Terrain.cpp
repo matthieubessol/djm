@@ -52,11 +52,9 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 }
 
 void Terrain::init(){
-	std::cout << "MAPS ind = "<<indMap<<std::endl;
 	this->loadMap(maps.at(indMap));
 	linkDoors();
 	player->setPosition(startPosition);
-	//player->reset(startPosition);
 	thisIsTheEnd = false;
 }
 
@@ -131,37 +129,31 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isDoor()){
 		Door *door = new Door(glm::vec3(x, 0, y), p);
 		doors.push_back(door);
-		//std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isKey()){
 		Key *key = new Key(glm::vec3(x, 0, y), p);
 		keys.push_back(key);
-		//std::cout << "Key in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isEnnemi()){
 		Ennemi *e = new Ennemi(glm::vec3(x, 0, y));
 		ennemis.push_back(e);
-		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isLife()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		lifes.push_back(e);
-		//std::cout << "ennemi in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isWall()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		walls.push_back(e);
-		//std::cout << "wall in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isTresor()){
 		SceneElement *e = new SceneElement(glm::vec3(x, 0, y));
 		tresors.push_back(e);
-		//std::cout << "tresor in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 }
@@ -208,7 +200,6 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	}
 	//si c'est un mur
 	if(isWall(position)) {
-		//std::cout<<"wall pos "<<playerPosition<<std::endl;
 		return true;
 	}
 	//si on verifie les collision d'un ennemi
@@ -219,8 +210,6 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 		}
 		return false;
 	}
-
-
 
 	//si c'est une clé
 	Key *k = recoverKey(position);
@@ -450,14 +439,14 @@ void Terrain::drawKeys(Game *g){
 
 void Terrain::drawLife(Game *g){
 	for (unsigned int i=0; i<lifes.size();++i){
-		g->drawCube("heart", lifes.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
+		g->drawCube("heart", lifes.at(i)->getPosition(), -M_PI/2, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
 void Terrain::drawFloor(Game *g){
 	int size = pixels.at(0)->size();
-	for (unsigned int i=0; i<size;++i){
-		for (unsigned int j=0; j<size;++j){
+	for (int i=0; i<size;++i){
+		for (int j=0; j<size;++j){
 			g->drawCube("floor", glm::vec3(i,-0.5,j), 0, glm::vec3(0.5, 0.01, 0.5));
 		}
 	}
@@ -473,7 +462,7 @@ void Terrain::drawWalls(Game *g){
 
 void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
-		g->drawCube("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.1, 0.1, 0.1));
+		g->drawCube("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.15, 0.15, 0.15));
 	}
 }
 
@@ -586,10 +575,10 @@ void Terrain::next(){
 void Terrain::restart(){
 	reset();
 	init();
+	player->resetMoney();
 }
 
 void Terrain::reset(){
-	std::cout<<"reset"<<std::endl;
 	for (std::vector<Door*>::iterator it = doors.begin() ; it != doors.end(); ++it){
 		delete (*it);
 	}

@@ -135,10 +135,6 @@ namespace glimac {
         isMoving  = false;
         isForward = false;
         isLeft    = false;
-//        for (int i=0; abs(m_fPhi - M_PI)< EPSILON; ++i){
-//        	m_fPhi -= i/180*MPI;
-//        }
-        //float test = angleMovingValue / 180 * M_PI;
         m_fPhi = M_PI;
         angleValue = 90;
         m_fTheta=0;

@@ -21,9 +21,6 @@ protected:
 public:
 	Menu();
 	Menu(std::string t);
-	//Menu(std::string t, std::vector<Button*> btns);
-	//void addButton(Button *b);
-	//std::vector<Button*> getButtons(){return buttons;}
 	virtual ~Menu();
 	virtual void checkButtons(glm::vec2 cursor, Game* g)=0;
 	virtual void draw(Game *g)=0;

@@ -57,9 +57,7 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	/*********************************
 	 * HERE SHOULD COME THE INITIALIZATION CODE
 	 *********************************/
-	// std::vector<std::string> stringTextures;
-	// stringTextures.push_back(dirPath + "/assets/textures/EarthMap.jpg");
-	// stringTextures.push_back(dirPath + "/assets/textures/MoonMap.jpg");
+
 	textures.insert(std::pair<std::string, Texture *>("floor",new Texture( dirPath + FLOOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("wall",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("skybox",new Texture( dirPath + SKYBOX_TEXT_PATH , program.getGLId())));
@@ -102,13 +100,9 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	currentMenu = beginMenu;
 	menuDisplayed = true;
 
-
-	//glm::vec3 start = glm::vec3(t.getStartPosition().z, 0, t.getStartPosition().x);
-
 	std::string filePath = dirPath + TXT_FILE_PATH;
 
 	t = Terrain(dirPath, &player, filePath);
-	//glm::vec3 start = t.getStartPosition();
 
 
 	uMVPMatrix    = glGetUniformLocation(program.getGLId(),"uMVPMatrix");
@@ -127,16 +121,6 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 
 	glEnable(GL_DEPTH_TEST);
 }
-
-//void test(){
-//	glBindVertexArray(cubes.getVao());
-//		cubes.draw(textures.at("wall"), 9, 17);
-//		glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * cubes.getModelMatrix()));
-//		glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
-//		glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-//		glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
-//	glBindVertexArray(0);
-//}
 
 void Game::play(){
 	// Application loop:
@@ -157,13 +141,6 @@ void Game::play(){
 				case SDL_MOUSEBUTTONDOWN:
 					cursorPositionInGL = w->getMousePositionInGL(cursorPosition);
 					currentMenu->checkButtons(cursorPositionInGL, this);
-//					std::cout << "click " << cursorPositionInGL << std::endl;
-//					for(unsigned int i=0 ;i<currentMenu->getButtons().size(); ++i){
-//						if(currentMenu->getButtons().at(i)->isOnButton(cursorPositionInGL.x, cursorPositionInGL.y)){
-//							menuDisplayed = false;
-//						}
-//					}
-
 					break;
 				case SDL_KEYDOWN:
 					t.keyEvent(e.key.keysym.sym) ;
@@ -210,7 +187,6 @@ void Game::play(){
 }
 
 Game::~Game() {
-	// TODO Auto-generated destructor stub
 }
 
 
@@ -235,7 +211,6 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, float rotate, gl
 
 	glDrawArrays(GL_TRIANGLES, 0, sphere.getVertexCount());
 	glBindVertexArray(0);
-	//std::cout<<"draw sphere pos"<<translate<<std::endl;
 }
 
 void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale){
@@ -259,7 +234,6 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
-	//std::cout<<"draw cube pos"<<translate<<std::endl;
 }
 
 void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm::vec3 scale, bool noLight){
@@ -324,7 +298,6 @@ void Game::drawCubeInterface(std::string texture, glm::vec3 translate, float rot
 	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(0,0,0)));
 	glDrawArrays(GL_TRIANGLES,0, cubes.getVertexCount());
 	glBindVertexArray(0);
-	//std::cout<<"draw cube pos"<<translate<<std::endl;
 }
 
 void Game::start(){
@@ -337,7 +310,6 @@ void Game::next(){
 }
 
 void Game::restart(){
-	std::cout<<"restart"<<std::endl;
 	t.restart();
 	menuDisplayed = false;
 }

@@ -22,7 +22,6 @@ public:
 	glm::vec3 getPosition(){return SceneElement::getPosition();}
 	Key * getKey();
 	virtual ~Door();
-	//bool operator== (Key* k){return getId() == k->getId();}
 };
 
 #endif /* INCLUDE_DOOR_H_ */

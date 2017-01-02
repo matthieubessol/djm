@@ -22,7 +22,6 @@ public:
 	int getId(){return PlayerItem::getId();}
 	glm::vec3 getPosition(){return PlayerItem::getPosition();}
 	virtual ~Key();
-	//bool operator== (Key* k){return getId() == k->getId();}
 
 };
 

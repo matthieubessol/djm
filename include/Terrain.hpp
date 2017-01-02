@@ -16,12 +16,9 @@ using Json = nlohmann::json;
 
 class Game;
 
-//namespace glimac{
 class Player;
 
 
-// Représente un cube discrétisée centrée en (0, 0, 0) (dans son repère local)
-// Son axe vertical est (0, 1, 0) et ses axes transversaux sont (1, 0, 0) et (0, 0, 1)
 class Terrain {
 private:
 	std::string imgPath;
@@ -62,7 +59,6 @@ private:
 	bool recoveryLife(glm::vec3 pos);
 
 public:
-	// Constructeur: alloue le tableau de données et construit les attributs des vertex
 	//Terrain();
 	Terrain();
 	Terrain(std::string _path, Player* p, std::string filePath);
@@ -75,7 +71,6 @@ public:
 	bool isDoor(glm::vec3 pos);
 	bool isKey(glm::vec3 pos);
 	bool isEnd(glm::vec3 pos);
-	//Key* findKey(glm::vec3 pos);
 	Key* findKey(Pixel* door);
 	Key* findKey(Door* door);
 	bool checkCollision(glm::vec3 playerPosition, SceneElement *e);
@@ -104,4 +99,3 @@ public:
 	void next();
 	void restart();
 };
-//}

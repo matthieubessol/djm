@@ -12,11 +12,8 @@
 #include "Direction.h"
 
 
-//namespace glimac{
 class Terrain;
-//}
 
-//using namespace glimac ;
 class Ennemi : SceneElement {
 	int life;
 	Direction direction;

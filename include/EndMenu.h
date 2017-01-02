@@ -17,7 +17,6 @@ public:
 	EndMenu(std::string t);
 	void checkButtons(glm::vec2 cursor, Game* g);
 	void draw(Game*g);
-	//BeginMenu(std::string t, std::vector<Button*> btns);
 	virtual ~EndMenu();
 
 };

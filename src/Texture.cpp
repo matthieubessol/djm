@@ -22,8 +22,6 @@ Texture::Texture(std::string _path, GLuint glId) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     this->uTexture = glGetUniformLocation(glId, "uEarthTexture");
     glUniform1i(this->uTexture, 0);
-
-    //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_BLEND);
     this->activeTexture = GL_TEXTURE0;
 }
 
