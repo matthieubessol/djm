@@ -81,7 +81,6 @@ bool Player::findAndRemove(PlayerItem *item){
 		if(items.at(i) == item){
 			items.erase(items.begin()+i);
 			Key *test = dynamic_cast<Key*>(item);
-			std::cout<<"KEY REMOVE"<<std::endl;
 			return true;
 		}
 	}

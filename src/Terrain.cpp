@@ -116,10 +116,6 @@ void Terrain::loadMap(std::string map) {
 		}
 		file.close();
 		std::cout << "YES, the map has been loaded successfully." << std::endl;
-		std::cout << "start pos : " << startPosition<< std::endl;
-		for(unsigned int i=0; i<keys.size(); ++i){
-			std::cout << "cle pos : " << keys.at(i)->getPosition()<< std::endl;
-		}
 	}
 	else std::cerr << "Impossible de lire de fichier." << std::endl;
 }
@@ -136,7 +132,7 @@ void Terrain::checkPixelSignification(Pixel* p, int x, int y){
 	if(p->isDoor()){
 		Door *door = new Door(glm::vec3(x, 0, y), p);
 		doors.push_back(door);
-		std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
+		//std::cout << "door in : " << glm::vec2(x, y)<< std::endl;
 		return;
 	}
 	if(p->isKey()){
@@ -229,7 +225,6 @@ bool Terrain::checkCollision(glm::vec3 position, SceneElement *element) {
 	//si c'est une porte
 	Door *d = getDoor(position);
 	if(d){
-		std::cout<<"YA UNE PORTE EN "<< position <<std::endl;
 		PlayerItem *item = dynamic_cast<PlayerItem*>(d->getKey());
 		if(player->findAndRemove(item)){
 			removeDoor(d);
