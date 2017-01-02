@@ -31,8 +31,8 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 	this->imgPath = _imgPath;
 	this->width = 0;
 	this->height = 0;
-	maps.push_back(MAP_4);
 	maps.push_back(MAP_1);
+	maps.push_back(MAP_4);
 	maps.push_back(MAP_2);
 	maps.push_back(MAP_3);
 	indMap = 0;
