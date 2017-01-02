@@ -33,8 +33,9 @@ Player::~Player() {
 }
 
 void Player::moovForward(Terrain* t){
-	if(!camera->getIsTurning())
+	if(!camera->getIsTurning() && !camera->getIsMoving()) {
 		moov(t, MOOV_FRONT_VALUE);
+	}
 }
 
 void Player::moov(Terrain *t, float value){
@@ -42,23 +43,32 @@ void Player::moov(Terrain *t, float value){
 	if(t->checkCollision(nextPos, this))
 		return;
 
-	camera->moveFront(value);
+	if(value>0)
+		camera->setIsForward(true);
+	else
+		camera->setIsForward(false);
+	camera->setIsMoving(true);
 	setPosition(camera->getPosition());
 }
 
 void Player::moovBack(Terrain* t){
-	if(!camera->getIsTurning())
+	if(!camera->getIsTurning() && !camera->getIsMoving()) {
 		moov(t, -MOOV_FRONT_VALUE);
+	}
 }
 
 void Player::lookLeft(){
-	camera->setIsTurning(true);
-	camera->setIsLeft(true);
+	if(!camera->getIsTurning() && !camera->getIsMoving()) {
+		camera->setIsTurning(true);
+		camera->setIsLeft(true);
+	}
 }
 
 void Player::lookRight(){
-	camera->setIsTurning(true);
-	camera->setIsLeft(false);
+	if(!camera->getIsTurning() && !camera->getIsMoving()) {
+		camera->setIsTurning(true);
+		camera->setIsLeft(false);
+	}
 }
 
 void Player::addItem(PlayerItem *item){
@@ -111,6 +121,9 @@ glm::vec3 Player::getFrontVector() {
 
 void Player::moveUpdate(){
 	camera->updateRotation();
+	camera->updateMoving();
+	setPosition(camera->getPosition());
+
 }
 
 int Player::getLife() {
@@ -128,4 +141,5 @@ void Player::setPosition(glm::vec3 pos){
 
 void Player::reset(){
 	nbLife = NB_LIFE;
+	camera->resetValues();
 }

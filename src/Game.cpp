@@ -69,11 +69,8 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("red",new Texture( dirPath + RED_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("black",new Texture( dirPath + BLACK_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("white",new Texture( dirPath + WHITE_TEXT_PATH , program.getGLId())));
-
 	textures.insert(std::pair<std::string, Texture *>("beginMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("endMenu",new Texture( dirPath + WALL_TEXT_PATH , program.getGLId())));
-
-
 	textures.insert(std::pair<std::string, Texture *>("cursor",new Texture( dirPath + CURSOR_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("fire",new Texture( dirPath + FIRE_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("start",new Texture( dirPath + START_TEXT_PATH , program.getGLId())));
@@ -243,7 +240,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
-	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3(player.getPosition().x*0.01,player.getPosition().y+1,player.getPosition().z*0.01)*glm::mat3(player.getViewMatrix())));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3((player.getPosition().x+0.5)*0.01,player.getPosition().y+1,(player.getPosition().z+0.5)*0.01)*glm::mat3(player.getViewMatrix())));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1,1,1)));
 	glUniform1i(uIsTransparent, 0);
 
