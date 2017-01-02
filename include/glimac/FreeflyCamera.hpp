@@ -23,9 +23,14 @@ public:
     float getAngleValue();
     glm::vec3 getFrontVector();
     void updateRotation();
+    void updateMoving();
     void setIsLeft(bool _isLeft);
+    void setIsForward(bool _isForward);
+    void setIsMoving(bool _isMoving);
     void setIsTurning(bool _isTurning);
     bool getIsTurning();
+    bool getIsMoving();
+    void resetValues();
 
 private:
 	float m_fPhi;
@@ -39,6 +44,9 @@ private:
 
     bool isTurning;
     bool isLeft;
+    bool isMoving;
+    bool isForward;
+    float forwardMovingValue;
     float angleMovingValue;
 
 };
