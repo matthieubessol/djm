@@ -30,6 +30,8 @@ const static std::string FIRE_TEXT_PATH = "/assets/textures/fire.png";
 const static std::string KEY_TEXT_PATH = "/assets/textures/key.jpg";
 const static std::string MINI_KEY_TEXT_PATH = "/assets/textures/mini_key.png";
 const static std::string START_TEXT_PATH = "/assets/textures/start.jpg";
+const static std::string CONTINUER_TEXT_PATH = "/assets/textures/continuer.jpg";
+const static std::string RESTART_TEXT_PATH = "/assets/textures/restart.jpg";
 const static std::string nb0_TEXT_PATH = "/assets/textures/0.png";
 const static std::string nb1_TEXT_PATH = "/assets/textures/1.png";
 const static std::string nb2_TEXT_PATH = "/assets/textures/2.png";
@@ -86,6 +88,8 @@ Game::Game(std::string dirPath, SDLWindowManager* window) :
 	textures.insert(std::pair<std::string, Texture *>("7",new Texture( dirPath + nb7_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("8",new Texture( dirPath + nb8_TEXT_PATH , program.getGLId())));
 	textures.insert(std::pair<std::string, Texture *>("9",new Texture( dirPath + nb9_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("continuer",new Texture( dirPath + CONTINUER_TEXT_PATH , program.getGLId())));
+	textures.insert(std::pair<std::string, Texture *>("restart",new Texture( dirPath + RESTART_TEXT_PATH , program.getGLId())));
 
 
 

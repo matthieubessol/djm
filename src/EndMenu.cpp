@@ -14,8 +14,8 @@ EndMenu::EndMenu() : Menu() {
 }
 
 EndMenu::EndMenu(std::string t) : Menu(t){
-	restart = new Button(0.2, 0.1, -0.4, -0.3, "floor");
-	next = new Button(0.2, 0.1, 0.4, -0.3, "floor");
+	restart = new Button(0.2, 0.1, -0.4, -0.3, "restart");
+	next = new Button(0.2, 0.1, 0.4, -0.3, "continuer");
 }
 
 void EndMenu::checkButtons(glm::vec2 cursor, Game* g){
