@@ -17,6 +17,7 @@ using Json = nlohmann::json;
 
 class Game;
 
+//namespace glimac{
 class Player;
 
 
@@ -100,3 +101,4 @@ public:
 	std::string getPixelSignificationString(Pixel* p);
 	void next();
 };
+//}

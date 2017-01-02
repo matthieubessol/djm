@@ -12,17 +12,13 @@ namespace glimac {
         moveFrontValue = 1;
         forwardMovingValue = 0;
         angleValue = 90;
-        moovValue = 0.;
-        moovValueTmp = 0.;
         isTurning = false;
         isMoving = false;
         FreeflyCamera::computeDirectionVectors();
     }
 
     void FreeflyCamera::moveFront(float t){
-    	moovValue = t;
-    	moovValueTmp = 0.;
-        //m_Position += t * m_FrontVector;
+        m_Position += t * m_FrontVector;
     }
 
     void FreeflyCamera::moveLeft(float t){
@@ -80,16 +76,8 @@ namespace glimac {
         return this->angleValue;
     }
 
-<<<<<<< HEAD
-
-    //interpolation
-    void FreeflyCamera::update() {
-        int speed = 5;
-        //update rotate
-=======
     void FreeflyCamera::updateRotation() {
         int speed = 10;
->>>>>>> origin/master
         if(angleMovingValue < 90 && isTurning){
             angleMovingValue+=speed;
             if(isLeft)
@@ -100,15 +88,6 @@ namespace glimac {
             angleMovingValue = 0;
             isTurning = false;
         }
-        //update moov
-        if(moovValueTmp > moovValue){
-        	//moovValueTmp = 0;
-        }
-        else{
-        	moovValueTmp += 0.02;
-        	m_Position += moovValueTmp * m_FrontVector;
-        }
-
     }
 
     void FreeflyCamera::updateMoving() {

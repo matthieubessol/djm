@@ -8,6 +8,7 @@
 #include "Terrain.hpp"
 #include <fstream>
 #include <GL/glew.h>
+//#include <GLUT/glut.h>
 #include "Player.hpp"
 #include "Game.h"
 
@@ -48,6 +49,9 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 }
 
 void Terrain::init(){
+//	if(mapIterator == maps.end()){
+//		mapIterator = maps.begin();
+//	}
 	int ind = indMap%NB_MAPS;
 	this->loadMap(maps.at(ind));
 	linkDoors();
@@ -427,11 +431,15 @@ void Terrain::drawKeys(Game *g){
 	}
 }
 
+//void Terrain::drawBonus(Game *g){
+//	for (unsigned int i=0; i<bonus.size();++i){
+//		g->drawSphere("bonus", bonus.at(i)->getPosition(), 0, glm::vec3(0.5, 0.5, 0.5));
+//	}
 
 void Terrain::drawFloor(Game *g){
 	int size = pixels.at(0)->size();
-	for (int i=0; i<size;++i){
-		for (int j=0; j<size;++j){
+	for (unsigned int i=0; i<size;++i){
+		for (unsigned int j=0; j<size;++j){
 			g->drawCube("floor", glm::vec3(i,-0.5,j), 0, glm::vec3(0.5, 0.01, 0.5));
 		}
 	}
@@ -447,7 +455,7 @@ void Terrain::drawWalls(Game *g){
 
 void Terrain::drawTresors(Game *g){
 	for (unsigned int i=0; i<tresors.size();++i){
-		g->drawSphere("tresor", tresors.at(i)->getPosition(), -M_PI/2, glm::vec3(0.2, 0.2, 0.2));
+		g->drawCube("tresor", tresors.at(i)->getPosition(), 0, glm::vec3(0.2, 0.2, 0.2));
 	}
 }
 
@@ -471,14 +479,14 @@ void Terrain::drawEnnemis(Game *g){
 void Terrain::drawInterface(Game *g){
 	float offset = 0.;
 	for(int i=0; i < player->getNbLife(); i++){
-		g->drawCubeInterface("heart", glm::vec3(-0.75+offset, 0.75, 0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+		g->drawCubeInterface("heart", glm::vec3(-0.75+offset,-0.75,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 		offset += HEART_OFFSET;
 	}
-	g->drawCubeInterface("tresor", glm::vec3(-0.75, 0.60, 0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+	g->drawCubeInterface("tresor", glm::vec3(-0.75,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 
 	std::string moneyStr = std::to_string(player->getMoney());
 	for (int i = 0; i < moneyStr.length(); ++i){
-		g->drawCubeInterface(moneyStr.substr(i, 1).c_str(), glm::vec3(-0.62+0.1*i, 0.60,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
+		g->drawCubeInterface(moneyStr.substr(i, 1).c_str(), glm::vec3(-0.62+0.1*i,-0.65,-0.75), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 	}
 
 	drawMinimap(g);
