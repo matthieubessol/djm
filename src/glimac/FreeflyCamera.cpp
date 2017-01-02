@@ -27,7 +27,6 @@ namespace glimac {
     void FreeflyCamera::rotateLeft(float degrees){
         float radians = degrees / 180 * M_PI;
         m_fPhi += radians;
-        std::cout<<"PHI "<< m_fPhi<<std::endl;
         FreeflyCamera::computeDirectionVectors();
     }
 
