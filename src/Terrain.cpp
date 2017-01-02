@@ -52,15 +52,12 @@ Terrain::Terrain(std::string _imgPath, Player* p, std::string filePath) {
 }
 
 void Terrain::init(){
-//	if(mapIterator == maps.end()){
-//		mapIterator = maps.begin();
-//	}
-	int ind = indMap%NB_MAPS;
-	this->loadMap(maps.at(ind));
+	std::cout << "MAPS ind = "<<indMap<<std::endl;
+	this->loadMap(maps.at(indMap));
 	linkDoors();
 	player->setPosition(startPosition);
+	//player->reset(startPosition);
 	thisIsTheEnd = false;
-	indMap++;
 }
 
 
@@ -553,6 +550,12 @@ int Terrain::recoveryTresor(glm::vec3 pos){
 }
 
 void Terrain::next(){
+	reset();
+	indMap++;
+	indMap = indMap%NB_MAPS;
+	init();
+}
+void Terrain::restart(){
 	reset();
 	init();
 }
