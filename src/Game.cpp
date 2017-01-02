@@ -7,7 +7,7 @@
 
 #include "Game.h"
 #include "Button.h"
-
+#include <SDL/SDL.h>
 const static std::string VS_SHADER_PATH = "/shaders/3D.vs.glsl";
 const static std::string FS_SHADER_PATH = "/shaders/multiTex3D.fs.glsl";
 const static std::string FLOOR_TEXT_PATH = "/assets/textures/floor.jpg";
@@ -44,6 +44,7 @@ const static std::string nb8_TEXT_PATH = "/assets/textures/8.png";
 const static std::string nb9_TEXT_PATH = "/assets/textures/9.png";
 const static std::string ALIEN_TEXT_PATH = "/assets/textures/alien.jpg";
 const static std::string ALIEN2_TEXT_PATH = "/assets/textures/alien2.jpg";
+static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 
 const static std::string TXT_FILE_PATH = "/map/items.json";
 
@@ -142,6 +143,7 @@ void Game::play(){
 	glm::vec2 cursorPosition, cursorPositionInGL;
 	bool done = false;
 	while(!done) {
+		Uint32 startTime = SDL_GetTicks();
 		// Event loop:
 		SDL_Event e;
 		while(w->pollEvent(e)) {
@@ -161,6 +163,7 @@ void Game::play(){
 //							menuDisplayed = false;
 //						}
 //					}
+
 					break;
 				case SDL_KEYDOWN:
 					t.keyEvent(e.key.keysym.sym) ;
@@ -197,6 +200,10 @@ void Game::play(){
 
 		glm::mat4 MVMatrix;
 		t.draw(this);
+		Uint32 elapsedTime = SDL_GetTicks() - startTime;
+		if (elapsedTime < FRAMERATE_MILLISECONDS) {
+			SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
+		}
 
 		w->swapBuffers();
 	}
@@ -219,8 +226,6 @@ void Game::drawSphere(std::string texture, glm::vec3 translate, float rotate, gl
 	glUniformMatrix4fv(uMVPMatrix,    1, GL_FALSE, glm::value_ptr(ProjMatrix * MVMatrix * sphere.getModelMatrix()));
 	glUniformMatrix4fv(uMVMatrix,     1, GL_FALSE, glm::value_ptr(MVMatrix));
 	glUniformMatrix4fv(uNormalMatrix, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
-
-	glm::vec3 kd = glm::vec3(0.7,0.7,0.7);
 
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.7,0.7,0.7)));
@@ -294,7 +299,6 @@ void Game::drawMouseCursor(glm::vec2 p){
 }
 
 void Game::drawMenu(){
-	glm::vec3 pos = player.getNextFrontPosition();
 	drawCubeInterface(currentMenu->getTexture(), glm::vec3(0,0,-1), 0, glm::vec3(1	, 1	, 1	));
 	currentMenu->draw(this);
 
