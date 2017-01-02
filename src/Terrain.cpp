@@ -486,7 +486,7 @@ void Terrain::drawInterface(Game *g){
 	}
 	offset = 0.;
 	for(int i=0; i < player->getNbKey(); i++){
-		g->drawCubeInterface("mini_key", glm::vec3( 0.9-offset, -0.75, -1), -M_PI/2, glm::vec3(0.09, 0.09, 0.09));
+		g->drawCubeInterface("mini_key", glm::vec3(-0.75+offset, 0.45, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
 		offset += KEY_OFFSET;
 	}
 	g->drawCubeInterface("tresor", glm::vec3(-0.75, 0.60, 0.1), -M_PI/2, glm::vec3(0.05, 0.05, 0.05));
