@@ -4,8 +4,6 @@
 #include "glimac/glm.hpp"
 #include "glimac/FreeflyCamera.hpp"
 
-
-
 namespace glimac {
 
     FreeflyCamera::FreeflyCamera() : m_Position(glm::vec3(0,0,0)), m_fTheta(0){
@@ -29,6 +27,7 @@ namespace glimac {
     void FreeflyCamera::rotateLeft(float degrees){
         float radians = degrees / 180 * M_PI;
         m_fPhi += radians;
+        std::cout<<"PHI "<< m_fPhi<<std::endl;
         FreeflyCamera::computeDirectionVectors();
     }
 
@@ -39,6 +38,7 @@ namespace glimac {
     void FreeflyCamera::rotateUp(float degrees){
         float radians = degrees / 180 * M_PI;
         m_fTheta += radians;
+
         FreeflyCamera::computeDirectionVectors();
     }
 
@@ -135,9 +135,13 @@ namespace glimac {
         isMoving  = false;
         isForward = false;
         isLeft    = false;
-        float test = angleMovingValue / 180 * M_PI;
-        m_fPhi -= angleMovingValue / 180 * M_PI;
-
+//        for (int i=0; abs(m_fPhi - M_PI)< EPSILON; ++i){
+//        	m_fPhi -= i/180*MPI;
+//        }
+        //float test = angleMovingValue / 180 * M_PI;
+        m_fPhi = M_PI;
+        angleValue = 90;
+        m_fTheta=0;
         angleMovingValue = 0;
         forwardMovingValue = 0;
     }
