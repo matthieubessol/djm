@@ -148,8 +148,8 @@ glm::mat4 Cube::getModelMatrix() {
 }
 
 void Cube::draw(Texture * texture, int i , int j) {
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glDisable(GL_TEXTURE_2D);
+  //glBindTexture(GL_TEXTURE_2D, 0);
+  // glDisable(GL_TEXTURE_2D);
   glActiveTexture(texture->getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(i, 0, j));
   this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(0.5, 0.5, 0.5));
@@ -159,8 +159,8 @@ void Cube::draw(Texture * texture, int i , int j) {
 
 void Cube::drawPlane(Texture * texture, float scale, float translateX, float translateY) {
   this->resetMatrix();
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glDisable(GL_TEXTURE_2D);
+  //glBindTexture(GL_TEXTURE_2D, 0);
+  //glDisable(GL_TEXTURE_2D);
   glActiveTexture(texture->getActiveTexture());
   this->modelMatrix = glm::translate(glm::mat4(1), glm::vec3(translateX, -0.6, translateY));
   this->modelMatrix = glm::scale(this->modelMatrix, glm::vec3(scale,0.1,scale));
@@ -170,8 +170,8 @@ void Cube::drawPlane(Texture * texture, float scale, float translateX, float tra
 
 void Cube::draw(Texture * texture, glm::vec3 translate, float radian, glm::vec3 scale) {
   this->resetMatrix();
-  glBindTexture(GL_TEXTURE_2D, 0);
-  glDisable(GL_TEXTURE_2D);
+  //glBindTexture(GL_TEXTURE_2D, 0);
+  //glDisable(GL_TEXTURE_2D);
 
   glActiveTexture(texture->getActiveTexture());
 

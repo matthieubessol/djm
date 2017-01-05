@@ -228,7 +228,7 @@ void Game::drawCube(std::string texture, glm::vec3 translate, float rotate, glm:
 
 	glUniform3fv(uKd, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
 	glUniform3fv(uKs, 1, glm::value_ptr(glm::vec3(0.5,1,0.7)));
-	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3((player.getPosition().x+0.5)*0.01,player.getPosition().y+1,(player.getPosition().z+0.5)*0.01)*glm::mat3(player.getViewMatrix())));
+	glUniform3fv(uLightDir_vs, 1, glm::value_ptr(glm::vec3((player.getPosition().x+1)*0.01,player.getPosition().y+1,(player.getPosition().z-0.5)*0.01)*glm::mat3(player.getViewMatrix())));
 	glUniform3fv(uLightIntensity, 1, glm::value_ptr(glm::vec3(1,1,1)));
 	glUniform1i(uIsTransparent, 0);
 
